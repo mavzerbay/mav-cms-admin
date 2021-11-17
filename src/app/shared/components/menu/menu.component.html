@@ -1,0 +1,22 @@
+<div #sidebar class="layout-sidebar" (mouseover)="toggleActive()" (mouseout)="toggleActive()">
+    <div class="sidebar-logo">
+        <a href="#" (click)="toggleLockActiveMenu()" title="Toggle Menu" class="sidebar-pin">
+            <i class="pi pi-lock{{isLocked?'':'-open'}} ng-star-inserted"></i>
+        </a>
+        <a routerlink="/" href="#/">
+            <img alt="logo" src="assets/images/mavzerbay-logo.png">
+            <span class="app-name">Mavzerbay</span>
+        </a>
+    </div>
+    <div class="layout-menu-container">
+        <ul class="layout-menu">
+            <li app-menuitem="" class="ng-tns-c175-5 ng-star-inserted active-menuitem">
+                <a routerlinkactive="active-menuitem-routerlink"
+                    class="ng-tns-c175-5 ng-star-inserted active-menuitem-routerlink" tabindex="0" href="#/"><span
+                        class="menuitem-text ng-tns-c175-5">Anasayfa</span>
+                    <i class="layout-menuitem-icon ng-tns-c175-5 pi pi-fw pi-home"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
