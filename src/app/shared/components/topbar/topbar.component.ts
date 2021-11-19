@@ -14,9 +14,12 @@ export class TopbarComponent implements OnInit {
 
   }
 
-  toggleActive() {
+  toggleSideBarActive() {
     const layoutWrapper = document.getElementsByClassName('layout-menu-light')[0];
     if (layoutWrapper) {
+      if (window.innerWidth <= 991 && layoutWrapper.classList.contains('layout-topbar-mobile-active')) {
+        layoutWrapper.classList.remove('layout-topbar-mobile-active');
+      }
       if (window.innerWidth <= 991 && layoutWrapper.classList.contains('layout-sidebar-mobile-active')) {
         layoutWrapper.classList.remove('layout-sidebar-mobile-active');
         layoutWrapper.classList.remove('layout-wrapper-static');
@@ -25,6 +28,24 @@ export class TopbarComponent implements OnInit {
         if (window.innerWidth <= 991) {
           layoutWrapper.classList.add('layout-sidebar-mobile-active');
           layoutWrapper.classList.add('layout-wrapper-static');
+        }
+      }
+    }
+  }
+
+  toggleTopBarActive() {
+    const layoutWrapper = document.getElementsByClassName('layout-menu-light')[0];
+    if (layoutWrapper) {
+      if (window.innerWidth <= 991 && layoutWrapper.classList.contains('layout-sidebar-mobile-active')) {
+        layoutWrapper.classList.remove('layout-sidebar-mobile-active');
+        layoutWrapper.classList.remove('layout-wrapper-static');
+      }
+      if (window.innerWidth <= 991 && layoutWrapper.classList.contains('layout-topbar-mobile-active')) {
+        layoutWrapper.classList.remove('layout-topbar-mobile-active');
+      }
+      else {
+        if (window.innerWidth <= 991) {
+          layoutWrapper.classList.add('layout-topbar-mobile-active');
         }
       }
     }
