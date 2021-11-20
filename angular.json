@@ -33,6 +33,7 @@
             "styles": [
               "node_modules/primeng/resources/themes/tailwind-light/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeflex/primeflex.css",
               "node_modules/primeicons/primeicons.css",
               "src/assets/css/layout-light.css",
               "src/styles.scss"

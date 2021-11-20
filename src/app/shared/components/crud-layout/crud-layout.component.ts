@@ -1,16 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { LazyLoadEvent, PrimeNGConfig } from 'primeng/api';
+import { Component, Input, isDevMode, OnInit, ViewChild } from '@angular/core';
+import { ConfirmationService, LazyLoadEvent, MessageService, PrimeNGConfig } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
+import { Table } from 'primeng/table';
+import { CrudLayoutOptions } from '../../models/crud-layout-options';
+import { MavDataService } from '../../services/mav-data.service';
+import { takeUntil } from 'rxjs';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'mav-crud-layout',
   templateUrl: './crud-layout.component.html',
-  styleUrls: ['./crud-layout.component.scss']
+  styleUrls: ['./crud-layout.component.scss'],
+  providers: [
+    DialogService,
+    MessageService,
+  ]
 })
 export class CrudLayoutComponent implements OnInit {
-  datasource!: any[];
 
-  customers!: any[];
+  @ViewChild("dt", { static: true })
+  dTable!: Table;
+
+  dataList!: any[];
 
   totalRecords!: number;
 
@@ -18,44 +29,104 @@ export class CrudLayoutComponent implements OnInit {
 
   loading!: boolean;
 
+  selectedDatas!: any[];
+
+  data: any;
+
+  ref!: DynamicDialogRef;
+
+  @Input() crudLayoutOptions!: CrudLayoutOptions<any>;
+
   constructor(
     private primengConfig: PrimeNGConfig,
-    private http: HttpClient
+    private dataService: MavDataService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    public dialogService: DialogService,
   ) { }
 
   ngOnInit() {
-    //datasource imitation
-    this.getCustomersLarge().then(data => {
-      this.datasource = data;
-      this.totalRecords = data.length;
-    });
-
     this.loading = true;
     this.primengConfig.ripple = true;
   }
-  getCustomersLarge() {
-    return this.http.get<any>('assets/customers-large.json')
-      .toPromise()
-      .then(res => <any[]>res.data)
-      .then(data => { return data; });
+
+  loadData(event: LazyLoadEvent) {
+    console.log(event);
+    this.loading = true
+    this.dataService.getDataList<typeof this.crudLayoutOptions.model>(this.crudLayoutOptions.url, event).subscribe((response) => {
+      if (response && response.isSuccess) {
+        this.dataList = response.dataMulti;
+        this.totalRecords = response.count;
+      } else {
+        console.log(response);
+      }
+      this.loading = false;
+    }, error => {
+      if (isDevMode())
+        console.error(error);
+    });
   }
 
-  loadCustomers(event: LazyLoadEvent) {
-    this.loading = true;
+  editData(data: typeof this.crudLayoutOptions.model) {
+    this.openDialog(data);
+  }
 
-    //in a real application, make a remote request to load data using state metadata from event
-    //event.first = First row offset
-    //event.rows = Number of rows per page
-    //event.sortField = Field name to sort with
-    //event.sortOrder = Sort order as number, 1 for asc and -1 for dec
-    //filters: FilterMetadata object having field as key and filter value, filter matchMode as value
+  newData() {
+    this.openDialog(null);
+  }
 
-    //imitate db connection over a network
-    setTimeout(() => {
-      if (this.datasource) {
-        this.customers = this.datasource.slice(event.first, ((event.first ?? 0) + (event.rows ?? 0)));
-        this.loading = false;
+  openDialog(data: typeof this.crudLayoutOptions.model) {
+    this.ref = this.dialogService.open(this.crudLayoutOptions.dialogComponent, {
+      header: this.crudLayoutOptions.dialogHeader,
+      width: this.crudLayoutOptions.dialogWidth,
+      contentStyle: this.crudLayoutOptions.contentStyle,
+      baseZIndex: 10000,
+      autoZIndex: true,
+    });
+  }
+
+  deleteSelectedDatas() {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete the selected products?',
+      header: 'Confirm',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        // this.products = this.products.filter(val => !this.selectedProducts.includes(val));
+        // this.selectedProducts = null;
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
       }
-    }, 1000);
+    });
+  }
+
+  deleteData(product: any) {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete ' + product.name + '?',
+      header: 'Confirm',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        // this.products = this.products.filter(val => val.id !== product.id);
+        // this.product = {};
+        // this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+      }
+    });
+  }
+
+  filterTable(event: any, field: string, matchMode: string = 'contains') {
+    if (event && event.target && event.target.value) {
+      this.dTable.filter(event.target.value, field, matchMode);
+    }
+  }
+
+  filterTableGlobal(event: any) {
+    if (event && event.target && event.target.value) {
+      this.dTable.filterGlobal(event.target.value, 'contains')
+    }
+  }
+
+  clearTable() {
+    this.dTable.clear();
+  }
+  get getGlobalFilters() {
+    return this.crudLayoutOptions.cols.filter(x => x.isGlobalFilter != null && x.isGlobalFilter == true).map(x => x.field);
   }
 }

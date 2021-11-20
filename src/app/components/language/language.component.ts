@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { CrudLayoutOptions } from 'src/app/shared/models/crud-layout-options';
+import { Language } from 'src/app/models/language';
+import { LanguageDialogComponent } from './language-dialog/language-dialog.component';
 
 @Component({
   selector: 'app-language',
@@ -12,4 +15,32 @@ export class LanguageComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  crudOptions: CrudLayoutOptions<Language> = {
+    url: '/Language',
+    dialogComponent: LanguageDialogComponent,
+    dialogHeader: "",
+    cols: [
+      {
+        field: 'crudButtons',
+        fieldHeaderName: 'İşlem',
+        type: ''
+      },
+      {
+        field: 'name',
+        fieldHeaderName: 'Adı',
+        type: 'text',
+        isGlobalFilter: true,
+      },
+      {
+        field: 'isPrimary',
+        fieldHeaderName: 'Birincil',
+        type: ''
+      },
+      {
+        field: 'activity',
+        fieldHeaderName: 'Durum',
+        type: 'trueFalse'
+      },
+    ]
+  }
 }

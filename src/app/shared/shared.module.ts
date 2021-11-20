@@ -7,6 +7,7 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
 import { FooterComponent } from './components/footer/footer.component';
 import { CrudLayoutComponent } from './components/crud-layout/crud-layout.component';
 import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 //Primeng
 import { ToastModule } from 'primeng/toast';
@@ -17,6 +18,9 @@ import { DialogModule } from 'primeng/dialog';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { MessagesModule } from 'primeng/messages';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 
 @NgModule({
@@ -31,11 +35,16 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
   imports: [
     CommonModule,
     RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
     //Primeng Modules
     TableModule,
     ToastModule,
     ToolbarModule,
     ButtonModule,
+    InputTextModule,
+    DropdownModule,
+    ProgressBarModule,
     DialogModule,
     ConfirmDialogModule,
     MessagesModule,

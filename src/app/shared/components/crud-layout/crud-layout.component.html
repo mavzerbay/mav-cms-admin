@@ -1,31 +1,71 @@
 <div class="p-grid">
     <div class="p-col-12">
         <div class="card">
-            <p-toolbar styleClass="p-mb-4">
+            <p-toolbar styleClass="p-mb-4" *ngIf="crudLayoutOptions.showToolBar">
                 <div class="p-toolbar-group-left ">
                     <button pButton pRipple label="Yeni Kayıt" icon="pi pi-plus"
                         class="p-button-success p-mr-2 p-mb-2 p-button">
                     </button>
-                    <button pButton pRipple label="Sil" icon="pi pi-trash" class="p-button-danger p-mb-2 p-button">
+                    <button pButton pRipple label="Seçilenleri Sil" icon="pi pi-trash"
+                        class="p-button-danger p-mb-2 p-button" (click)="deleteSelectedDatas()"
+                        [disabled]="!selectedDatas || !selectedDatas.length">
                     </button>
                 </div>
+                <div class="p-toolbar-group-left" *ngIf="crudLayoutOptions.showSearch">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="filterTableGlobal($event)" placeholder="Ara..." />
+                        </span>
+                    </div>
+                </div>
             </p-toolbar>
-            <p-table [value]="customers" [lazy]="true" (onLazyLoad)="loadCustomers($event)" [paginator]="true"
-                [rows]="10" [totalRecords]="totalRecords" [loading]="loading">
+            <p-table #dt [value]="dataList" [lazy]="true" (onLazyLoad)="loadData($event)" [(selection)]="selectedDatas"
+                [paginator]="true" [rows]="10" [globalFilterFields]="getGlobalFilters" [totalRecords]="totalRecords"
+                [loading]="loading" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [showCurrentPageReport]="true">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>Name</th>
-                        <th>Country</th>
-                        <th>Company</th>
-                        <th>Representative</th>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th>#</th>
+                        <th *ngFor="let col of crudLayoutOptions.cols" [pSortableColumn]="col.field">
+                            {{col.fieldHeaderName}}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th>
+                            <button pButton class="p-button-outlined" icon="pi pi-filter-slash"
+                                (click)="clearTable()"></button>
+                        </th>
+                        <th *ngFor="let col of crudLayoutOptions.cols">
+                            <input *ngIf="col.field!='crudButtons'&& col.type=='text'" pInputText type="text"
+                                (input)="filterTable($event,col.field)" [value]="$any(dt.filters[col.field])?.value"
+                                placeholder="{{col.fieldHeaderName}} ara" class="p-column-filter">
+
+                        </th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-customer>
+                <ng-template pTemplate="body" let-data let-index="rowIndex">
                     <tr>
-                        <td>{{customer.name}}</td>
-                        <td>{{customer.country.name}}</td>
-                        <td>{{customer.company}}</td>
-                        <td>{{customer.representative.name}}</td>
+                        <td>
+                            <p-tableCheckbox [value]="data"></p-tableCheckbox>
+                        </td>
+                        <td>{{index+1}}</td>
+                        <td *ngFor="let col of crudLayoutOptions.cols">
+                            <ng-container *ngIf="col.field!='crudButtons'">
+                                {{data[col.field]}}
+                            </ng-container>
+                            <ng-container *ngIf="col.field=='crudButtons'">
+                                <button pButton pRipple icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success p-mr-2 crud-button" (click)="editData(data)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger crud-button"
+                                    (click)="deleteData(data)"></button>
+                            </ng-container>
+                        </td>
                     </tr>
                 </ng-template>
             </p-table>
@@ -33,4 +73,4 @@
     </div>
 </div>
 
-<p-toast></p-toast>
+<p-toast position="top-right"></p-toast>
