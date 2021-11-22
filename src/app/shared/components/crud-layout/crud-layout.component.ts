@@ -1,11 +1,12 @@
-import { Component, Input, isDevMode, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, isDevMode, OnInit, Type, ViewChild } from '@angular/core';
 import { ConfirmationService, LazyLoadEvent, MessageService, PrimeNGConfig } from 'primeng/api';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpStatusCode } from '@angular/common/http';
 import { Table } from 'primeng/table';
 import { CrudLayoutOptions } from '../../models/crud-layout-options';
 import { MavDataService } from '../../services/mav-data.service';
 import { takeUntil } from 'rxjs';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { IApiResponse } from '../../models/api-response';
 
 @Component({
   selector: 'mav-crud-layout',
@@ -46,14 +47,21 @@ export class CrudLayoutComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loading = true;
+    //varsayılan değerleri atamak için
+    this.crudLayoutOptions.showToolBar = this.crudLayoutOptions.showToolBar ?? true;
+    this.crudLayoutOptions.showSearch = this.crudLayoutOptions.showSearch ?? true;
+    this.crudLayoutOptions.dialogWidth = this.crudLayoutOptions.dialogWidth ?? '60%';
+    this.crudLayoutOptions.contentStyle = this.crudLayoutOptions.contentStyle ?? { "max-height": "500px", "overflow": "auto" };
+
     this.primengConfig.ripple = true;
+
+    console.log(this.crudLayoutOptions);
   }
 
   loadData(event: LazyLoadEvent) {
     console.log(event);
     this.loading = true
-    this.dataService.getDataList<typeof this.crudLayoutOptions.model>(this.crudLayoutOptions.url, event).subscribe((response) => {
+    this.dataService.getDataList<typeof this.crudLayoutOptions.model>(this.crudLayoutOptions.url, event).subscribe((response: IApiResponse<typeof this.crudLayoutOptions.model>) => {
       if (response && response.isSuccess) {
         this.dataList = response.dataMulti;
         this.totalRecords = response.count;
@@ -77,12 +85,24 @@ export class CrudLayoutComponent implements OnInit {
 
   openDialog(data: typeof this.crudLayoutOptions.model) {
     this.ref = this.dialogService.open(this.crudLayoutOptions.dialogComponent, {
+      data: data?.id,
       header: this.crudLayoutOptions.dialogHeader,
       width: this.crudLayoutOptions.dialogWidth,
       contentStyle: this.crudLayoutOptions.contentStyle,
       baseZIndex: 10000,
       autoZIndex: true,
     });
+
+    this.ref.onClose.subscribe((response: IApiResponse<typeof this.crudLayoutOptions.model>) => {
+      if (response && response.dataSingle && response.dataSingle.id) {
+        if (response.statusCode == HttpStatusCode.NoContent && this.dataList.some(x => x.id == response.dataSingle.id)) {
+          const indexOfElement = this.dataList.findIndex(x => x.id == response.dataSingle.id);
+          this.dataList[indexOfElement] = response.dataSingle;
+        } else if (response.statusCode == HttpStatusCode.Created) {
+          this.dataList.splice(0, 0, response.dataSingle);
+        }
+      }
+    })
   }
 
   deleteSelectedDatas() {

@@ -18,7 +18,7 @@ export class LanguageComponent implements OnInit {
   crudOptions: CrudLayoutOptions<Language> = {
     url: '/Language',
     dialogComponent: LanguageDialogComponent,
-    dialogHeader: "",
+    dialogHeader: "Dil",
     cols: [
       {
         field: 'crudButtons',
@@ -29,6 +29,7 @@ export class LanguageComponent implements OnInit {
         field: 'name',
         fieldHeaderName: 'Adı',
         type: 'text',
+        typePlaceHolder: 'Ada göre ara',
         isGlobalFilter: true,
       },
       {

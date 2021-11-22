@@ -1,0 +1,22 @@
+:host ::ng-deep {
+    .p-float-label input:focus ~ label,
+    .p-float-label input.p-filled ~ label,
+    .p-float-label textarea:focus ~ label,
+    .p-float-label textarea.p-filled ~ label,
+    .p-float-label .p-inputwrapper-focus ~ label,
+    .p-float-label .p-inputwrapper-filled ~ label {
+        top: 0;
+        font-size: 12px;
+        background: white;
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+    }
+    .p-float-label {
+        display: block;
+        position: relative;
+        margin-top: 0.5rem;
+    }
+    .p-inputtext {
+        width: 100%;
+    }
+}

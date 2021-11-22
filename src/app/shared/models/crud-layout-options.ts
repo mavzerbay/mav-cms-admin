@@ -27,6 +27,10 @@ export class CrudLayoutColumns {
      * Filtreleme headerı tipi örn:none,text,number,autocomplete,trueFalse
      */
     type!: string;
+    /**
+     * Tipe uygun inputların placeholderı varsa placeholder alanları için
+     */
+    typePlaceHolder?: string;
     autoCompleteUrl?: string;
     isGlobalFilter?: boolean = false;
 }

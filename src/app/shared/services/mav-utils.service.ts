@@ -35,6 +35,9 @@ export class MavUtilsService {
           customParams = customParams.append("MatchMode", matchModes);
       }
 
+      if (event.globalFilter)
+        customParams = customParams.append("Search", event.globalFilter);
+
     }
 
     return customParams;

@@ -21,6 +21,10 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { MavInputComponent } from './components/mav-input/mav-input.component';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { DialogButtonsComponent } from './components/dialog-buttons/dialog-buttons.component';
 
 
 @NgModule({
@@ -31,6 +35,8 @@ import { ProgressBarModule } from 'primeng/progressbar';
     BreadcrumbComponent,
     FooterComponent,
     CrudLayoutComponent,
+    MavInputComponent,
+    DialogButtonsComponent,
   ],
   imports: [
     CommonModule,
@@ -43,6 +49,8 @@ import { ProgressBarModule } from 'primeng/progressbar';
     ToolbarModule,
     ButtonModule,
     InputTextModule,
+    InputTextareaModule,
+    InputNumberModule,
     DropdownModule,
     ProgressBarModule,
     DialogModule,
@@ -56,6 +64,8 @@ import { ProgressBarModule } from 'primeng/progressbar';
     BreadcrumbComponent,
     FooterComponent,
     CrudLayoutComponent,
+    MavInputComponent,
+    DialogButtonsComponent,
   ]
 })
 export class SharedModule { }
