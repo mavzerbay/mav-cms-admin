@@ -11,6 +11,11 @@ export class CrudLayoutOptions<T> {
     dialogHeader!: string;
     dialogWidth?: string = '60%';
     contentStyle?: any = { "max-height": "500px", "overflow": "auto" };
+    /**
+     * Silmek için sorulduğunda hangi alana göre soracağını belirtir örn:
+     * language.name alanını silmek istediğinize emin misiniz?
+     */
+    deleteProperty?: string = 'name';
 }
 
 export class CrudLayoutColumns {

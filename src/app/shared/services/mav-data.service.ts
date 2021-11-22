@@ -20,13 +20,15 @@ export class MavDataService {
   ) { }
 
 
-  saveData<T extends BaseModel>(url: string, data: T, event?: LazyLoadEvent, customParams?: HttpParams, isMultiPartData: boolean = false): Observable<IApiResponse<T>> {
+  saveData<T extends BaseModel>(url: string, data: T, customParams?: HttpParams, isMultiPartData: boolean = false): Observable<IApiResponse<T>> {
     let values: any = null;
 
     let params = new HttpParams();
 
-    if (event) {
-      params = this.utilsService.lazyLoadToCustomParams(event);
+    if (customParams) {
+      for (const key in customParams) {
+        console.log(key);
+      }
     }
 
     if (isMultiPartData) {
@@ -40,12 +42,13 @@ export class MavDataService {
 
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
+    headers = headers.set('Accept', `application/json`);
     headers = headers.set('Authorization', `Bearer ${token}`);
 
     if (data.id) {
-      return this.http.put<T>(`${this.baseURL}${url}`, values, { headers: headers, params: params }).pipe(map((response: any) => {
+      return this.http.put<IApiResponse<T>>(`${this.baseURL}${url}`, values, { headers: headers, params: params }).pipe(map((response: IApiResponse<T>) => {
         console.log("Dönen veri", response);
-        return response.body;
+        return response;
       }))
     } else {
       return this.http.post<IApiResponse<T>>(`${this.baseURL}${url}`, values, { headers: headers }).pipe(map((response: IApiResponse<T>) => {
@@ -59,11 +62,20 @@ export class MavDataService {
 
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
+    headers = headers.set('Accept', `application/json`);
     headers = headers.set('Authorization', `Bearer ${token}`);
 
     return this.http.get<IApiResponse<T>>(`${this.baseURL}${url}/${id}`, { headers }).pipe(
       map((response: IApiResponse<T>) => {
         return response;
+      })
+    );
+  }
+
+  delete(url: string, id: string): Observable<IApiResponse<boolean>> {
+    return this.http.delete(`${this.baseURL}${url}/${id}`, { observe: 'response' }).pipe(
+      map((response) => {
+        return <IApiResponse<boolean>>response.body;
       })
     );
   }
@@ -85,6 +97,27 @@ export class MavDataService {
 
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
+    headers = headers.set('Accept', `application/json`);
+    headers = headers.set('Authorization', `Bearer ${token}`);
+
+    return this.http.get<IApiResponse<T>>(`${this.baseURL}${url}`, { headers, params }).pipe(
+      map((response: IApiResponse<T>) => {
+        return response;
+      })
+    );
+  }
+
+  getDropdownDataList<T extends BaseModel>(url: string, query?: string): Observable<IApiResponse<T>> {
+    let values: any = null;
+
+    let params = new HttpParams();
+
+    if (query)
+      params = params.append("Name", query);
+
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', `application/json`);
     headers = headers.set('Authorization', `Bearer ${token}`);
 
     return this.http.get<IApiResponse<T>>(`${this.baseURL}${url}`, { headers, params }).pipe(

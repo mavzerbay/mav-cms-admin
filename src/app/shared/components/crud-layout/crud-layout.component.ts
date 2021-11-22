@@ -1,10 +1,10 @@
 import { Component, Input, isDevMode, OnInit, Type, ViewChild } from '@angular/core';
 import { ConfirmationService, LazyLoadEvent, MessageService, PrimeNGConfig } from 'primeng/api';
-import { HttpClient, HttpStatusCode } from '@angular/common/http';
+import { HttpStatusCode } from '@angular/common/http';
 import { Table } from 'primeng/table';
 import { CrudLayoutOptions } from '../../models/crud-layout-options';
 import { MavDataService } from '../../services/mav-data.service';
-import { takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { IApiResponse } from '../../models/api-response';
 
@@ -38,6 +38,8 @@ export class CrudLayoutComponent implements OnInit {
 
   @Input() crudLayoutOptions!: CrudLayoutOptions<any>;
 
+  private unsubscribe = new Subject();
+
   constructor(
     private primengConfig: PrimeNGConfig,
     private dataService: MavDataService,
@@ -52,21 +54,26 @@ export class CrudLayoutComponent implements OnInit {
     this.crudLayoutOptions.showSearch = this.crudLayoutOptions.showSearch ?? true;
     this.crudLayoutOptions.dialogWidth = this.crudLayoutOptions.dialogWidth ?? '60%';
     this.crudLayoutOptions.contentStyle = this.crudLayoutOptions.contentStyle ?? { "max-height": "500px", "overflow": "auto" };
+    this.crudLayoutOptions.deleteProperty = 'name';
 
-    this.primengConfig.ripple = true;
-
-    console.log(this.crudLayoutOptions);
   }
 
   loadData(event: LazyLoadEvent) {
-    console.log(event);
     this.loading = true
-    this.dataService.getDataList<typeof this.crudLayoutOptions.model>(this.crudLayoutOptions.url, event).subscribe((response: IApiResponse<typeof this.crudLayoutOptions.model>) => {
+    this.dataService.getDataList<typeof this.crudLayoutOptions.model>(this.crudLayoutOptions.url, event).pipe(takeUntil(this.unsubscribe)).subscribe((response: IApiResponse<typeof this.crudLayoutOptions.model>) => {
       if (response && response.isSuccess) {
         this.dataList = response.dataMulti;
         this.totalRecords = response.count;
       } else {
-        console.log(response);
+        if (response.error) {
+          let errorMessage;
+          for (const key in response.error) {
+            if (Object.prototype.hasOwnProperty.call(response.error, key)) {
+              errorMessage += response.error[key];
+            }
+          }
+          this.messageService.add({ severity: 'error', summary: 'İşlem Başarısız', detail: errorMessage, life: 3000 });
+        }
       }
       this.loading = false;
     }, error => {
@@ -118,15 +125,21 @@ export class CrudLayoutComponent implements OnInit {
     });
   }
 
-  deleteData(product: any) {
+  deleteData(data: any) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + product.name + '?',
-      header: 'Confirm',
+      message: `${data[this.crudLayoutOptions.deleteProperty!]} silmek istediğinize emin misiniz?`,
+      header: 'Onaylama İşlemi',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        // this.products = this.products.filter(val => val.id !== product.id);
-        // this.product = {};
-        // this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+        this.dataService.delete(this.crudLayoutOptions.url, data.id).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
+          if (response && response.isSuccess) {
+            const deletedItemIndex = this.dataList.findIndex(x => x.id == data.id);
+            this.dataList.splice(deletedItemIndex, 1);
+            this.messageService.add({ severity: 'success', summary: 'Silme işlemi başarılı', life: 3000 });
+          } else {
+            this.messageService.add({ severity: 'error', summary: 'Silme işlemi başarısız', life: 3000 });
+          }
+        });
       }
     });
   }

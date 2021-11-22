@@ -62,7 +62,6 @@ export class MavInputComponent implements ControlValueAccessor {
   }
 
   writeValue(value: any): void {
-    this.control?.setValue(value);
   }
   registerOnChange(fn: any): void {
   }
@@ -84,6 +83,10 @@ export class MavInputComponent implements ControlValueAccessor {
 
   keyup(event: any) {
     this.onKeyUp.emit(event);
+  }
+
+  change(event: any) {
+    this.onChange.emit(event.checked);
   }
 
 }

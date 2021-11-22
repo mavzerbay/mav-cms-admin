@@ -8,6 +8,8 @@ import { FooterComponent } from './components/footer/footer.component';
 import { CrudLayoutComponent } from './components/crud-layout/crud-layout.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DialogButtonsComponent } from './components/dialog-buttons/dialog-buttons.component';
+import { MavAutocompleteComponent } from './components/mav-autocomplete/mav-autocomplete.component';
 
 //Primeng
 import { ToastModule } from 'primeng/toast';
@@ -19,12 +21,13 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { MessagesModule } from 'primeng/messages';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { DropdownModule } from 'primeng/dropdown';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { MavInputComponent } from './components/mav-input/mav-input.component';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { DialogButtonsComponent } from './components/dialog-buttons/dialog-buttons.component';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 
 
 @NgModule({
@@ -37,6 +40,7 @@ import { DialogButtonsComponent } from './components/dialog-buttons/dialog-butto
     CrudLayoutComponent,
     MavInputComponent,
     DialogButtonsComponent,
+    MavAutocompleteComponent,
   ],
   imports: [
     CommonModule,
@@ -51,12 +55,14 @@ import { DialogButtonsComponent } from './components/dialog-buttons/dialog-butto
     InputTextModule,
     InputTextareaModule,
     InputNumberModule,
-    DropdownModule,
+    AutoCompleteModule,
     ProgressBarModule,
     DialogModule,
+    InputSwitchModule,
     ConfirmDialogModule,
     MessagesModule,
-    DynamicDialogModule
+    DynamicDialogModule,
+    BreadcrumbModule,
   ],
   exports: [
     MenuComponent,
@@ -66,6 +72,7 @@ import { DialogButtonsComponent } from './components/dialog-buttons/dialog-butto
     CrudLayoutComponent,
     MavInputComponent,
     DialogButtonsComponent,
+    MavAutocompleteComponent,
   ]
 })
 export class SharedModule { }

@@ -24,6 +24,16 @@
             (keyup)="keyup($event)" [class.ng-invalid]="!control.valid" [class.ng-dirty]="control.dirty">
         </p-inputNumber>
     </ng-container>
+    <ng-container *ngSwitchCase="'switch'">
+        <label *ngIf="label" [for]="inputId" style="display: block;" class="mb-2">{{label}}</label>
+        <p-inputSwitch [formControl]="control" [inputId]="inputId" [class]="class" [style]="style"
+            (input)="onInput($event)" (blur)="blur()" (keydown)="keydown($event)" (keyup)="keyup($event)"
+            (onChange)="change($event)" [class.ng-invalid]="!control.valid" [class.ng-dirty]="control.dirty">
+        </p-inputSwitch>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+        input bulunamadı
+    </ng-container>
 </ng-container>
 <ng-container *ngIf="control&& !control.valid&&(control.touched || control.dirty) && control.errors">
     <small style="color: red;" *ngIf="control.errors?.['required']">{{label}} alanı zorunludur</small>

@@ -4,8 +4,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LanguageComponent } from './components/language/language.component';
 
 const routes: Routes = [
-  { path: '', component: DashboardComponent },
-  { path: 'Language', component: LanguageComponent }
+  { path: '', component: DashboardComponent, data: { breadcrumb: 'Anasayfa' } },
+  { path: 'Language', component: LanguageComponent, data: { breadcrumb: 'Dil' } }
 ];
 
 @NgModule({

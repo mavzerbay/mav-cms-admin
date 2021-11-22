@@ -2,6 +2,7 @@ import { Component, isDevMode, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Subject, takeUntil } from 'rxjs';
 import { Language } from 'src/app/models/language';
 import { IApiResponse } from 'src/app/shared/models/api-response';
 import { MavDataService } from 'src/app/shared/services/mav-data.service';
@@ -24,6 +25,8 @@ export class LanguageDialogComponent implements OnInit {
   languageId: string = this.config.data;
 
   formLanguage!: FormGroup;
+
+  private unsubscribe = new Subject();
 
   ngOnInit(): void {
     this.createLanguageForm();
@@ -48,7 +51,7 @@ export class LanguageDialogComponent implements OnInit {
   }
 
   private getLanguage() {
-    this.dataService.getById<Language>(`Language`, this.languageId).subscribe((response: IApiResponse<Language>) => {
+    this.dataService.getById<Language>(`/Language`, this.languageId).subscribe((response: IApiResponse<Language>) => {
       if (response && response.isSuccess) {
         this.formLanguage.patchValue(response.dataSingle);
       } else {
@@ -73,7 +76,29 @@ export class LanguageDialogComponent implements OnInit {
 
   saveLanguage() {
     if (this.formLanguage.valid) {
-
+      this.dataService.saveData<Language>("/Language", this.formLanguage.value).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
+        debugger;
+        if (response && response.isSuccess) {
+          this.ref.close(response);
+        } else {
+          if (response.error) {
+            let errorMessage;
+            for (const key in response.error) {
+              if (Object.prototype.hasOwnProperty.call(response.error, key)) {
+                if (this.formLanguage.get(key) != null) {
+                  this.formLanguage.get(key)?.setErrors(Validators.required, response.error[key]);
+                }
+                errorMessage += response.error[key];
+              }
+            }
+            this.messageService.add({ severity: 'error', summary: 'İşlem Başarısız', detail: errorMessage, life: 3000 });
+          }
+          this.messageService.add({ severity: 'error', summary: 'İşlem Başarısız', detail: response.message, life: 3000 });
+        }
+      }, error => {
+        if (isDevMode())
+          console.log(error);
+      })
     }
   }
 
