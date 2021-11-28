@@ -11,17 +11,21 @@
     <div class="layout-menu-container">
         <ul class="layout-menu">
             <!-- active-menuitem -->
-            <li app-menuitem class="ng-tns-c175-5 ng-star-inserted">
-                <a routerlinkactive="active-menuitem-routerlink" class="ng-tns-c175-5 ng-star-inserted" routerLink="/"
-                    tabindex="0"><span class="menuitem-text ng-tns-c175-5">Anasayfa</span>
-                    <i class="layout-menuitem-icon ng-tns-c175-5 pi pi-fw pi-home"></i>
+            <li routerLinkActive="active-menuitem" [routerLinkActiveOptions]="{exact:true}">
+                <a routerLink="/"><span class="menuitem-text">Anasayfa</span>
+                    <i class="layout-menuitem-icon  pi pi-fw pi-home"></i>
                 </a>
             </li>
-            <li app-menuitem class="ng-tns-c175-29 ng-tns-c175-8 ng-star-inserted active-menuitem">
-                <a routerlinkactive="active-menuitem-routerlink" class="ng-tns-c175-29 ng-star-inserted" tabindex="0"
-                    routerLink="/Language">
-                    <span class="menuitem-text ng-tns-c175-29">Crud</span>
-                    <i class="layout-menuitem-icon ng-tns-c175-29 pi pi-fw pi-pencil"></i>
+            <li routerLinkActive="active-menuitem" [routerLinkActiveOptions]="{exact:true}">
+                <a routerLink="/Language">
+                    <span class="menuitem-text">Dil</span>
+                    <i class="layout-menuitem-icon pi pi-fw pi-pencil"></i>
+                </a>
+            </li>
+            <li routerLinkActive="active-menuitem" [routerLinkActiveOptions]="{exact:true}">
+                <a routerLink="/Translate">
+                    <span class="menuitem-text">Çeviri</span>
+                    <i class="layout-menuitem-icon pi pi-fw pi-pencil"></i>
                 </a>
             </li>
         </ul>

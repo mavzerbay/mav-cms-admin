@@ -2,3 +2,20 @@
     height: 2rem !important;
     width: 2rem !important;
 }
+
+.mav-col-div {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+:host ::ng-deep {
+    .p-datatable .p-datatable-tbody > tr > td > div > .p-column-title {
+        display: none;
+    }
+    @media screen and (max-width: 960px) {
+        .p-datatable-tbody > tr > td > div > .p-column-title {
+            display: block !important;
+        }
+    }
+}

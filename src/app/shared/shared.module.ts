@@ -30,6 +30,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
 import { CheckboxModule } from 'primeng/checkbox';
+import { MavDataFromKeyDirective } from './directives/mav-data-from-key.directive';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { CheckboxModule } from 'primeng/checkbox';
     MavInputComponent,
     DialogButtonsComponent,
     MavAutocompleteComponent,
+    MavDataFromKeyDirective,
   ],
   imports: [
     CommonModule,

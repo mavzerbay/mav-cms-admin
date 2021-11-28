@@ -11,6 +11,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { LanguageDialogComponent } from './components/language/language-dialog/language-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateComponent } from './components/translate/translate.component';
+import { TranslateDialogComponent } from './components/translate/translate-dialog/translate-dialog.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     LanguageComponent,
     DashboardComponent,
     LanguageDialogComponent,
+    TranslateComponent,
+    TranslateDialogComponent,
   ],
   imports: [
     BrowserModule,

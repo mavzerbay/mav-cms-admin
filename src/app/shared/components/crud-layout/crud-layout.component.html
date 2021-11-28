@@ -46,12 +46,15 @@
                                 pInputText type="text" (input)="filterTable($event,col.field)"
                                 [value]="$any(dt.filters[col.field])?.value" [placeholder]="col.typePlaceHolder"
                                 class="p-column-filter"> -->
-                            <mav-autocomplete
+                            <p-autoComplete
                                 *ngIf="col.field!='crudButtons' &&col.type!='none' && col.type=='autocomplete' && col.autoCompleteUrl"
-                                [withoutForm]="true" [suggestionUrl]="col.autoCompleteUrl"
-                                [label]="col.typePlaceHolder!"
-                                (onSelect)="filterTableFromAutoComplete($event,col.field)">
-                            </mav-autocomplete>
+                                [(ngModel)]="selectedItem" [suggestions]="suggestions"
+                                [placeholder]="col.typePlaceHolder!" field="name" dataKey="id"
+                                (completeMethod)="filterData($event,col.autoCompleteUrl)" [completeOnFocus]="true"
+                                (onKeyUp)="filterData($event,col.autoCompleteUrl)" [dropdown]="true"
+                                (onSelect)="filterTableFromAutoComplete($event,col.autoCompleteSearchName!)"
+                                [inputId]=" col.field" [showEmptyMessage]="true" [emptyMessage]="'Kayıt bulunamadı.'">
+                            </p-autoComplete>
                             <p-columnFilter
                                 *ngIf="col.field!='crudButtons' &&col.type!='none' && (col.type=='text' || col.type=='numeric' ||col.type=='boolean')"
                                 [type]="col.type" [field]="col.field"></p-columnFilter>
@@ -66,15 +69,20 @@
                         <td>{{index+1}}</td>
                         <td *ngFor="let col of crudLayoutOptions.cols">
                             <ng-container *ngIf="col.field!='crudButtons'">
-                                {{data[col.field]}}
+                                <div class="mav-col-div" mavDataFromKey [data]="data" [mavKey]="col.field">
+                                    <span class="p-column-title">{{col.fieldHeaderName}}</span>
+                                </div>
                             </ng-container>
                             <ng-container *ngIf="col.field=='crudButtons'">
-                                <button pButton pRipple icon="pi pi-pencil"
-                                    class="p-button-rounded p-button-success mr-2 crud-button"
-                                    (click)="editData(data)"></button>
-                                <button pButton pRipple icon="pi pi-trash"
-                                    class="p-button-rounded p-button-danger crud-button"
-                                    (click)="deleteData(data)"></button>
+                                <span class="p-column-title">{{col.fieldHeaderName}}</span>
+                                <div style="min-width: 65px;">
+                                    <button pButton pRipple icon="pi pi-pencil"
+                                        class="p-button-rounded p-button-success mr-2 crud-button"
+                                        (click)="editData(data)"></button>
+                                    <button pButton pRipple icon="pi pi-trash"
+                                        class="p-button-rounded p-button-danger crud-button"
+                                        (click)="deleteData(data)"></button>
+                                </div>
                             </ng-container>
                         </td>
                     </tr>

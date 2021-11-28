@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'dialog-buttons',
@@ -9,6 +9,9 @@ export class DialogButtonsComponent implements OnInit {
 
   @Output() onSave: EventEmitter<void> = new EventEmitter();
   @Output() onCancel: EventEmitter<void> = new EventEmitter();
+
+  @Input() saveDisabled: boolean = false;
+  @Input() cancelDisabled: boolean = false;
 
   constructor() { }
 

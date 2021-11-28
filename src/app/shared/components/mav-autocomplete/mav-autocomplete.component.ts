@@ -17,7 +17,6 @@ import { MavDataService } from '../../services/mav-data.service';
 export class MavAutocompleteComponent implements ControlValueAccessor {
 
   @Input() formControlName!: string;
-  @Input() withoutForm: boolean = false;
   @Input() label!: string;
   @Input() field: string = 'name';
   @Input() dataKey: string = 'id';
@@ -32,8 +31,6 @@ export class MavAutocompleteComponent implements ControlValueAccessor {
   @Output() onSelect: EventEmitter<any> = new EventEmitter();
 
   suggestions!: any[];
-
-  selectedItem!: any;
 
   constructor(
     private controlContainer: ControlContainer,
@@ -51,7 +48,7 @@ export class MavAutocompleteComponent implements ControlValueAccessor {
   }
 
   writeValue(value: any): void {
-    this.control?.setValue(value);
+
   }
   registerOnChange(fn: any): void {
   }

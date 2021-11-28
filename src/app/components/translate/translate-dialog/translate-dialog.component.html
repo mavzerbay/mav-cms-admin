@@ -1,0 +1,20 @@
+<div class="p-card p-grid col-12">
+    <form [formGroup]="formTranslate" (ngSubmit)="saveTranslate()">
+        <dialog-buttons [saveDisabled]="formTranslate.invalid" (onCancel)="closeDialog()"></dialog-buttons>
+        <div class="grid">
+            <div class="col-6">
+                <mav-autocomplete formControlName="language" label="Dil Seçiniz"
+                    suggestionUrl="/Language/GetDropdownList"></mav-autocomplete>
+            </div>
+            <div class="col-6">
+                <mav-input formControlName="keyName" label="Anahtar Adı"></mav-input>
+            </div>
+            <div class="col-6">
+                <mav-input formControlName="translation" label="Çeviri"></mav-input>
+            </div>
+            <div class="col-6">
+                <mav-input formControlName="explanation" label="Açıklama"></mav-input>
+            </div>
+        </div>
+    </form>
+</div>

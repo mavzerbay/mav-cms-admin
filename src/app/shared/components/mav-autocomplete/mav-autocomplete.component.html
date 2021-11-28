@@ -1,13 +1,5 @@
-<span *ngIf="!withoutForm" class="p-float-label">
-    <p-autoComplete [formControl]="control" [suggestions]="suggestions" (completeMethod)="filterData($event)"
-        [completeOnFocus]="true" (onKeyUp)="filterData($event)" [dropdownMode]="dropdownMode"
-        (onSelect)="onSelectItem($event)" [field]="field" [class]="class" [style]="style" [dataKey]="dataKey"
-        [dropdown]="true" [showEmptyMessage]="true" [emptyMessage]="'Kayıt bulunamadı.'">
-    </p-autoComplete>
-    <label *ngIf="label" [for]="inputId">{{label}}</label>
-</span>
-<span *ngIf="withoutForm" class="p-float-label">
-    <p-autoComplete [(ngModel)]="selectedItem" [suggestions]="suggestions" (completeMethod)="filterData($event)"
+<span class="p-float-label">
+    <p-autoComplete [formControl]="control!" [suggestions]="suggestions" (completeMethod)="filterData($event)"
         [completeOnFocus]="true" (onKeyUp)="filterData($event)" [dropdownMode]="dropdownMode"
         (onSelect)="onSelectItem($event)" [field]="field" [class]="class" [style]="style" [dataKey]="dataKey"
         [dropdown]="true" [showEmptyMessage]="true" [emptyMessage]="'Kayıt bulunamadı.'">

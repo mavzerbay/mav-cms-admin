@@ -1,6 +1,6 @@
-<div class="p-card">
+<div class="p-card p-grid col-12">
     <form [formGroup]="formLanguage" (ngSubmit)="saveLanguage()">
-        <dialog-buttons (onCancel)="closeDialog()"></dialog-buttons>
+        <dialog-buttons [saveDisabled]="formLanguage.invalid" (onCancel)="closeDialog()"></dialog-buttons>
         <div class="grid">
             <div class="col-4">
                 <mav-input formControlName="name" label="Adı"></mav-input>

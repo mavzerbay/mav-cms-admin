@@ -7,6 +7,8 @@ import { MavDataService } from '../../services/mav-data.service';
 import { Subject, takeUntil } from 'rxjs';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { IApiResponse } from '../../models/api-response';
+import { BaseDropdownResponse } from '../../models/base-dropdown-response';
+import 'src/app/core/extensions/object.extension';
 
 @Component({
   selector: 'mav-crud-layout',
@@ -36,6 +38,10 @@ export class CrudLayoutComponent implements OnInit {
 
   ref!: DynamicDialogRef;
 
+  suggestions!: any[];
+
+  selectedItem!: any;
+
   @Input() crudLayoutOptions!: CrudLayoutOptions<any>;
 
   private unsubscribe = new Subject();
@@ -54,12 +60,11 @@ export class CrudLayoutComponent implements OnInit {
     this.crudLayoutOptions.showSearch = this.crudLayoutOptions.showSearch ?? true;
     this.crudLayoutOptions.dialogWidth = this.crudLayoutOptions.dialogWidth ?? '60%';
     this.crudLayoutOptions.contentStyle = this.crudLayoutOptions.contentStyle ?? { "max-height": "500px", "overflow": "auto" };
-    this.crudLayoutOptions.deleteProperty = 'name';
+    this.crudLayoutOptions.deleteProperty = this.crudLayoutOptions.deleteProperty ?? 'name';
 
   }
 
   loadData(event: LazyLoadEvent) {
-    console.log({ event });
     this.loading = true
     this.dataService.getDataList<typeof this.crudLayoutOptions.model>(this.crudLayoutOptions.url, event).pipe(takeUntil(this.unsubscribe)).subscribe((response: IApiResponse<typeof this.crudLayoutOptions.model>) => {
       if (response && response.isSuccess) {
@@ -74,6 +79,8 @@ export class CrudLayoutComponent implements OnInit {
             }
           }
           this.messageService.add({ severity: 'error', summary: 'İşlem Başarısız', detail: errorMessage, life: 3000 });
+        } else if (response.message) {
+          this.messageService.add({ severity: 'error', summary: 'İşlem Başarısız', detail: response.message, life: 3000 });
         }
       }
       this.loading = false;
@@ -127,8 +134,9 @@ export class CrudLayoutComponent implements OnInit {
   }
 
   deleteData(data: any) {
+    const detail = data.objectByKeyName(this.crudLayoutOptions.deleteProperty, data);
     this.confirmationService.confirm({
-      message: `${data[this.crudLayoutOptions.deleteProperty!]} silmek istediğinize emin misiniz?`,
+      message: `${detail} silmek istediğinize emin misiniz?`,
       header: 'Onaylama İşlemi',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
@@ -162,9 +170,23 @@ export class CrudLayoutComponent implements OnInit {
   }
 
   clearTable() {
+    this.selectedItem = null;
     this.dTable.clear();
   }
   get getGlobalFilters() {
     return this.crudLayoutOptions.cols.filter(x => x.isGlobalFilter != null && x.isGlobalFilter == true).map(x => x.field);
+  }
+
+
+
+  filterData(event: any, suggestionUrl: string) {
+    const query = event && event.query ? event.query : null;
+    this.dataService.getDropdownDataList<BaseDropdownResponse>(suggestionUrl, query).pipe(takeUntil(this.unsubscribe)).subscribe((response) => {
+      if (response && response.isSuccess) {
+        this.suggestions = response.dataMulti;
+      } else {
+        this.suggestions = []
+      }
+    })
   }
 }

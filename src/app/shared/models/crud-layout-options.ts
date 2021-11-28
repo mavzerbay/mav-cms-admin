@@ -37,5 +37,6 @@ export class CrudLayoutColumns {
      */
     typePlaceHolder?: string;
     autoCompleteUrl?: string;
+    autoCompleteSearchName?: string;
     isGlobalFilter?: boolean = false;
 }
