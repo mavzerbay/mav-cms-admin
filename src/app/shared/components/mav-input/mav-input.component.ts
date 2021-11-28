@@ -86,7 +86,21 @@ export class MavInputComponent implements ControlValueAccessor {
   }
 
   change(event: any) {
-    this.onChange.emit(event.checked);
+    switch (this.type) {
+      case 'switch':
+        this.onChange.emit(event.checked);
+        break;
+      case 'checkbox':
+        this.control.setValue(event.checked);
+        this.onChange.emit(event.checked);
+        break;
+      case 'nullcheckbox':
+        this.onChange.emit(event.value);
+        break;
+      default:
+        this.onChange.emit(event);
+        break;
+    }
   }
 
 }

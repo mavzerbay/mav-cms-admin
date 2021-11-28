@@ -29,7 +29,7 @@ export class CrudLayoutColumns {
      */
     fieldHeaderName!: string;
     /**
-     * Filtreleme headerı tipi örn:none,text,number,autocomplete,trueFalse
+     * Filtreleme headerı tipi örn:none,text,numeric,autocomplete,boolean
      */
     type!: string;
     /**

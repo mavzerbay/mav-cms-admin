@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ControlContainer, ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { BaseDropdownResponse } from '../../models/base-dropdown-response';
@@ -17,6 +17,7 @@ import { MavDataService } from '../../services/mav-data.service';
 export class MavAutocompleteComponent implements ControlValueAccessor {
 
   @Input() formControlName!: string;
+  @Input() withoutForm: boolean = false;
   @Input() label!: string;
   @Input() field: string = 'name';
   @Input() dataKey: string = 'id';
@@ -28,7 +29,11 @@ export class MavAutocompleteComponent implements ControlValueAccessor {
    */
   @Input() dropdownMode: string = 'blank';
 
+  @Output() onSelect: EventEmitter<any> = new EventEmitter();
+
   suggestions!: any[];
+
+  selectedItem!: any;
 
   constructor(
     private controlContainer: ControlContainer,
@@ -64,5 +69,7 @@ export class MavAutocompleteComponent implements ControlValueAccessor {
       }
     })
   }
-
+  onSelectItem(event: any) {
+    this.onSelect.emit(event);
+  }
 }

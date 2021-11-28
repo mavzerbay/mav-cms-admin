@@ -20,7 +20,7 @@ export class MavDataService {
   ) { }
 
 
-  saveData<T extends BaseModel>(url: string, data: T, customParams?: HttpParams, isMultiPartData: boolean = false): Observable<IApiResponse<T>> {
+  saveData<T extends BaseModel>(url: string, data: T, customParams?: HttpParams, isFormData: boolean = false): Observable<IApiResponse<T>> {
     let values: any = null;
 
     let params = new HttpParams();
@@ -31,11 +31,11 @@ export class MavDataService {
       }
     }
 
-    if (isMultiPartData) {
-      //event data to formData işlemleri yapılacak
-    } else {
+    if (isFormData)
+      values = this.utilsService.objectToFormData(data);
+    else
       values = data;
-    }
+
 
     if (isDevMode())
       console.log("Gönderilen veri", values);
@@ -46,14 +46,16 @@ export class MavDataService {
     headers = headers.set('Authorization', `Bearer ${token}`);
 
     if (data.id) {
-      return this.http.put<IApiResponse<T>>(`${this.baseURL}${url}`, values, { headers: headers, params: params }).pipe(map((response: IApiResponse<T>) => {
-        console.log("Dönen veri", response);
-        return response;
+      return this.http.put<IApiResponse<T>>(`${this.baseURL}${url}`, values, { observe: 'response', headers: headers, params: params }).pipe(map((response) => {
+        if (isDevMode())
+          console.log("Dönen veri", <IApiResponse<T>>response.body);
+        return <IApiResponse<T>>response.body;
       }))
     } else {
-      return this.http.post<IApiResponse<T>>(`${this.baseURL}${url}`, values, { headers: headers }).pipe(map((response: IApiResponse<T>) => {
-        console.log("Dönen veri", response);
-        return response;
+      return this.http.post<IApiResponse<T>>(`${this.baseURL}${url}`, values, { observe: 'response', headers: headers }).pipe(map((response) => {
+        if (isDevMode())
+          console.log("Dönen veri", <IApiResponse<T>>response.body);
+        return <IApiResponse<T>>response.body;
       }))
     }
   }
@@ -65,9 +67,11 @@ export class MavDataService {
     headers = headers.set('Accept', `application/json`);
     headers = headers.set('Authorization', `Bearer ${token}`);
 
-    return this.http.get<IApiResponse<T>>(`${this.baseURL}${url}/${id}`, { headers }).pipe(
-      map((response: IApiResponse<T>) => {
-        return response;
+    return this.http.get<IApiResponse<T>>(`${this.baseURL}${url}/${id}`, { observe: 'response', headers }).pipe(
+      map((response) => {
+        if (isDevMode())
+          console.log("Dönen veri", <IApiResponse<T>>response.body);
+        return <IApiResponse<T>>response.body;
       })
     );
   }
@@ -100,9 +104,11 @@ export class MavDataService {
     headers = headers.set('Accept', `application/json`);
     headers = headers.set('Authorization', `Bearer ${token}`);
 
-    return this.http.get<IApiResponse<T>>(`${this.baseURL}${url}`, { headers, params }).pipe(
-      map((response: IApiResponse<T>) => {
-        return response;
+    return this.http.get<IApiResponse<T>>(`${this.baseURL}${url}`, { observe: 'response', headers, params }).pipe(
+      map((response) => {
+        if (isDevMode())
+          console.log("Dönen veri", <IApiResponse<T>>response.body);
+        return <IApiResponse<T>>response.body;
       })
     );
   }
@@ -120,9 +126,11 @@ export class MavDataService {
     headers = headers.set('Accept', `application/json`);
     headers = headers.set('Authorization', `Bearer ${token}`);
 
-    return this.http.get<IApiResponse<T>>(`${this.baseURL}${url}`, { headers, params }).pipe(
-      map((response: IApiResponse<T>) => {
-        return response;
+    return this.http.get<IApiResponse<T>>(`${this.baseURL}${url}`, { observe: 'response', headers, params }).pipe(
+      map((response) => {
+        if (isDevMode())
+          console.log("Dönen veri", <IApiResponse<T>>response.body);
+        return <IApiResponse<T>>response.body;
       })
     );
   }

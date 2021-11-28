@@ -25,7 +25,7 @@ export class MavUtilsService {
         for (const key in event.filters) {
           if (Object.prototype.hasOwnProperty.call(event.filters, key)) {
             const element = event.filters[key];
-            if (element.value) {
+            if (element.value != null) {
               customParams = customParams.append(key, element.value);
               matchModes += `${key}:${element.matchMode},`;
             }
@@ -42,4 +42,33 @@ export class MavUtilsService {
 
     return customParams;
   }
+
+  objectToFormData(object: any, form?: FormData, namespace?: string): FormData {
+    const formData = form || new FormData();
+    for (let property in object) {
+      if (!object.hasOwnProperty(property) || object[property] == null || object[property] == undefined) continue;
+
+      const formKey = namespace ? `${namespace}[${property}]` : property;
+      if (object[property] instanceof Date)
+        formData.append(formKey, object[property].toISOString());
+      else if (object[property] instanceof File)
+        formData.append(formKey, object[property]);
+      else if (object[property] instanceof Array) {
+        for (let i = 0; i < object[property].length; i++) {
+          const element = object[property][i];
+          const tempFormKey = `${formKey}[${i}]`;
+          if (typeof object[property][i] === 'object')
+            this.objectToFormData(element, formData, tempFormKey);
+          else
+            formData.append(tempFormKey, element.toString());
+        }
+      }
+      else if (typeof object[property] === 'object')
+        this.objectToFormData(object[property], formData, formKey);
+      else
+        formData.append(formKey, object[property].toString());
+    }
+    return formData;
+  }
+
 }

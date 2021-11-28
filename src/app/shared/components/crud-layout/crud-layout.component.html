@@ -32,7 +32,7 @@
                         <th>#</th>
                         <th *ngFor="let col of crudLayoutOptions.cols" [pSortableColumn]="col.field">
                             {{col.fieldHeaderName}}
-                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                            <p-sortIcon *ngIf="col.field!='crudButtons'" [field]="col.field"></p-sortIcon>
                         </th>
                     </tr>
                     <tr>
@@ -42,10 +42,19 @@
                                 (click)="clearTable()"></button>
                         </th>
                         <th *ngFor="let col of crudLayoutOptions.cols">
-                            <input *ngIf="col.field!='crudButtons'&& col.type=='text'" pInputText type="text"
-                                (input)="filterTable($event,col.field)" [value]="$any(dt.filters[col.field])?.value"
-                                [placeholder]="col.typePlaceHolder" class="p-column-filter">
-
+                            <!-- <input *ngIf="col.field!='crudButtons'&& (col.type=='text' || col.type=='numeric')"
+                                pInputText type="text" (input)="filterTable($event,col.field)"
+                                [value]="$any(dt.filters[col.field])?.value" [placeholder]="col.typePlaceHolder"
+                                class="p-column-filter"> -->
+                            <mav-autocomplete
+                                *ngIf="col.field!='crudButtons' &&col.type!='none' && col.type=='autocomplete' && col.autoCompleteUrl"
+                                [withoutForm]="true" [suggestionUrl]="col.autoCompleteUrl"
+                                [label]="col.typePlaceHolder!"
+                                (onSelect)="filterTableFromAutoComplete($event,col.field)">
+                            </mav-autocomplete>
+                            <p-columnFilter
+                                *ngIf="col.field!='crudButtons' &&col.type!='none' && (col.type=='text' || col.type=='numeric' ||col.type=='boolean')"
+                                [type]="col.type" [field]="col.field"></p-columnFilter>
                         </th>
                     </tr>
                 </ng-template>
@@ -76,4 +85,5 @@
 </div>
 
 <p-toast position="top-right"></p-toast>
-<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" acceptLabel="Evet" rejectLabel="Hayır"></p-confirmDialog>
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" acceptLabel="Evet" rejectLabel="Hayır">
+</p-confirmDialog>

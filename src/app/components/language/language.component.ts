@@ -35,12 +35,12 @@ export class LanguageComponent implements OnInit {
       {
         field: 'isPrimary',
         fieldHeaderName: 'Birincil',
-        type: ''
+        type: 'boolean'
       },
       {
         field: 'activity',
         fieldHeaderName: 'Durum',
-        type: 'trueFalse'
+        type: 'boolean'
       },
     ]
   }

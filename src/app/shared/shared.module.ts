@@ -28,6 +28,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
+import { CheckboxModule } from 'primeng/checkbox';
 
 
 @NgModule({
@@ -63,6 +65,8 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     MessagesModule,
     DynamicDialogModule,
     BreadcrumbModule,
+    TriStateCheckboxModule,
+    CheckboxModule,
   ],
   exports: [
     MenuComponent,

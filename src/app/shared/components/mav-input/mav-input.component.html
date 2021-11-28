@@ -31,6 +31,27 @@
             (onChange)="change($event)" [class.ng-invalid]="!control.valid" [class.ng-dirty]="control.dirty">
         </p-inputSwitch>
     </ng-container>
+    <ng-container *ngSwitchCase="'nullcheckbox'">
+        <label *ngIf="label" [for]="inputId" style="display: block;" class="mb-2">{{label}}</label>
+        <p-triStateCheckbox [formControl]="control" [inputId]="inputId" [class]="class" [style]="style"
+            (input)="onInput($event)" (blur)="blur()" (keydown)="keydown($event)" (keyup)="keyup($event)"
+            (onChange)="change($event)" [class.ng-invalid]="!control.valid" [class.ng-dirty]="control.dirty">
+        </p-triStateCheckbox>
+    </ng-container>
+    <ng-container *ngSwitchCase="'binarycheckbox'">
+        <div class="p-field-checkbox">
+            <p-checkbox [formControl]="control" [inputId]="inputId" [class]="class" [style]="style" [binary]="true"
+                (input)="onInput($event)" (blur)="blur()" (keydown)="keydown($event)" (keyup)="keyup($event)"
+                (onChange)="change($event)" [class.ng-invalid]="!control.valid" [class.ng-dirty]="control.dirty">
+            </p-checkbox>
+            <label *ngIf="label" [for]="inputId">{{label}}</label>
+        </div>
+        <label *ngIf="label" [for]="inputId" style="display: block;" class="mb-2">{{label}}</label>
+        <p-triStateCheckbox [formControl]="control" [inputId]="inputId" [class]="class" [style]="style"
+            (input)="onInput($event)" (blur)="blur()" (keydown)="keydown($event)" (keyup)="keyup($event)"
+            (onChange)="change($event)" [class.ng-invalid]="!control.valid" [class.ng-dirty]="control.dirty">
+        </p-triStateCheckbox>
+    </ng-container>
     <ng-container *ngSwitchDefault>
         input bulunamadı
     </ng-container>

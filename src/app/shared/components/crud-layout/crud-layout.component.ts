@@ -59,6 +59,7 @@ export class CrudLayoutComponent implements OnInit {
   }
 
   loadData(event: LazyLoadEvent) {
+    console.log({ event });
     this.loading = true
     this.dataService.getDataList<typeof this.crudLayoutOptions.model>(this.crudLayoutOptions.url, event).pipe(takeUntil(this.unsubscribe)).subscribe((response: IApiResponse<typeof this.crudLayoutOptions.model>) => {
       if (response && response.isSuccess) {
@@ -148,6 +149,10 @@ export class CrudLayoutComponent implements OnInit {
     if (event && event.target && event.target.value) {
       this.dTable.filter(event.target.value, field, matchMode);
     }
+  }
+
+  filterTableFromAutoComplete(event: any, field: string) {
+    this.dTable.filter(event.id, field, 'contains');
   }
 
   filterTableGlobal(event: any) {
