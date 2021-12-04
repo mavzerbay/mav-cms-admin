@@ -26,20 +26,18 @@
                     </ng-container>
                 </div>
             </p-tabPanel>
-            <p-tabPanel *ngFor="let language of getOtherLanguages" [header]="language.name">
+            <p-tabPanel *ngFor="let language of getOtherLanguages;let i =index" [header]="language.name">
                 <div class="grid">
                     <ng-container formArrayName="customVarTrans">
-                        <ng-container *ngFor="let other of getOtherLanguagesControl;let i =index">
-                            <ng-container [formGroupName]="i">
-                                <div class="col-6">
-                                    <mav-input formControlName="name" [label]="translate('Common.Name')">
-                                    </mav-input>
-                                </div>
-                                <div class="col-6">
-                                    <mav-input formControlName="description" [label]="translate('Common.Description')">
-                                    </mav-input>
-                                </div>
-                            </ng-container>
+                        <ng-container [formGroupName]="i">
+                            <div class="col-6">
+                                <mav-input formControlName="name" [label]="translate('Common.Name')">
+                                </mav-input>
+                            </div>
+                            <div class="col-6">
+                                <mav-input formControlName="description" [label]="translate('Common.Description')">
+                                </mav-input>
+                            </div>
                         </ng-container>
                     </ng-container>
                 </div>

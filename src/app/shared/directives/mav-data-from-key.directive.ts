@@ -1,5 +1,6 @@
 import { AfterViewInit, Directive, ElementRef, Input } from '@angular/core';
 import 'src/app/core/extensions/object.extension';
+import { LocalizationService } from '../services/localization.service';
 
 @Directive({
   selector: '[mavDataFromKey]'
@@ -11,12 +12,13 @@ export class MavDataFromKeyDirective implements AfterViewInit {
 
   constructor(
     private el: ElementRef,
+    private localizationService: LocalizationService
   ) {
   }
   ngAfterViewInit(): void {
     if (this.el && this.el.nativeElement && this.data && this.mavKey) {
-      const html = `<span>${this.data.objectByKeyName(this.mavKey, this.data)}</span>`
-      this.el.nativeElement.innerHTML += html;
+      //const html = `<span>${this.data.objectByKeyName(this.mavKey, this.data)}</span>`
+      this.el.nativeElement.innerHTML += this.objectByString();
     }
   }
 
@@ -26,6 +28,9 @@ export class MavDataFromKeyDirective implements AfterViewInit {
     var a = this.mavKey.split('.');
     for (var i = 0, n = a.length; i < n; ++i) {
       var k = a[i];
+      if (k == "0" && a[i - 1].includes('Trans')) {
+        k = this.filterByUserLanguage(this.data).toString();
+      }
       if (k in this.data) {
         this.data = this.data[k];
       } else {
@@ -36,5 +41,9 @@ export class MavDataFromKeyDirective implements AfterViewInit {
       return '';
     }
     return `<span>${this.data}</span>`;
+  }
+
+  filterByUserLanguage(data: any[]): number {
+    return data.findIndex(x => x.languageId == this.localizationService.getPrimaryLanguage?.id);
   }
 }

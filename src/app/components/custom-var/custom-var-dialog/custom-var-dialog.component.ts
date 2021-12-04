@@ -1,4 +1,4 @@
-import { Component, isDevMode, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, isDevMode, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -14,7 +14,7 @@ import { MavDataService } from 'src/app/shared/services/mav-data.service';
   templateUrl: './custom-var-dialog.component.html',
   styleUrls: ['./custom-var-dialog.component.scss']
 })
-export class CustomVarDialogComponent implements OnInit {
+export class CustomVarDialogComponent implements OnInit,AfterViewInit {
 
   constructor(
     private formBuilder: FormBuilder,
@@ -23,9 +23,13 @@ export class CustomVarDialogComponent implements OnInit {
     private messageService: MessageService,
     private ref: DynamicDialogRef,
     private localizationService: LocalizationService,
+    private cdRef: ChangeDetectorRef,
   ) { }
+  ngAfterViewInit(): void {
+    this.cdRef.detectChanges();
+  }
 
-  languageId: string = this.config.data;
+  customVarId: string = this.config.data;
 
   formCustomVar!: FormGroup;
 
@@ -40,7 +44,7 @@ export class CustomVarDialogComponent implements OnInit {
     this.language$.subscribe((val) => {
       if (val && val.length > 0) {
         this.createCustomVarForm();
-        if (this.languageId)
+        if (this.customVarId)
           this.getCustomVar();
       } else {
         this.closeDialog();
@@ -66,7 +70,7 @@ export class CustomVarDialogComponent implements OnInit {
 
   private createCustomVarForm() {
     this.formCustomVar = this.formBuilder.group({
-      id: [{ value: null, disabled: false }],
+      id: [{ value: this.customVarId, disabled: false }],
       groupName: [{ value: null, disabled: false }, Validators.required],
       keyName: [{ value: null, disabled: false }, Validators.required],
       primaryCustomVarTrans: this.formBuilder.array(this.localizationService.getLanguageList.filter(x => x.id == this.primaryLanguage?.id).map(x => this.createCustomVarTansFormArray(x.id))),
@@ -77,7 +81,7 @@ export class CustomVarDialogComponent implements OnInit {
   private createCustomVarTansFormArray(languageId: string) {
     return this.formBuilder.group({
       id!: [{ value: null, disabled: false }],
-      customVarId!: [{ value: null, disabled: false }],
+      customVarId!: [{ value: this.customVarId, disabled: false }],
       languageId!: [{ value: languageId, disabled: false }, Validators.required],
       name!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
       description!: [{ value: null, disabled: false }],
@@ -95,9 +99,9 @@ export class CustomVarDialogComponent implements OnInit {
   get getOtherLanguages() {
     return this.localizationService.getLanguageList.filter(x => !x.isPrimary);
   }
-
+  
   private getCustomVar() {
-    this.dataService.getById<CustomVar>(`/CustomVar`, this.languageId).subscribe((response: IApiResponse<CustomVar>) => {
+    this.dataService.getById<CustomVar>(`/CustomVar`, this.customVarId).subscribe((response: IApiResponse<CustomVar>) => {
       if (response && response.isSuccess) {
         this.patchFormValue(response.dataSingle);
         //this.formCustomVar.patchValue(response.dataSingle);
