@@ -17,5 +17,6 @@
     }
     .p-autocomplete .p-autocomplete-panel {
         top: 48px !important;
+        z-index: 999999;
     }
 }

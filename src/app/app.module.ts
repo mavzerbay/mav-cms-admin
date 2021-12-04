@@ -13,6 +13,10 @@ import { LanguageDialogComponent } from './components/language/language-dialog/l
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateComponent } from './components/translate/translate.component';
 import { TranslateDialogComponent } from './components/translate/translate-dialog/translate-dialog.component';
+import { MenuComponent } from './components/menu/menu.component';
+import { MenuDialogComponent } from './components/menu/menu-dialog/menu-dialog.component';
+import { CustomVarComponent } from './components/custom-var/custom-var.component';
+import { CustomVarDialogComponent } from './components/custom-var/custom-var-dialog/custom-var-dialog.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +26,10 @@ import { TranslateDialogComponent } from './components/translate/translate-dialo
     LanguageDialogComponent,
     TranslateComponent,
     TranslateDialogComponent,
+    MenuComponent,
+    MenuDialogComponent,
+    CustomVarComponent,
+    CustomVarDialogComponent,
   ],
   imports: [
     BrowserModule,

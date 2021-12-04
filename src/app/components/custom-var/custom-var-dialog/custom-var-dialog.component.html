@@ -1,0 +1,50 @@
+<div class="p-card p-grid col-12" *ngIf="(language$ | async)">
+    <form [formGroup]="formCustomVar" (ngSubmit)="saveCustomVar()">
+        <dialog-buttons [saveDisabled]="formCustomVar.invalid" (onCancel)="closeDialog()"></dialog-buttons>
+        <p-tabView>
+            <p-tabPanel [header]="primaryLanguage?.name!">
+                <div class="grid">
+                    <div class="col-6">
+                        <mav-input formControlName="groupName" [label]="translate('CustomVar.GroupName')"></mav-input>
+                    </div>
+                    <div class="col-6">
+                        <mav-input formControlName="keyName" [label]="translate('CustomVar.KeyName')"></mav-input>
+                    </div>
+                    <ng-container formArrayName="primaryCustomVarTrans">
+                        <ng-container *ngFor="let primary of getPrimaryTrans;let i =index">
+                            <ng-container [formGroupName]="i">
+                                <div class="col-6">
+                                    <mav-input formControlName="name" [label]="translate('Common.Name')">
+                                    </mav-input>
+                                </div>
+                                <div class="col-6">
+                                    <mav-input formControlName="description" [label]="translate('Common.Description')">
+                                    </mav-input>
+                                </div>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel *ngFor="let language of getOtherLanguages" [header]="language.name">
+                <div class="grid">
+                    <ng-container formArrayName="customVarTrans">
+                        <ng-container *ngFor="let other of getOtherLanguagesControl;let i =index">
+                            <ng-container [formGroupName]="i">
+                                <div class="col-6">
+                                    <mav-input formControlName="name" [label]="translate('Common.Name')">
+                                    </mav-input>
+                                </div>
+                                <div class="col-6">
+                                    <mav-input formControlName="description" [label]="translate('Common.Description')">
+                                    </mav-input>
+                                </div>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
+
+    </form>
+</div>

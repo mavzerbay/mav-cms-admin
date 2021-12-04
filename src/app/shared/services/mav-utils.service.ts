@@ -43,6 +43,7 @@ export class MavUtilsService {
     return customParams;
   }
 
+  //https://gist.github.com/ghinda/8442a57f22099bdb2e34
   objectToFormData(object: any, form?: FormData, namespace?: string): FormData {
     const formData = form || new FormData();
     for (let property in object) {

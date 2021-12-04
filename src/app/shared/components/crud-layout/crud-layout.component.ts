@@ -9,6 +9,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { IApiResponse } from '../../models/api-response';
 import { BaseDropdownResponse } from '../../models/base-dropdown-response';
 import 'src/app/core/extensions/object.extension';
+import { LocalizationService } from '../../services/localization.service';
 
 @Component({
   selector: 'mav-crud-layout',
@@ -47,12 +48,12 @@ export class CrudLayoutComponent implements OnInit {
   private unsubscribe = new Subject();
 
   constructor(
-    private primengConfig: PrimeNGConfig,
     private dataService: MavDataService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     public dialogService: DialogService,
-  ) { }
+    private localizationService: LocalizationService,
+    ) { }
 
   ngOnInit() {
     //varsayılan değerleri atamak için
@@ -101,7 +102,7 @@ export class CrudLayoutComponent implements OnInit {
   openDialog(data: typeof this.crudLayoutOptions.model) {
     this.ref = this.dialogService.open(this.crudLayoutOptions.dialogComponent, {
       data: data?.id,
-      header: this.crudLayoutOptions.dialogHeader,
+      header: this.translate(this.crudLayoutOptions.dialogHeader),
       width: this.crudLayoutOptions.dialogWidth,
       contentStyle: this.crudLayoutOptions.contentStyle,
       baseZIndex: 10000,
@@ -177,7 +178,9 @@ export class CrudLayoutComponent implements OnInit {
     return this.crudLayoutOptions.cols.filter(x => x.isGlobalFilter != null && x.isGlobalFilter == true).map(x => x.field);
   }
 
-
+  translate(keyName: string) {
+    return this.localizationService.translate(keyName);
+  }
 
   filterData(event: any, suggestionUrl: string) {
     const query = event && event.query ? event.query : null;

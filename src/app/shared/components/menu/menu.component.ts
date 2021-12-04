@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'app-menu',
+  selector: 'main-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss']
 })

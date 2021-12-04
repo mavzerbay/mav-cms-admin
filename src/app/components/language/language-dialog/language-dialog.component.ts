@@ -77,7 +77,6 @@ export class LanguageDialogComponent implements OnInit {
   saveLanguage() {
     if (this.formLanguage.valid) {
       this.dataService.saveData<Language>("/Language", this.formLanguage.value).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
-        debugger;
         if (response && response.isSuccess) {
           this.ref.close(response);
         } else {

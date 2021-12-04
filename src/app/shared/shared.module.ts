@@ -31,6 +31,7 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MavDataFromKeyDirective } from './directives/mav-data-from-key.directive';
+import {TabViewModule} from 'primeng/tabview';
 
 
 @NgModule({
@@ -79,6 +80,7 @@ import { MavDataFromKeyDirective } from './directives/mav-data-from-key.directiv
     MavInputComponent,
     DialogButtonsComponent,
     MavAutocompleteComponent,
+    TabViewModule,
   ]
 })
 export class SharedModule { }
