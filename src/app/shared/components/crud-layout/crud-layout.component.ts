@@ -53,7 +53,7 @@ export class CrudLayoutComponent implements OnInit {
     private confirmationService: ConfirmationService,
     public dialogService: DialogService,
     private localizationService: LocalizationService,
-    ) { }
+  ) { }
 
   ngOnInit() {
     //varsayılan değerleri atamak için
@@ -135,7 +135,7 @@ export class CrudLayoutComponent implements OnInit {
   }
 
   deleteData(data: any) {
-    const detail = data.objectByKeyName(this.crudLayoutOptions.deleteProperty, data);
+    const detail = this.objectByString(data, this.crudLayoutOptions.deleteProperty!);
     this.confirmationService.confirm({
       message: `${detail} silmek istediğinize emin misiniz?`,
       header: 'Onaylama İşlemi',
@@ -191,5 +191,31 @@ export class CrudLayoutComponent implements OnInit {
         this.suggestions = []
       }
     })
+  }
+
+
+  objectByString(data: any, key: string) {
+    key = key.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+    key = key.replace(/^\./, '');           // strip a leading dot
+    var a = key.split('.');
+    for (var i = 0, n = a.length; i < n; ++i) {
+      var k = a[i];
+      if (k == "0" && a[i - 1].includes('Trans')) {
+        k = this.filterByUserLanguage(data).toString();
+      }
+      if (k in data) {
+        data = data[k];
+      } else {
+        return;
+      }
+    }
+    if (!data) {
+      return '';
+    }
+    return data;
+  }
+
+  filterByUserLanguage(data: any[]): number {
+    return data.findIndex(x => x.languageId == this.localizationService.getPrimaryLanguage?.id);
   }
 }

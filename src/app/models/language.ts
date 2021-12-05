@@ -12,4 +12,5 @@ export class Language implements BaseModel {
     isRTL!: boolean;
     activity!: boolean;
     isPrimary!: boolean;
+    displayOrder!: number;
 }

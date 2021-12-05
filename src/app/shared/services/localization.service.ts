@@ -27,9 +27,12 @@ export class LocalizationService {
   }
 
   get getLanguageList() {
-    return this.languageSource.getValue().sort((a, b) => a.isPrimary ? 1 : -1);
+    return this.languageSource.getValue().sort((a, b) => a.displayOrder > b.displayOrder ? 1 : a.displayOrder < b.displayOrder ? -1 : 0);
   }
 
+  get getLanguageListWithoutPrimary() {
+    return this.languageSource.getValue().filter(x => x.isPrimary != true).sort((a, b) => a.displayOrder > b.displayOrder ? 1 : a.displayOrder < b.displayOrder ? -1 : 0);
+  }
 
   getLanguages() {
     return this.dataService.getDataList<Language>('/Language').pipe(

@@ -2,7 +2,7 @@
     <form [formGroup]="formCustomVar" (ngSubmit)="saveCustomVar()">
         <dialog-buttons [saveDisabled]="formCustomVar.invalid" (onCancel)="closeDialog()"></dialog-buttons>
         <p-tabView>
-            <p-tabPanel [header]="primaryLanguage?.name!">
+            <p-tabPanel [header]="translate('Common.General')">
                 <div class="grid">
                     <div class="col-6">
                         <mav-input formControlName="groupName" [label]="translate('CustomVar.GroupName')"></mav-input>
@@ -14,11 +14,13 @@
                         <ng-container *ngFor="let primary of getPrimaryTrans;let i =index">
                             <ng-container [formGroupName]="i">
                                 <div class="col-6">
-                                    <mav-input formControlName="name" [label]="translate('Common.Name')">
+                                    <mav-input formControlName="name"
+                                        [label]="translate('Common.Name')+' ('+primaryLanguage?.name!+')'">
                                     </mav-input>
                                 </div>
                                 <div class="col-6">
-                                    <mav-input formControlName="description" [label]="translate('Common.Description')">
+                                    <mav-input formControlName="description"
+                                        [label]="translate('Common.Description')+' ('+primaryLanguage?.name!+')'">
                                     </mav-input>
                                 </div>
                             </ng-container>
@@ -26,21 +28,24 @@
                     </ng-container>
                 </div>
             </p-tabPanel>
-            <p-tabPanel *ngFor="let language of getOtherLanguages;let i =index" [header]="language.name">
-                <div class="grid">
-                    <ng-container formArrayName="customVarTrans">
-                        <ng-container [formGroupName]="i">
-                            <div class="col-6">
-                                <mav-input formControlName="name" [label]="translate('Common.Name')">
-                                </mav-input>
+            <p-tabPanel [header]="translate('Common.OtherLanguages')">
+                <ng-container formArrayName="customVarTrans">
+                    <p-tabView orientation="left">
+                        <p-tabPanel [header]="getLanguageName(group.value.languageId)"
+                            *ngFor="let group of getCustomVarTransFormArray let i = index;">
+                            <div class="grid" [formGroupName]="i">
+                                <div class="col-6">
+                                    <mav-input formControlName="name" [label]="translate('Common.Name')">
+                                    </mav-input>
+                                </div>
+                                <div class="col-6">
+                                    <mav-input formControlName="description" [label]="translate('Common.Description')">
+                                    </mav-input>
+                                </div>
                             </div>
-                            <div class="col-6">
-                                <mav-input formControlName="description" [label]="translate('Common.Description')">
-                                </mav-input>
-                            </div>
-                        </ng-container>
-                    </ng-container>
-                </div>
+                        </p-tabPanel>
+                    </p-tabView>
+                </ng-container>
             </p-tabPanel>
         </p-tabView>
 

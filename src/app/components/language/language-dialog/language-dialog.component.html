@@ -2,8 +2,11 @@
     <form [formGroup]="formLanguage" (ngSubmit)="saveLanguage()">
         <dialog-buttons [saveDisabled]="formLanguage.invalid" (onCancel)="closeDialog()"></dialog-buttons>
         <div class="grid">
-            <div class="col-4">
-                <mav-input formControlName="name" label="Adı"></mav-input>
+            <div class="col-6">
+                <mav-input formControlName="name" [label]="translate('Common.Name')"></mav-input>
+            </div>
+            <div class="col-6">
+                <mav-input formControlName="displayOrder" label="Adı" type="numeric"></mav-input>
             </div>
             <div class="col-4">
                 <mav-input formControlName="culture" label="Kültür"></mav-input>

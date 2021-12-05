@@ -14,7 +14,7 @@ import { MavDataService } from 'src/app/shared/services/mav-data.service';
   templateUrl: './custom-var-dialog.component.html',
   styleUrls: ['./custom-var-dialog.component.scss']
 })
-export class CustomVarDialogComponent implements OnInit,AfterViewInit {
+export class CustomVarDialogComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
@@ -23,11 +23,7 @@ export class CustomVarDialogComponent implements OnInit,AfterViewInit {
     private messageService: MessageService,
     private ref: DynamicDialogRef,
     private localizationService: LocalizationService,
-    private cdRef: ChangeDetectorRef,
   ) { }
-  ngAfterViewInit(): void {
-    this.cdRef.detectChanges();
-  }
 
   customVarId: string = this.config.data;
 
@@ -39,10 +35,13 @@ export class CustomVarDialogComponent implements OnInit,AfterViewInit {
 
   language$!: Observable<Language[]>;
 
+  languageList!: Language[];
+
   ngOnInit(): void {
     this.language$ = this.localizationService.language$;
     this.language$.subscribe((val) => {
       if (val && val.length > 0) {
+        this.languageList = val;
         this.createCustomVarForm();
         if (this.customVarId)
           this.getCustomVar();
@@ -65,6 +64,7 @@ export class CustomVarDialogComponent implements OnInit,AfterViewInit {
     data.customVarTrans = data.customVarTrans.filter(x => x.languageId != this.primaryLanguage?.id);
 
     this.formCustomVar.patchValue(data);
+    this.formCustomVar.patchValue({ customVarTrans: data.customVarTrans });
     this.formCustomVar.patchValue({ primaryCustomVarTrans: [primaryTrans] });
   }
 
@@ -74,7 +74,7 @@ export class CustomVarDialogComponent implements OnInit,AfterViewInit {
       groupName: [{ value: null, disabled: false }, Validators.required],
       keyName: [{ value: null, disabled: false }, Validators.required],
       primaryCustomVarTrans: this.formBuilder.array(this.localizationService.getLanguageList.filter(x => x.id == this.primaryLanguage?.id).map(x => this.createCustomVarTansFormArray(x.id))),
-      customVarTrans: this.formBuilder.array(this.localizationService.getLanguageList.filter(x => x.id != this.primaryLanguage?.id).map(x => this.createCustomVarTansFormArray(x.id))),
+      customVarTrans: this.formBuilder.array(this.localizationService.getLanguageListWithoutPrimary.map(x => this.createCustomVarTansFormArray(x.id))),
     });
   }
 
@@ -83,6 +83,7 @@ export class CustomVarDialogComponent implements OnInit,AfterViewInit {
       id!: [{ value: null, disabled: false }],
       customVarId!: [{ value: this.customVarId, disabled: false }],
       languageId!: [{ value: languageId, disabled: false }, Validators.required],
+      langDisplayOrder: [{ value: this.languageList.find(x => x.id == languageId)?.displayOrder }],
       name!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
       description!: [{ value: null, disabled: false }],
     })
@@ -92,14 +93,14 @@ export class CustomVarDialogComponent implements OnInit,AfterViewInit {
     return (this.formCustomVar.controls['primaryCustomVarTrans'] as FormArray).controls;
   }
 
-  get getOtherLanguagesControl(): AbstractControl[] {
-    return (this.formCustomVar.controls['customVarTrans'] as FormArray).controls;
+  get getCustomVarTransFormArray(): AbstractControl[] {
+    return (this.formCustomVar.controls['customVarTrans'] as FormArray).controls.sort((a, b) => a.value.langDisplayOrder > b.value.langDisplayOrder ? -1 : a.value.langDisplayOrder < b.value.langDisplayOrder ? 1 : 0);
   }
 
-  get getOtherLanguages() {
-    return this.localizationService.getLanguageList.filter(x => !x.isPrimary);
+  getLanguageName(id: string): string {
+    return this.languageList.find(x => x.id == id)?.name!;
   }
-  
+
   private getCustomVar() {
     this.dataService.getById<CustomVar>(`/CustomVar`, this.customVarId).subscribe((response: IApiResponse<CustomVar>) => {
       if (response && response.isSuccess) {
@@ -127,7 +128,6 @@ export class CustomVarDialogComponent implements OnInit,AfterViewInit {
 
   saveCustomVar() {
     if (this.formCustomVar.valid) {
-      debugger;
       let item: CustomVar = this.formCustomVar.value;
       const primaryTrans: CustomVarTrans = ((this.formCustomVar.controls['primaryCustomVarTrans'] as FormArray)?.value[0] as CustomVarTrans);
       item.customVarTrans.push(primaryTrans);

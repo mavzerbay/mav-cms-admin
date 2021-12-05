@@ -5,6 +5,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { Language } from 'src/app/models/language';
 import { IApiResponse } from 'src/app/shared/models/api-response';
+import { LocalizationService } from 'src/app/shared/services/localization.service';
 import { MavDataService } from 'src/app/shared/services/mav-data.service';
 
 @Component({
@@ -20,6 +21,7 @@ export class LanguageDialogComponent implements OnInit {
     private dataService: MavDataService,
     private messageService: MessageService,
     private ref: DynamicDialogRef,
+    private localizationService:LocalizationService,
   ) { }
 
   languageId: string = this.config.data;
@@ -47,7 +49,12 @@ export class LanguageDialogComponent implements OnInit {
       isRTL: [{ value: false, disabled: false }, Validators.required],
       activity: [{ value: true, disabled: false }, Validators.required],
       isPrimary: [{ value: false, disabled: false }, Validators.required],
+      displayOrder: [{ value: 0, disabled: false }, Validators.required],
     });
+  }
+
+  translate(keyName: string) {
+    return this.localizationService.translate(keyName);
   }
 
   private getLanguage() {
