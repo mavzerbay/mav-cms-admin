@@ -1,1 +1,71 @@
-<p>menu-dialog works!</p>
+<div class="p-card p-grid col-12" *ngIf="(language$ | async)">
+    <form [formGroup]="formMenu" (ngSubmit)="saveMenu()">
+        <dialog-buttons [saveDisabled]="formMenu.invalid" (onCancel)="closeDialog()"></dialog-buttons>
+        <p-tabView>
+            <p-tabPanel [header]="translate('Common.General')">
+                <div class="grid d-flex ai-center">
+                    <div class="col-4">
+                        <mav-input formControlName="activity" [label]="translate('Common.Activity')" type="switch">
+                        </mav-input>
+                    </div>
+                    <div class="col-4">
+                        <mav-input formControlName="isBackend" [label]="translate('Menu.IsBackend')" type="switch">
+                        </mav-input>
+                    </div>
+                    <div class="col-4">
+                        <mav-input formControlName="displayOrder" type="numeric"
+                            [label]="translate('Common.DisplayOrder')"></mav-input>
+                    </div>
+                    <div class="col-6">
+                        <mav-input formControlName="routerLink" [label]="translate('Menu.RouterLink')"></mav-input>
+                    </div>
+                    <div class="col-6">
+                        <mav-input formControlName="routerQueryParameter"
+                            [label]="translate('Menu.RouterQueryParameter')"></mav-input>
+                    </div>
+                    <div class="col-6">
+                        <mav-autocomplete formControlName="menuPosition" suggestionUrl="/CustomVar/GetDropdownList"
+                            [label]="translate('Menu.MenuPosition')" [customParams]="menuPositionParams">
+                        </mav-autocomplete>
+                    </div>
+                    <div class="col-6">
+                        <mav-autocomplete formControlName="menuType" [label]="translate('Menu.MenuType')"
+                            suggestionUrl="/CustomVar/GetDropdownList" [customParams]="menuTypeParams">
+                        </mav-autocomplete>
+                    </div>
+                    <div class="col-6">
+                        <mav-autocomplete formControlName="parentMenu" suggestionUrl="/Menu/GetDropdownList"
+                            [label]="translate('Menu.ParentMenu')">
+                        </mav-autocomplete>
+                    </div>
+                    <div class="col-6">
+                        <mav-autocomplete formControlName="page" suggestionUrl="/Page/GetDropdownList"
+                            [label]="translate('Page.ControllerTitle')">
+                        </mav-autocomplete>
+                    </div>
+                    <div class="col-6">
+                        <mav-input formControlName="icon" [label]="translate('Menu.Icon')"></mav-input>
+                    </div>
+                    <div class="col-8">
+                        <mav-upload formControlName="backgroundImageFile" formControlNamePath="backgroundImagePath">
+                        </mav-upload>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel formArrayName="menuTrans" [header]="getLanguageName(group.value.languageId)"
+                *ngFor="let group of getMenuTransFormArray let i = index;">
+                <div class="grid" [formGroupName]="i">
+                    <div class="col-6">
+                        <mav-input formControlName="name" [label]="translate('Common.Name')">
+                        </mav-input>
+                    </div>
+                    <div class="col-6">
+                        <mav-input formControlName="info" [label]="translate('Menu.Info')">
+                        </mav-input>
+                    </div>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
+    </form>
+</div>
+<p-toast position="top-right" key="menu-toast" [baseZIndex]="9999999"></p-toast>

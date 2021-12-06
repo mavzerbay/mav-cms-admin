@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api/menuitem';
 import { filter } from 'rxjs';
+import { Translation } from '../../models/translation';
+import { LocalizationService } from '../../services/localization.service';
 
 @Component({
   selector: 'app-breadcrumb',
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.component.scss']
 })
-export class BreadcrumbComponent implements OnInit {
+export class BreadcrumbComponent implements OnInit, AfterViewInit {
 
   static readonly ROUTE_DATA_BREADCRUMB = 'breadcrumb';
   readonly home = { icon: 'pi pi-home', url: '/' };
@@ -16,14 +18,26 @@ export class BreadcrumbComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private localizationService: LocalizationService,
+    private cdRef: ChangeDetectorRef
   ) { }
+
+  translatorList: Translation[] = [];
+  ngAfterViewInit(): void {
+    this.cdRef.detectChanges();
+  }
 
   ngOnInit(): void {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
-        this.menuItems = this.createBreadcrumbs(this.activatedRoute.root);
+        this.localizationService.translation$.subscribe((val) => {
+          if (val && val.length > 0) {
+            this.translatorList = val;
+            this.menuItems = this.createBreadcrumbs(this.activatedRoute.root);
+          }
+        })
       });
   }
 
@@ -40,8 +54,9 @@ export class BreadcrumbComponent implements OnInit {
         url += `/${routeURL}`;
       }
 
-      const label = child.snapshot.data[BreadcrumbComponent.ROUTE_DATA_BREADCRUMB];
+      let label = child.snapshot.data[BreadcrumbComponent.ROUTE_DATA_BREADCRUMB];
       if (label) {
+        label = this.translatorList.some(x => x.keyName == label) ? this.translatorList.find(x => x.keyName == label)?.translation : label;
         breadcrumbs.push({ label, url });
       }
 

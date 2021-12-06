@@ -20,16 +20,13 @@ export class MavDataService {
   ) { }
 
 
-  saveData<T extends BaseModel>(url: string, data: T, customParams?: HttpParams, isFormData: boolean = false): Observable<IApiResponse<T>> {
+  saveData<T extends BaseModel>(url: string, data: T, customParams?: HttpParams | null, isFormData: boolean = false): Observable<IApiResponse<T>> {
     let values: any = null;
 
     let params = new HttpParams();
 
-    if (customParams) {
-      for (const key in customParams) {
-        console.log(key);
-      }
-    }
+    if (customParams)
+      params = customParams;
 
     if (isFormData)
       values = this.utilsService.objectToFormData(data);
@@ -89,16 +86,12 @@ export class MavDataService {
 
     let params = new HttpParams();
 
+    if (customParams)
+      params = customParams;
+
     if (event) {
       params = this.utilsService.lazyLoadToCustomParams(event);
     }
-
-    if (customParams) {
-      for (const key in customParams) {
-        console.log(key);
-      }
-    }
-
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.set('Accept', `application/json`);
@@ -113,10 +106,13 @@ export class MavDataService {
     );
   }
 
-  getDropdownDataList<T extends BaseModel>(url: string, query?: string): Observable<IApiResponse<T>> {
+  getDropdownDataList<T extends BaseModel>(url: string, query?: string, customParams?: HttpParams): Observable<IApiResponse<T>> {
     let values: any = null;
 
     let params = new HttpParams();
+
+    if (customParams)
+      params = customParams;
 
     if (query)
       params = params.append("Name", query);

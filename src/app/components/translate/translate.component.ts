@@ -5,7 +5,7 @@ import { TranslateDialogComponent } from './translate-dialog/translate-dialog.co
 
 @Component({
   selector: 'app-translate',
-  templateUrl: './translate.component.html',
+  template: '<mav-crud-layout [crudLayoutOptions]="crudOptions"></mav-crud-layout>',
   styleUrls: ['./translate.component.scss']
 })
 export class TranslateComponent implements OnInit {
@@ -18,8 +18,8 @@ export class TranslateComponent implements OnInit {
   crudOptions: CrudLayoutOptions<Translate> = {
     url: '/Translate',
     dialogComponent: TranslateDialogComponent,
-    dialogHeader: "Çeviri",
-    deleteProperty:'keyName',
+    dialogHeader: "Translate.ControllerTitle",
+    deleteProperty: 'keyName',
     cols: [
       {
         field: 'crudButtons',

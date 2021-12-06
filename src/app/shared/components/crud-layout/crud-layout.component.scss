@@ -10,6 +10,9 @@
 }
 
 :host ::ng-deep {
+    .p-dialog-mask.p-component-overlay-enter {
+        z-index: 99999 !important;
+    }
     .p-datatable .p-datatable-tbody > tr > td > div > .p-column-title {
         display: none;
     }
@@ -17,5 +20,30 @@
         .p-datatable-tbody > tr > td > div > .p-column-title {
             display: block !important;
         }
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 0.25em 0.4em;
+        font-size: 85%;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.25rem;
+    }
+    .badge-pill {
+        padding: 0.75em;
+        border-radius: 5px;
+    }
+
+    .badge-success {
+        color: #fff;
+        background-color: #22c55e;
+    }
+    .badge-danger {
+        color: #fff;
+        background-color: #ef4444;
     }
 }

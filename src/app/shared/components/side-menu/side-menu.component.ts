@@ -1,16 +1,18 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { LocalizationService } from '../../services/localization.service';
 
 @Component({
-  selector: 'main-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss']
+  selector: 'app-side-menu',
+  templateUrl: './side-menu.component.html',
+  styleUrls: ['./side-menu.component.scss']
 })
-export class MenuComponent implements OnInit {
+export class SideMenuComponent implements OnInit {
 
   @ViewChild('sidebar', { static: true }) sidebar: ElementRef<HTMLElement> | undefined;
 
   constructor(
     private renderer: Renderer2,
+    private localizationService: LocalizationService
   ) { }
 
   isLocked: boolean = false;
@@ -26,6 +28,10 @@ export class MenuComponent implements OnInit {
         this.sidebar.nativeElement.classList.add('layout-sidebar-active');
       }
     }
+  }
+
+  translate(keyName: string) {
+    return this.localizationService.translate(keyName);
   }
 
   toggleLockActiveMenu() {

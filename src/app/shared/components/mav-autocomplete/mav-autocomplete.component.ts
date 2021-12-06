@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Component, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ControlContainer, ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
@@ -27,10 +28,11 @@ export class MavAutocompleteComponent implements ControlValueAccessor {
    * Specifies the behavior dropdown button. Default "blank" mode sends an empty string and "current" mode sends the input value.
    */
   @Input() dropdownMode: string = 'blank';
+  @Input() customParams!: HttpParams;
 
   @Output() onSelect: EventEmitter<any> = new EventEmitter();
 
-  suggestions!: any[];
+  suggestions: any[] = [];
 
   constructor(
     private controlContainer: ControlContainer,
@@ -60,13 +62,14 @@ export class MavAutocompleteComponent implements ControlValueAccessor {
 
   filterData(event: any) {
     const query = event && event.query ? event.query : null;
-    this.dataService.getDropdownDataList<BaseDropdownResponse>(this.suggestionUrl, query).pipe(takeUntil(this.unsubscribe)).subscribe((response) => {
+    this.dataService.getDropdownDataList<BaseDropdownResponse>(this.suggestionUrl, query, this.customParams).pipe(takeUntil(this.unsubscribe)).subscribe((response) => {
       if (response && response.isSuccess) {
         this.suggestions = response.dataMulti;
       }
     })
   }
   onSelectItem(event: any) {
+    this.control.setValue(event);
     this.onSelect.emit(event);
   }
 }

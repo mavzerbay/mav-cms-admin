@@ -39,4 +39,8 @@ export class CrudLayoutColumns {
     autoCompleteUrl?: string;
     autoCompleteSearchName?: string;
     isGlobalFilter?: boolean = false;
+    /**
+     * Pipe kullanılmak isteniyorsa pipe adı
+     */
+    pipeName?: string;
 }

@@ -42,6 +42,9 @@ export class MavInputComponent implements ControlValueAccessor {
   @Input() mode: string = "decimal";
   @Input() min: number = 0;
   @Input() max!: number;
+  @Input() minFractionDigits!: number;
+  @Input() maxFractionDigits!: number;
+  @Input() showButtons: boolean = true;
 
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onBlur: EventEmitter<void> = new EventEmitter();

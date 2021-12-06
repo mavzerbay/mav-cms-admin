@@ -14,9 +14,20 @@ export class Menu implements BaseModel {
     backgroundImagePath!: string;
     isBackend!: boolean;
     menuPositionId!: string;
+    menuPosition!: any;
+    menuTypeId!: string;
+    menuType!: any;
+    parentMenuId!: string;
+    parentMenu!: any;
+    pageId!: string;
+    page!: any;
+    menuTrans!: MenuTrans[];
 }
 
 export class MenuTrans implements BaseModel {
     id!: string;
-
+    menuId!: string;
+    languageId!: string;
+    name!: string;
+    toolTip!: string;
 }

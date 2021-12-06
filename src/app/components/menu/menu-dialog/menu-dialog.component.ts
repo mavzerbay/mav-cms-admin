@@ -1,6 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { HttpParams } from '@angular/common/http';
+import { Component, isDevMode, OnInit } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { Language } from 'src/app/models/language';
+import { Menu, MenuTrans } from 'src/app/models/menu';
+import { IApiResponse } from 'src/app/shared/models/api-response';
 import { BaseDropdownResponse } from 'src/app/shared/models/base-dropdown-response';
+import { LocalizationService } from 'src/app/shared/services/localization.service';
 import { MavDataService } from 'src/app/shared/services/mav-data.service';
 
 @Component({
@@ -10,26 +18,161 @@ import { MavDataService } from 'src/app/shared/services/mav-data.service';
 })
 export class MenuDialogComponent implements OnInit {
 
-  private unsubscribe = new Subject();
-
-  menuPositionList!: any[];
-
   constructor(
+    private formBuilder: FormBuilder,
+    private config: DynamicDialogConfig,
     private dataService: MavDataService,
+    private messageService: MessageService,
+    private ref: DynamicDialogRef,
+    private localizationService: LocalizationService,
   ) { }
 
+  menuId: string = this.config.data;
+
+  formMenu!: FormGroup;
+
+  private unsubscribe = new Subject();
+
+  primaryLanguage = this.localizationService.getPrimaryLanguage;
+
+  language$!: Observable<Language[]>;
+
+  languageList!: Language[];
+
+  menuPositionParams: HttpParams = new HttpParams().append('GroupName', 'MenuPosition');
+  menuTypeParams: HttpParams = new HttpParams().append('GroupName', 'MenuType');
+
   ngOnInit(): void {
+
+    this.language$ = this.localizationService.language$;
+    this.language$.subscribe((val) => {
+      if (val && val.length > 0) {
+        this.languageList = val;
+        this.createMenuForm();
+        if (this.menuId)
+          this.getMenu();
+      } else {
+        this.closeDialog();
+      }
+    });
   }
 
+  closeDialog() {
+    this.ref.close();
+  }
 
-  filterMenuPosition(event: any) {
-    const query = event && event.query ? event.query : null;
-    this.dataService.getDropdownDataList<BaseDropdownResponse>('/CustomVar/GetDropdownList', query).pipe(takeUntil(this.unsubscribe)).subscribe((response) => {
-      if (response && response.isSuccess) {
-        this.menuPositionList = response.dataMulti;
-      } else {
-        this.menuPositionList = [];
-      }
+  translate(keyName: string) {
+    return this.localizationService.translate(keyName);
+  }
+
+  private createMenuForm() {
+    this.formMenu = this.formBuilder.group({
+      id: [{ value: this.menuId, disabled: false }],
+      displayOrder: [{ value: 0, disabled: false }, Validators.required],
+      activity: [{ value: true, disabled: false }, Validators.required],
+      routerLink: [{ value: null, disabled: false }, Validators.required],
+      routerQueryParameter: [{ value: null, disabled: false }],
+      icon: [{ value: null, disabled: false }],
+      backgroundImagePath: [{ value: null, disabled: false }],
+      backgroundImageFile: [{ value: null, disabled: false }],
+      isBackend: [{ value: false, disabled: false }, Validators.required],
+      menuPosition: [{ value: null, disabled: false }],
+      menuPositionId: [{ value: null, disabled: false }],
+      menuType: [{ value: null, disabled: false }],
+      menuTypeId: [{ value: null, disabled: false }],
+      parentMenu: [{ value: null, disabled: false }],
+      parentMenuId: [{ value: null, disabled: false }],
+      page: [{ value: null, disabled: false }],
+      menuTrans: this.formBuilder.array(this.localizationService.getLanguageList.map(x => this.createMenuTansFormArray(x.id))),
+    });
+
+    this.formMenu.get('menuPosition')?.valueChanges.subscribe(val => {
+      if (val && val.id)
+        this.formMenu.get('menuPositionId')?.setValue(val.id);
+      else
+        this.formMenu.get('menuPositionId')?.setValue(null);
+    });
+    this.formMenu.get('menuType')?.valueChanges.subscribe(val => {
+      if (val && val.id)
+        this.formMenu.get('menuTypeId')?.setValue(val.id);
+      else
+        this.formMenu.get('menuTypeId')?.setValue(null);
+    });
+    this.formMenu.get('parentMenu')?.valueChanges.subscribe(val => {
+      if (val && val.id)
+        this.formMenu.get('parentMenuId')?.setValue(val.id);
+      else
+        this.formMenu.get('parentMenuId')?.setValue(null);
+    });
+  }
+
+  private createMenuTansFormArray(languageId: string) {
+    return this.formBuilder.group({
+      id!: [{ value: null, disabled: false }],
+      menuId!: [{ value: this.menuId, disabled: false }],
+      languageId!: [{ value: languageId, disabled: false }, Validators.required],
+      langDisplayOrder: [{ value: this.languageList.find(x => x.id == languageId)?.displayOrder }],
+      name!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
+      info!: [{ value: null, disabled: false }],
     })
+  }
+
+  get getMenuTransFormArray(): AbstractControl[] {
+    return (this.formMenu.controls['menuTrans'] as FormArray).controls.sort((a, b) => a.value.langDisplayOrder > b.value.langDisplayOrder ? 1 : a.value.langDisplayOrder < b.value.langDisplayOrder ? -1 : 0);
+  }
+
+  getLanguageName(id: string): string {
+    return this.languageList.find(x => x.id == id)?.name!;
+  }
+
+  private getMenu() {
+    this.dataService.getById<Menu>(`/Menu`, this.menuId).subscribe((response: IApiResponse<Menu>) => {
+      if (response && response.isSuccess) {
+        this.formMenu.patchValue(response.dataSingle);
+      } else {
+        if (response.error) {
+          let errorMessage;
+          for (const key in response.error) {
+            if (Object.prototype.hasOwnProperty.call(response.error, key)) {
+              if (this.formMenu.get(key) != null) {
+                this.formMenu.get(key)?.setErrors(Validators.required, response.error[key]);
+              }
+              errorMessage += response.error[key];
+            }
+          }
+          this.messageService.add({ key: 'menu-toast', severity: 'error', summary: 'İşlem Başarısız', detail: errorMessage, life: 5000 });
+        }
+      }
+    }, (error: any) => {
+      if (isDevMode())
+        console.log(error);
+    })
+  }
+
+  saveMenu() {
+    if (this.formMenu.valid) {
+      this.dataService.saveData<Menu>("/Menu", this.formMenu.value, null, true).pipe(takeUntil(this.unsubscribe)).subscribe((response: IApiResponse<Menu>) => {
+        if (response && response.isSuccess) {
+          this.ref.close(response);
+        } else {
+          if (response.error) {
+            let errorMessage;
+            for (const key in response.error) {
+              if (Object.prototype.hasOwnProperty.call(response.error, key)) {
+                if (this.formMenu.get(key) != null) {
+                  this.formMenu.get(key)?.setErrors(Validators.required, response.error[key]);
+                }
+                errorMessage += response.error[key];
+              }
+            }
+            this.messageService.add({ key: 'menu-toast', severity: 'error', summary: 'İşlem Başarısız', detail: errorMessage, life: 5000 });
+          }
+          this.messageService.add({ key: 'menu-toast', severity: 'error', summary: 'İşlem Başarısız', detail: response.message, life: 5000 });
+        }
+      }, (error: any) => {
+        if (isDevMode())
+          console.log(error);
+      })
+    }
   }
 }

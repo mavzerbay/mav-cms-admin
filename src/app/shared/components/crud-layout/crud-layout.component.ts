@@ -25,9 +25,9 @@ export class CrudLayoutComponent implements OnInit {
   @ViewChild("dt", { static: true })
   dTable!: Table;
 
-  dataList!: any[];
+  dataList: any[] = [];
 
-  totalRecords!: number;
+  totalRecords: number = 0;
 
   cols!: any[];
 
@@ -107,6 +107,7 @@ export class CrudLayoutComponent implements OnInit {
       contentStyle: this.crudLayoutOptions.contentStyle,
       baseZIndex: 10000,
       autoZIndex: true,
+      styleClass:'test123AAAAAAA'
     });
 
     this.ref.onClose.subscribe((response: IApiResponse<typeof this.crudLayoutOptions.model>) => {
@@ -117,6 +118,7 @@ export class CrudLayoutComponent implements OnInit {
         } else if (response.statusCode == HttpStatusCode.Created) {
           this.dataList.splice(0, 0, response.dataSingle);
         }
+        this.messageService.add({ severity: 'success', summary: this.translate('Common.Successfully'), detail: response.message, life: 3000 });
       }
     })
   }

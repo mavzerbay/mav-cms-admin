@@ -19,9 +19,10 @@
     <ng-container *ngSwitchCase="'numeric'">
         <label *ngIf="label" [for]="inputId">{{label}}</label>
         <p-inputNumber [formControl]="control" [inputId]="inputId" [mode]="mode" locale="tr-TR" currency="TRY"
-            [min]="min" [max]="max" [minFractionDigits]="2" [maxFractionDigits]="2" [class]="class" [style]="style"
-            [autocomplete]="autocomplete" (input)="onInput($event)" (blur)="blur()" (keydown)="keydown($event)"
-            (keyup)="keyup($event)" [class.ng-invalid]="!control.valid" [class.ng-dirty]="control.dirty">
+            [min]="min" [max]="max" [minFractionDigits]="minFractionDigits" [maxFractionDigits]="maxFractionDigits"
+            [class]="class" [style]="style" [showButtons]="showButtons" [autocomplete]="autocomplete"
+            (input)="onInput($event)" (blur)="blur()" (keydown)="keydown($event)" (keyup)="keyup($event)"
+            [class.ng-invalid]="!control.valid" [class.ng-dirty]="control.dirty">
         </p-inputNumber>
     </ng-container>
     <ng-container *ngSwitchCase="'switch'">

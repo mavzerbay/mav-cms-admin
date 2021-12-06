@@ -5,7 +5,7 @@ import { LanguageDialogComponent } from './language-dialog/language-dialog.compo
 
 @Component({
   selector: 'app-language',
-  templateUrl: './language.component.html',
+  template: '<mav-crud-layout [crudLayoutOptions]="crudOptions"></mav-crud-layout>',
   styleUrls: ['./language.component.scss']
 })
 export class LanguageComponent implements OnInit {
@@ -18,7 +18,7 @@ export class LanguageComponent implements OnInit {
   crudOptions: CrudLayoutOptions<Language> = {
     url: '/Language',
     dialogComponent: LanguageDialogComponent,
-    dialogHeader: "Dil",
+    dialogHeader: "Language.ControllerTitle",
     cols: [
       {
         field: 'crudButtons',

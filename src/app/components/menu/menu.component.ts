@@ -5,7 +5,7 @@ import { MenuDialogComponent } from './menu-dialog/menu-dialog.component';
 
 @Component({
   selector: 'app-menu',
-  templateUrl: './menu.component.html',
+  template: '<mav-crud-layout [crudLayoutOptions]="crudOptions"></mav-crud-layout>',
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
@@ -18,37 +18,42 @@ export class MenuComponent implements OnInit {
   crudOptions: CrudLayoutOptions<Menu> = {
     url: '/Menu',
     dialogComponent: MenuDialogComponent,
-    dialogHeader: "Menü",
+    dialogHeader: "Menu.ControllerTitle",
     deleteProperty: 'menuTrans[0].name',
     cols: [
       {
         field: 'crudButtons',
-        fieldHeaderName: 'İşlem',
+        fieldHeaderName: 'Common.Action',
         type: ''
       },
       {
         field: 'menuTrans[0].name',
-        fieldHeaderName: 'Adı',
+        fieldHeaderName: 'Common.Name',
         type: 'text',
         isGlobalFilter: true,
       },
       {
         field: 'parentMenu.name',
-        fieldHeaderName: 'Üst Menü Adı',
+        fieldHeaderName: 'Menu.ParentMenu',
         type: 'text',
         isGlobalFilter: true,
       },
       {
         field: 'displayOrder',
-        fieldHeaderName: 'Sıralama',
+        fieldHeaderName: 'Common.DisplayOrder',
         type: 'numeric',
-        isGlobalFilter: true,
       },
       {
         field: 'isBackend',
-        fieldHeaderName: 'Admin Menüsü',
+        fieldHeaderName: 'Menu.IsBackend',
         type: 'boolean',
-        isGlobalFilter: true,
+        pipeName:'yesNo'
+      },
+      {
+        field: 'activity',
+        fieldHeaderName: 'Common.Activity',
+        type: 'boolean',
+        pipeName:'activity'
       }
     ]
   }

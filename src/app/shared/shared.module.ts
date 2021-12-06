@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MenuComponent } from './components/menu/menu.component';
+import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
 import { TopbarItemDirective } from './components/topbar/topbar-item.directive';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogButtonsComponent } from './components/dialog-buttons/dialog-buttons.component';
 import { MavAutocompleteComponent } from './components/mav-autocomplete/mav-autocomplete.component';
+import { MavUploadComponent } from './components/mav-upload/mav-upload.component';
 
 //Primeng
 import { ToastModule } from 'primeng/toast';
@@ -31,12 +32,15 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MavDataFromKeyDirective } from './directives/mav-data-from-key.directive';
-import {TabViewModule} from 'primeng/tabview';
+import { TabViewModule } from 'primeng/tabview';
+import { FileUploadModule } from 'primeng/fileupload';
+import { YesNoPipe } from './pipes/yes-no.pipe';
+import { ActivityPipe } from './pipes/activity.pipe';
 
 
 @NgModule({
   declarations: [
-    MenuComponent,
+    SideMenuComponent,
     TopbarComponent,
     TopbarItemDirective,
     BreadcrumbComponent,
@@ -46,6 +50,9 @@ import {TabViewModule} from 'primeng/tabview';
     DialogButtonsComponent,
     MavAutocompleteComponent,
     MavDataFromKeyDirective,
+    MavUploadComponent,
+    YesNoPipe,
+    ActivityPipe,
   ],
   imports: [
     CommonModule,
@@ -70,9 +77,10 @@ import {TabViewModule} from 'primeng/tabview';
     BreadcrumbModule,
     TriStateCheckboxModule,
     CheckboxModule,
+    FileUploadModule,
   ],
   exports: [
-    MenuComponent,
+    SideMenuComponent,
     TopbarComponent,
     BreadcrumbComponent,
     FooterComponent,
@@ -80,7 +88,9 @@ import {TabViewModule} from 'primeng/tabview';
     MavInputComponent,
     DialogButtonsComponent,
     MavAutocompleteComponent,
+    MavUploadComponent,
     TabViewModule,
+    ToastModule,
   ]
 })
 export class SharedModule { }
