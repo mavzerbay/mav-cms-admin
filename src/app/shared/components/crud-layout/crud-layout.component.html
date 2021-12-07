@@ -22,7 +22,7 @@
             </p-toolbar>
             <p-table #dt [value]="dataList" [lazy]="true" (onLazyLoad)="loadData($event)" [(selection)]="selectedDatas"
                 [paginator]="true" [rows]="10" [globalFilterFields]="getGlobalFilters" [totalRecords]="totalRecords"
-                [loading]="loading" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [loading]="loading" [currentPageReportTemplate]="translate('Common.CurrentPageReportTemplate')"
                 [showCurrentPageReport]="true">
                 <ng-template pTemplate="header">
                     <tr>
@@ -42,17 +42,14 @@
                                 (click)="clearTable()"></button>
                         </th>
                         <th *ngFor="let col of crudLayoutOptions.cols">
-                            <!-- <input *ngIf="col.field!='crudButtons'&& (col.type=='text' || col.type=='numeric')"
-                                pInputText type="text" (input)="filterTable($event,col.field)"
-                                [value]="$any(dt.filters[col.field])?.value" [placeholder]="col.typePlaceHolder"
-                                class="p-column-filter"> -->
-                            <div class="grid-col-12" #myAutoComplete
+                            <div class="grid-col-12"
                                 *ngIf="col.field!='crudButtons' &&col.type!='none' && col.type=='autocomplete' && col.autoCompleteUrl">
                                 <p-autoComplete [(ngModel)]="selectedItem" [suggestions]="suggestions"
-                                    [appendTo]="myAutoComplete" [placeholder]="col.typePlaceHolder!" field="name"
-                                    dataKey="id" (completeMethod)="filterData($event,col.autoCompleteUrl)"
-                                    [completeOnFocus]="true" (onKeyUp)="filterData($event,col.autoCompleteUrl)"
-                                    [dropdown]="true" dropdownMode="current"
+                                    [placeholder]="translate(col.typePlaceHolder!)" field="name" dataKey="id"
+                                    (completeMethod)="filterData($event,col.autoCompleteUrl,col.customParams)"
+                                    [completeOnFocus]="true"
+                                    (onKeyUp)="filterData($event,col.autoCompleteUrl,col.customParams)"
+                                    [dropdown]="true"
                                     (onSelect)="filterTableFromAutoComplete($event,col.autoCompleteSearchName!)"
                                     [inputId]=" col.field" [showEmptyMessage]="true"
                                     [emptyMessage]="'Kayıt bulunamadı.'">

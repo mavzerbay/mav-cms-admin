@@ -1,6 +1,6 @@
 import { Component, Input, isDevMode, OnInit, Type, ViewChild } from '@angular/core';
 import { ConfirmationService, LazyLoadEvent, MessageService, PrimeNGConfig } from 'primeng/api';
-import { HttpStatusCode } from '@angular/common/http';
+import { HttpParams, HttpStatusCode } from '@angular/common/http';
 import { Table } from 'primeng/table';
 import { CrudLayoutOptions } from '../../models/crud-layout-options';
 import { MavDataService } from '../../services/mav-data.service';
@@ -8,8 +8,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { IApiResponse } from '../../models/api-response';
 import { BaseDropdownResponse } from '../../models/base-dropdown-response';
-import 'src/app/core/extensions/object.extension';
 import { LocalizationService } from '../../services/localization.service';
+import { StringFormatPipe } from '../../pipes/string-format.pipe';
 
 @Component({
   selector: 'mav-crud-layout',
@@ -106,8 +106,7 @@ export class CrudLayoutComponent implements OnInit {
       width: this.crudLayoutOptions.dialogWidth,
       contentStyle: this.crudLayoutOptions.contentStyle,
       baseZIndex: 10000,
-      autoZIndex: true,
-      styleClass:'test123AAAAAAA'
+      autoZIndex: true
     });
 
     this.ref.onClose.subscribe((response: IApiResponse<typeof this.crudLayoutOptions.model>) => {
@@ -137,10 +136,14 @@ export class CrudLayoutComponent implements OnInit {
   }
 
   deleteData(data: any) {
-    const detail = this.objectByString(data, this.crudLayoutOptions.deleteProperty!);
+    let message = this.translate('Common.AreYouSureToDelete');
+    if (this.crudLayoutOptions.deleteProperty && this.crudLayoutOptions.deleteProperty !== '')
+      message = new StringFormatPipe().transform(message, this.objectByString(data, this.crudLayoutOptions.deleteProperty!));
+    else
+      message = new StringFormatPipe().transform(message, '');
     this.confirmationService.confirm({
-      message: `${detail} silmek istediğinize emin misiniz?`,
-      header: 'Onaylama İşlemi',
+      message: message,
+      header: this.translate('Common.AreYouSureToDelete'),
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.dataService.delete(this.crudLayoutOptions.url, data.id).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
@@ -184,9 +187,9 @@ export class CrudLayoutComponent implements OnInit {
     return this.localizationService.translate(keyName);
   }
 
-  filterData(event: any, suggestionUrl: string) {
+  filterData(event: any, suggestionUrl: string, customParams?: HttpParams) {
     const query = event && event.query ? event.query : null;
-    this.dataService.getDropdownDataList<BaseDropdownResponse>(suggestionUrl, query).pipe(takeUntil(this.unsubscribe)).subscribe((response) => {
+    this.dataService.getDropdownDataList<BaseDropdownResponse>(suggestionUrl, query, customParams).pipe(takeUntil(this.unsubscribe)).subscribe((response) => {
       if (response && response.isSuccess) {
         this.suggestions = response.dataMulti;
       } else {

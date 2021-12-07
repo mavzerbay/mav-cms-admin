@@ -1,5 +1,5 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { ControlContainer, ControlValueAccessor, FormControl } from '@angular/forms';
+import { AfterViewInit, Component, ElementRef, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ControlContainer, ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FileUpload } from 'primeng/fileupload';
 import { LocalizationService } from '../../services/localization.service';
@@ -7,9 +7,14 @@ import { LocalizationService } from '../../services/localization.service';
 @Component({
   selector: 'mav-upload',
   templateUrl: './mav-upload.component.html',
-  styleUrls: ['./mav-upload.component.scss']
+  styleUrls: ['./mav-upload.component.scss'],
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    multi: true,
+    useExisting: forwardRef(() => MavUploadComponent)
+  }]
 })
-export class MavUploadComponent implements OnInit, ControlValueAccessor {
+export class MavUploadComponent implements AfterViewInit, ControlValueAccessor {
 
   @ViewChild('upload') fileUpload!: FileUpload;
 
@@ -26,6 +31,15 @@ export class MavUploadComponent implements OnInit, ControlValueAccessor {
     private localizationService: LocalizationService,
     private sanitizer: DomSanitizer,
   ) { }
+
+  ngAfterViewInit(): void {
+    this.controlPath.valueChanges.subscribe((val)=>{
+      if(val){
+        this.defaultPath = this.controlPath.value;
+        this.imagePath = this.defaultPath;
+      }
+    })
+  }
 
   translate(keyName: string) {
     return this.localizationService.translate(keyName);
@@ -50,11 +64,6 @@ export class MavUploadComponent implements OnInit, ControlValueAccessor {
   registerOnTouched(fn: any): void {
   }
 
-  ngOnInit(): void {
-    this.defaultPath = this.controlPath.value;
-    this.imagePath = this.defaultPath;
-  }
-
   selectPhoto(event: any) {
     console.log(event.currentFiles[0]);
     this.controlFile.setValue(event.currentFiles[0]);
@@ -64,7 +73,7 @@ export class MavUploadComponent implements OnInit, ControlValueAccessor {
     this.fileUpload.clear()
     this.controlFile.setValue(null);
     this.controlPath.setValue(null);
-    this.imagePath=null;
+    this.imagePath = null;
     if (this.defaultPath) {
       this.controlPath.setValue(this.defaultPath);
     }

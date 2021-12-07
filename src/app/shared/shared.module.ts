@@ -11,7 +11,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogButtonsComponent } from './components/dialog-buttons/dialog-buttons.component';
 import { MavAutocompleteComponent } from './components/mav-autocomplete/mav-autocomplete.component';
 import { MavUploadComponent } from './components/mav-upload/mav-upload.component';
-
+import { YesNoPipe } from './pipes/yes-no.pipe';
+import { ActivityPipe } from './pipes/activity.pipe';
 //Primeng
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -34,8 +35,9 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { MavDataFromKeyDirective } from './directives/mav-data-from-key.directive';
 import { TabViewModule } from 'primeng/tabview';
 import { FileUploadModule } from 'primeng/fileupload';
-import { YesNoPipe } from './pipes/yes-no.pipe';
-import { ActivityPipe } from './pipes/activity.pipe';
+import { EditorModule } from 'primeng/editor';
+import { RippleModule } from 'primeng/ripple';
+import { StringFormatPipe } from './pipes/string-format.pipe';
 
 
 @NgModule({
@@ -53,17 +55,20 @@ import { ActivityPipe } from './pipes/activity.pipe';
     MavUploadComponent,
     YesNoPipe,
     ActivityPipe,
+    StringFormatPipe,
   ],
   imports: [
     CommonModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
     //Primeng Modules
     TableModule,
     ToastModule,
     ToolbarModule,
     ButtonModule,
+    RippleModule,
     InputTextModule,
     InputTextareaModule,
     InputNumberModule,
@@ -77,7 +82,7 @@ import { ActivityPipe } from './pipes/activity.pipe';
     BreadcrumbModule,
     TriStateCheckboxModule,
     CheckboxModule,
-    FileUploadModule,
+    FileUploadModule
   ],
   exports: [
     SideMenuComponent,
@@ -91,6 +96,12 @@ import { ActivityPipe } from './pipes/activity.pipe';
     MavUploadComponent,
     TabViewModule,
     ToastModule,
+    RouterModule,
+    ButtonModule,
+    RippleModule,
+    StringFormatPipe,
+    TableModule,
+    ToolbarModule,
   ]
 })
 export class SharedModule { }

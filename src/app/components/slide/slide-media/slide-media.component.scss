@@ -1,0 +1,11 @@
+
+.mav-col-div {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+:host ::ng-deep{
+    .p-datatable-wrapper{
+        overflow-y: auto;
+    }
+}

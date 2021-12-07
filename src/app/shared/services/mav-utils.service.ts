@@ -15,11 +15,13 @@ export class MavUtilsService {
       customParams = customParams.append("PageIndex", (event.first ?? 0) + 1);
       customParams = customParams.append("PageSize", event.rows ?? 10);
 
-      if (event.sortOrder && event.sortField && event.sortOrder == 1)
-        customParams = customParams.append("Sort", `${event.sortField}Asc`)
-      else if (event.sortOrder && event.sortField && event.sortOrder == -1)
-        customParams = customParams.append("Sort", `${event.sortField}Desc`)
-
+      if (event.sortOrder && event.sortField) {
+        const sortField = event.sortField.includes('[0]') ? event.sortField.replace('[0]', '') : event.sortField;
+        if (event.sortOrder == 1)
+          customParams = customParams.append("Sort", `${sortField}Asc`)
+        else if (event.sortOrder == -1)
+          customParams = customParams.append("Sort", `${sortField}Desc`)
+      }
       if (event.filters) {
         let matchModes: string = '';
         for (const key in event.filters) {

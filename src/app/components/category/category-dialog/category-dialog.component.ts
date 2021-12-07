@@ -1,20 +1,20 @@
-import { AfterViewInit, ChangeDetectorRef, Component, isDevMode, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, isDevMode, OnInit } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { CustomVar, CustomVarTrans } from 'src/app/models/custom-var';
+import { Category, CategoryTrans } from 'src/app/models/category';
 import { Language } from 'src/app/models/language';
 import { IApiResponse } from 'src/app/shared/models/api-response';
 import { LocalizationService } from 'src/app/shared/services/localization.service';
 import { MavDataService } from 'src/app/shared/services/mav-data.service';
 
 @Component({
-  selector: 'app-custom-var-dialog',
-  templateUrl: './custom-var-dialog.component.html',
-  styleUrls: ['./custom-var-dialog.component.scss']
+  selector: 'app-category-dialog',
+  templateUrl: './category-dialog.component.html',
+  styleUrls: ['./category-dialog.component.scss']
 })
-export class CustomVarDialogComponent implements OnInit {
+export class CategoryDialogComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
@@ -25,9 +25,9 @@ export class CustomVarDialogComponent implements OnInit {
     private localizationService: LocalizationService,
   ) { }
 
-  customVarId: string = this.config.data;
+  categoryId: string = this.config.data;
 
-  formCustomVar!: FormGroup;
+  formCategory!: FormGroup;
 
   private unsubscribe = new Subject();
 
@@ -42,9 +42,9 @@ export class CustomVarDialogComponent implements OnInit {
     this.language$.subscribe((val) => {
       if (val && val.length > 0) {
         this.languageList = val;
-        this.createCustomVarForm();
-        if (this.customVarId)
-          this.getCustomVar();
+        this.createCategoryForm();
+        if (this.categoryId)
+          this.getCategory();
       } else {
         this.closeDialog();
       }
@@ -59,33 +59,32 @@ export class CustomVarDialogComponent implements OnInit {
     return this.localizationService.translate(keyName);
   }
 
-  private patchFormValue(data: CustomVar) {
-    const primaryTrans = data.customVarTrans.find(x => x.languageId == this.primaryLanguage?.id);
-    data.customVarTrans = data.customVarTrans.filter(x => x.languageId != this.primaryLanguage?.id);
+  private patchFormValue(data: Category) {
+    const primaryTrans = data.categoryTrans.find(x => x.languageId == this.primaryLanguage?.id);
+    data.categoryTrans = data.categoryTrans.filter(x => x.languageId != this.primaryLanguage?.id);
 
-    this.formCustomVar.patchValue(data);
-    this.formCustomVar.patchValue({ customVarTrans: data.customVarTrans });
-    this.formCustomVar.patchValue({ primaryCustomVarTrans: [primaryTrans] });
+    this.formCategory.patchValue(data);
+    this.formCategory.patchValue({ categoryTrans: data.categoryTrans });
+    this.formCategory.patchValue({ primaryCategoryTrans: [primaryTrans] });
   }
 
-  private createCustomVarForm() {
-    this.formCustomVar = this.formBuilder.group({
-      id: [{ value: this.customVarId, disabled: false }],
-      groupName: [{ value: null, disabled: false }, Validators.required],
-      keyName: [{ value: null, disabled: false }, Validators.required],
-      primaryCustomVarTrans: this.formBuilder.array(this.localizationService.getLanguageList.filter(x => x.id == this.primaryLanguage?.id).map(x => this.createCustomVarTansFormArray(x.id))),
-      customVarTrans: this.formBuilder.array(this.localizationService.getLanguageListWithoutPrimary.map(x => this.createCustomVarTansFormArray(x.id))),
+  private createCategoryForm() {
+    this.formCategory = this.formBuilder.group({
+      id: [{ value: this.categoryId, disabled: false }],
+      activity: [{ value: true, disabled: false }, Validators.required],
+      primaryCategoryTrans: this.formBuilder.array(this.localizationService.getLanguageList.filter(x => x.id == this.primaryLanguage?.id).map(x => this.createCategoryTansFormArray(x.id))),
+      categoryTrans: this.formBuilder.array(this.localizationService.getLanguageListWithoutPrimary.map(x => this.createCategoryTansFormArray(x.id))),
     });
   }
 
-  private createCustomVarTansFormArray(languageId: string) {
+  private createCategoryTansFormArray(languageId: string) {
     const transForm = this.formBuilder.group({
       id!: [{ value: null, disabled: false }],
-      customVarId!: [{ value: this.customVarId, disabled: false }],
+      categoryId!: [{ value: this.categoryId, disabled: false }],
       languageId!: [{ value: languageId, disabled: false }, Validators.required],
       langDisplayOrder: [{ value: null }],
       name!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
-      description!: [{ value: null, disabled: false }],
+      info!: [{ value: null, disabled: false }],
     });
 
     transForm.get('languageId')?.valueChanges.subscribe((val) => {
@@ -96,29 +95,29 @@ export class CustomVarDialogComponent implements OnInit {
   }
 
   get getPrimaryTrans(): AbstractControl[] {
-    return (this.formCustomVar.controls['primaryCustomVarTrans'] as FormArray).controls;
+    return (this.formCategory.controls['primaryCategoryTrans'] as FormArray).controls;
   }
 
-  get getCustomVarTransFormArray(): AbstractControl[] {
-    return (this.formCustomVar.controls['customVarTrans'] as FormArray).controls.sort((a, b) => a.value.langDisplayOrder > b.value.langDisplayOrder ? 1 : a.value.langDisplayOrder < b.value.langDisplayOrder ? -1 : 0);
+  get getCategoryTransFormArray(): AbstractControl[] {
+    return (this.formCategory.controls['categoryTrans'] as FormArray).controls.sort((a, b) => a.value.langDisplayOrder > b.value.langDisplayOrder ? 1 : a.value.langDisplayOrder < b.value.langDisplayOrder ? -1 : 0);
   }
 
   getLanguageName(id: string): string {
     return this.languageList.find(x => x.id == id)?.name!;
   }
 
-  private getCustomVar() {
-    this.dataService.getById<CustomVar>(`/CustomVar`, this.customVarId).subscribe((response: IApiResponse<CustomVar>) => {
+  private getCategory() {
+    this.dataService.getById<Category>(`/Category`, this.categoryId).subscribe((response: IApiResponse<Category>) => {
       if (response && response.isSuccess) {
         this.patchFormValue(response.dataSingle);
-        //this.formCustomVar.patchValue(response.dataSingle);
+        //this.formCategory.patchValue(response.dataSingle);
       } else {
         if (response.error) {
           let errorMessage;
           for (const key in response.error) {
             if (Object.prototype.hasOwnProperty.call(response.error, key)) {
-              if (this.formCustomVar.get(key) != null) {
-                this.formCustomVar.get(key)?.setErrors(Validators.required, response.error[key]);
+              if (this.formCategory.get(key) != null) {
+                this.formCategory.get(key)?.setErrors(Validators.required, response.error[key]);
               }
               errorMessage += response.error[key];
             }
@@ -132,13 +131,13 @@ export class CustomVarDialogComponent implements OnInit {
     })
   }
 
-  saveCustomVar() {
-    if (this.formCustomVar.valid) {
-      let item: CustomVar = this.formCustomVar.value;
-      const primaryTrans: CustomVarTrans = ((this.formCustomVar.controls['primaryCustomVarTrans'] as FormArray)?.value[0] as CustomVarTrans);
-      item.customVarTrans.push(primaryTrans);
+  saveCategory() {
+    if (this.formCategory.valid) {
+      let item: Category = this.formCategory.value;
+      const primaryTrans: CategoryTrans = ((this.formCategory.controls['primaryCategoryTrans'] as FormArray)?.value[0] as CategoryTrans);
+      item.categoryTrans.push(primaryTrans);
 
-      this.dataService.saveData<CustomVar>("/CustomVar", this.formCustomVar.value).pipe(takeUntil(this.unsubscribe)).subscribe((response: IApiResponse<CustomVar>) => {
+      this.dataService.saveData<Category>("/Category", this.formCategory.value).pipe(takeUntil(this.unsubscribe)).subscribe((response: IApiResponse<Category>) => {
         if (response && response.isSuccess) {
           this.ref.close(response);
         } else {
@@ -146,8 +145,8 @@ export class CustomVarDialogComponent implements OnInit {
             let errorMessage;
             for (const key in response.error) {
               if (Object.prototype.hasOwnProperty.call(response.error, key)) {
-                if (this.formCustomVar.get(key) != null) {
-                  this.formCustomVar.get(key)?.setErrors(Validators.required, response.error[key]);
+                if (this.formCategory.get(key) != null) {
+                  this.formCategory.get(key)?.setErrors(Validators.required, response.error[key]);
                 }
                 errorMessage += response.error[key];
               }

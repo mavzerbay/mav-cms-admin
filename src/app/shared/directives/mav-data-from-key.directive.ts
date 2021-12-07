@@ -1,5 +1,4 @@
 import { AfterViewInit, Directive, ElementRef, Input } from '@angular/core';
-import 'src/app/core/extensions/object.extension';
 import { ActivityPipe } from '../pipes/activity.pipe';
 import { YesNoPipe } from '../pipes/yes-no.pipe';
 import { LocalizationService } from '../services/localization.service';

@@ -107,14 +107,26 @@ export class MenuDialogComponent implements OnInit {
   }
 
   private createMenuTansFormArray(languageId: string) {
-    return this.formBuilder.group({
+    const transForm = this.formBuilder.group({
       id!: [{ value: null, disabled: false }],
       menuId!: [{ value: this.menuId, disabled: false }],
       languageId!: [{ value: languageId, disabled: false }, Validators.required],
-      langDisplayOrder: [{ value: this.languageList.find(x => x.id == languageId)?.displayOrder }],
+      langDisplayOrder: [{ value: null }],
       name!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
       info!: [{ value: null, disabled: false }],
+    });
+
+    transForm.get('languageId')?.valueChanges.subscribe((val) => {
+      transForm.get('langDisplayOrder')?.setValue(this.languageList.find(x => x.id == transForm.get('languageId')?.value)?.displayOrder);
+      if (val == this.primaryLanguage?.id) {
+        transForm.get('name')?.setValidators(Validators.required);
+        transForm.get('name')?.updateValueAndValidity();
+      }else{        
+        transForm.get('name')?.setValidators(null);
+        transForm.get('name')?.updateValueAndValidity();
+      }
     })
+    return transForm;
   }
 
   get getMenuTransFormArray(): AbstractControl[] {

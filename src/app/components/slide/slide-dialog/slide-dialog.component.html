@@ -1,0 +1,28 @@
+<div class="p-card p-grid col-12">
+    <form [formGroup]="formSlide" (ngSubmit)="saveSlide()">
+        <dialog-buttons [saveDisabled]="formSlide.invalid" (onCancel)="closeDialog()"></dialog-buttons>
+        <div class="grid">
+            <div class="col-6">
+                <mav-input formControlName="activity" [label]="translate('Common.Activity')" type="switch"></mav-input>
+            </div>
+            <div class="col-6">
+                <mav-input formControlName="isHome" [label]="translate('Slide.IsHome')" type="switch"></mav-input>
+            </div>
+            <div class="col-6">
+                <mav-autocomplete formControlName="page"
+                    [label]="translate('Common.Choose') | stringFormat: translate('Page.ControllerTitle')"
+                    suggestionUrl="/Page/GetDropdownList"></mav-autocomplete>
+            </div>
+            <div class="col-6">
+                <mav-autocomplete formControlName="slidePosition"
+                    [label]="translate('Common.Choose') | stringFormat: translate('Slide.SlidePosition')"
+                    [customParams]="slidePositionParams" suggestionUrl="/CustomVar/GetDropdownList"></mav-autocomplete>
+            </div>
+            <div class="col-12">
+                <div class="card">
+                    <app-slide-media (onNewSlide)="addSlideMedia()"></app-slide-media>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

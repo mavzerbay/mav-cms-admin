@@ -1,3 +1,4 @@
+import { HttpParams } from "@angular/common/http";
 import { IApiResponse } from "./api-response";
 import { BaseModel } from "./base-model";
 
@@ -15,7 +16,7 @@ export class CrudLayoutOptions<T> {
      * Silmek için sorulduğunda hangi alana göre soracağını belirtir örn:
      * language.name alanını silmek istediğinize emin misiniz?
      */
-    deleteProperty?: string = 'name';
+    deleteProperty?: string;
 }
 
 export class CrudLayoutColumns {
@@ -39,6 +40,10 @@ export class CrudLayoutColumns {
     autoCompleteUrl?: string;
     autoCompleteSearchName?: string;
     isGlobalFilter?: boolean = false;
+    /**
+     * CustomParams var ise autocomplete için
+     */
+    customParams?:HttpParams;
     /**
      * Pipe kullanılmak isteniyorsa pipe adı
      */

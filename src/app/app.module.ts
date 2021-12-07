@@ -17,6 +17,16 @@ import { MenuComponent } from './components/menu/menu.component';
 import { MenuDialogComponent } from './components/menu/menu-dialog/menu-dialog.component';
 import { CustomVarComponent } from './components/custom-var/custom-var.component';
 import { CustomVarDialogComponent } from './components/custom-var/custom-var-dialog/custom-var-dialog.component';
+import { PageComponent } from './components/page/page.component';
+import { CategoryComponent } from './components/category/category.component';
+import { CategoryDialogComponent } from './components/category/category-dialog/category-dialog.component';
+import { PageDialogComponent } from './components/page/page-dialog/page-dialog.component';
+import { TooltipModule } from 'primeng/tooltip';
+import { EditorModule } from 'primeng/editor';
+import { SlideComponent } from './components/slide/slide.component';
+import { SlideDialogComponent } from './components/slide/slide-dialog/slide-dialog.component';
+import { SlideMediaComponent } from './components/slide/slide-media/slide-media.component';
+import { SlideMediaDialogComponent } from './components/slide/slide-media-dialog/slide-media-dialog.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +40,14 @@ import { CustomVarDialogComponent } from './components/custom-var/custom-var-dia
     MenuDialogComponent,
     CustomVarComponent,
     CustomVarDialogComponent,
+    PageComponent,
+    CategoryComponent,
+    CategoryDialogComponent,
+    PageDialogComponent,
+    SlideComponent,
+    SlideDialogComponent,
+    SlideMediaComponent,
+    SlideMediaDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,6 +57,8 @@ import { CustomVarDialogComponent } from './components/custom-var/custom-var-dia
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
+    TooltipModule,
+    EditorModule,
   ],
   providers: [
     MessageService,

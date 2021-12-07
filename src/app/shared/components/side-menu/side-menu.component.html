@@ -11,19 +11,19 @@
     <div class="layout-menu-container">
         <ul class="layout-menu">
             <!-- active-menuitem -->
-            <li routerLinkActive="active-menuitem" [routerLinkActiveOptions]="{exact:true}">
+            <li routerLinkActive="active-menuitem" [routerLinkActiveOptions]="{exact: true}">
                 <a routerLink="/">
                     <span class="menuitem-text">{{translate('Common.Dashboard')}}</span>
                     <i class="layout-menuitem-icon  pi pi-fw pi-home"></i>
                 </a>
             </li>
-            <!-- <li routerLinkActive="active-menuitem">
+            <li routerLinkActive="active-menuitem" [routerLinkActiveOptions]="{exact: true}">
                 <a routerLink="/CustomVar">
                     <span class="menuitem-text">{{translate('CustomVar.ControllerTitle')}}</span>
-                    <i class="layout-menuitem-icon  pi pi-fw pi-home"></i>
+                    <i class="layout-menuitem-icon  pi pi-fw pi-eject"></i>
                 </a>
             </li>
-            <li routerLinkActive="active-menuitem">
+            <!--  <li routerLinkActive="active-menuitem">
                 <a routerLink="/Language">
                     <span class="menuitem-text">{{translate('Language.ControllerTitle')}}</span>
                     <i class="layout-menuitem-icon  pi pi-fw pi-home"></i>

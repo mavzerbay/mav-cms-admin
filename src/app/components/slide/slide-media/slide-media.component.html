@@ -1,0 +1,108 @@
+<p-toolbar styleClass="mb-4">
+    <div class="p-toolbar-group-left ">
+        <button pButton pRipple label="Yeni Kayıt" (click)="newSlideMedia()" icon="pi pi-plus"
+            class="p-button-success mr-2 mb-2 p-button">
+        </button>
+        <button pButton pRipple label="Seçilenleri Sil" icon="pi pi-trash" class="p-button-danger mb-2 p-button"
+            (click)="deleteSelectedSlideMedias()" [disabled]="!selectedSlideMedias || !selectedSlideMedias.length">
+        </button>
+    </div>
+</p-toolbar>
+<p-table #dt [value]="slideMediaList" [lazy]="true" (onLazyLoad)="loadSlideMedia($event)" [paginator]="true" [rows]="10"
+    [totalRecords]="totalRecords" [loading]="loading"
+    [currentPageReportTemplate]="translate('Common.CurrentPageReportTemplate')" [showCurrentPageReport]="true">
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width: 3rem">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th>#</th>
+            <th pSortableColumn="title">
+                {{translate('SlideMedia.Title')}}
+                <p-sortIcon field="title"></p-sortIcon>
+            </th>
+            <th pSortableColumn="language.Id">
+                {{translate('SlideMedia.Language')}}
+                <p-sortIcon field="language.Id"></p-sortIcon>
+            </th>
+            <th>
+                {{translate('SlideMedia.BackgroundImage')}}
+            </th>
+            <th pSortableColumn="activity">
+                {{translate('Common.Activity')}}
+                <p-sortIcon field="activity"></p-sortIcon>
+            </th>
+        </tr>
+        <tr>
+            <th></th>
+            <th>
+                <button pButton class="p-button-outlined" icon="pi pi-filter-slash" (click)="clearTable()"></button>
+            </th>
+            <th>
+                <p-columnFilter type="text" field="title"></p-columnFilter>
+            </th>
+            <th>
+                <!-- <div class="grid-col-12"
+                    *ngIf="col.field!='crudButtons' &&col.type!='none' && col.type=='autocomplete' && col.autoCompleteUrl">
+                    <p-autoComplete [(ngModel)]="selectedItem" [suggestions]="suggestions"
+                        [placeholder]="translate(col.typePlaceHolder!)" field="name" slideMediaKey="id"
+                        (completeMethod)="filterSlideMedia($event,col.autoCompleteUrl,col.customParams)"
+                        [completeOnFocus]="true"
+                        (onKeyUp)="filterSlideMedia($event,col.autoCompleteUrl,col.customParams)" [dropdown]="true"
+                        (onSelect)="filterTableFromAutoComplete($event,col.autoCompleteSearchName!)"
+                        [inputId]=" col.field" [showEmptyMessage]="true" [emptyMessage]="'Kayıt bulunamadı.'">
+                    </p-autoComplete>
+                </div> -->
+            </th>
+            <th>
+            </th>
+            <th>
+                <p-columnFilter type="boolean" field="activity"></p-columnFilter>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-slideMedia let-index="rowIndex">
+        <tr>
+            <td>
+                <p-tableCheckbox [value]="slideMedia"></p-tableCheckbox>
+            </td>
+            <td>{{index+1}}</td>
+            <td>
+                <span class="p-column-title">{{translate('Common.Actions')}}</span>
+                <div style="min-width: 65px;">
+                    <button pButton pRipple icon="pi pi-pencil"
+                        class="p-button-rounded p-button-success mr-2 crud-button"
+                        (click)="editSlideMedia(slideMedia)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger crud-button"
+                        (click)="deleteSlideMedia(slideMedia)"></button>
+                </div>
+            </td>
+            <td>
+                <div class="mav-col-div">
+                    <span class="p-column-title">{{translate('SlideMedia.Title')}}</span>
+                    {{slideMedia?.title}}
+                </div>
+            </td>
+            <td>
+                <div class="mav-col-div">
+                    <span class="p-column-title">{{translate('SlideMedia.Language')}}</span>
+                    {{slideMedia?.language?.name}}
+                </div>
+            </td>
+            <td>
+                <div class="mav-col-div">
+                    <span class="p-column-title">{{translate('SlideMedia.BackgroundImage')}}</span>
+                    {{slideMedia?.backgroundImage}}
+                </div>
+            </td>
+            <td>
+                <div class="mav-col-div">
+                    <span class="p-column-title">{{translate('Common.Activity')}}</span>
+                    {{slideMedia?.activity}}
+                </div>
+            </td>
+            <td>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
