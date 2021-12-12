@@ -1,5 +1,8 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, isDevMode, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+import { IApiResponse } from '../../models/api-response';
 import { LocalizationService } from '../../services/localization.service';
+import { MavDataService } from '../../services/mav-data.service';
 
 @Component({
   selector: 'app-side-menu',
@@ -12,12 +15,29 @@ export class SideMenuComponent implements OnInit {
 
   constructor(
     private renderer: Renderer2,
-    private localizationService: LocalizationService
+    private localizationService: LocalizationService,
+    private dataService: MavDataService,
   ) { }
 
   isLocked: boolean = false;
 
+  menuList!: any[];
+
+  private unsubscribe = new Subject()
+
   ngOnInit(): void {
+    this.getMenuList();
+  }
+
+  getMenuList() {
+    this.dataService.getDataList<any>('/Menu/AdminMenus').pipe(takeUntil(this.unsubscribe)).subscribe((response: IApiResponse<any>) => {
+      if (response && response.isSuccess) {
+        this.menuList = response.dataMulti;
+      }
+    }, error => {
+      if (isDevMode())
+        console.error(error);
+    });
   }
 
   toggleActive() {

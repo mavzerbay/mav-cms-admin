@@ -1,6 +1,7 @@
 <div class="p-card p-grid col-12">
-    <form [formGroup]="formSlide" (ngSubmit)="saveSlide()">
-        <dialog-buttons [saveDisabled]="formSlide.invalid" (onCancel)="closeDialog()"></dialog-buttons>
+    <form [formGroup]="formSlide">
+        <dialog-buttons [saveDisabled]="formSlide.invalid" (onSave)="saveSlide()" (onCancel)=" closeDialog()">
+        </dialog-buttons>
         <div class="grid">
             <div class="col-6">
                 <mav-input formControlName="activity" [label]="translate('Common.Activity')" type="switch"></mav-input>

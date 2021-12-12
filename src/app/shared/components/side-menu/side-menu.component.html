@@ -17,24 +17,13 @@
                     <i class="layout-menuitem-icon  pi pi-fw pi-home"></i>
                 </a>
             </li>
-            <li routerLinkActive="active-menuitem" [routerLinkActiveOptions]="{exact: true}">
-                <a routerLink="/CustomVar">
-                    <span class="menuitem-text">{{translate('CustomVar.ControllerTitle')}}</span>
-                    <i class="layout-menuitem-icon  pi pi-fw pi-eject"></i>
+            <li *ngFor="let menu of menuList" routerLinkActive="active-menuitem"
+                [routerLinkActiveOptions]="{exact: true}">
+                <a [routerLink]="menu.routerLink" [queryParams]="menu.routerQueryParameter">
+                    <span class="menuitem-text">{{menu.name}}</span>
+                    <i class="layout-menuitem-icon pi pi-fw {{menu.icon}}"></i>
                 </a>
             </li>
-            <!--  <li routerLinkActive="active-menuitem">
-                <a routerLink="/Language">
-                    <span class="menuitem-text">{{translate('Language.ControllerTitle')}}</span>
-                    <i class="layout-menuitem-icon  pi pi-fw pi-home"></i>
-                </a>
-            </li>
-            <li routerLinkActive="active-menuitem">
-                <a routerLink="/Translate">
-                    <span class="menuitem-text">{{translate('Translate.ControllerTitle')}}</span>
-                    <i class="layout-menuitem-icon  pi pi-fw pi-home"></i>
-                </a>
-            </li> -->
         </ul>
     </div>
 </div>

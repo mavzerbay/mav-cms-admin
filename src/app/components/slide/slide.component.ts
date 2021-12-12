@@ -45,7 +45,7 @@ export class SlideComponent implements OnInit {
         customParams: new HttpParams().append('GroupName', 'SlidePosition')
       },
       {
-        field: 'ishome',
+        field: 'isHome',
         fieldHeaderName: 'Slide.IsHome',
         type: 'boolean',
         pipeName: 'yesNo'

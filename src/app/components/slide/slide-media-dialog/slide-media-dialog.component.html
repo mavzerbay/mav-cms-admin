@@ -1,1 +1,57 @@
-<p>slide-media-dialog works!</p>
+<div class="p-card p-grid col-12">
+    <form [formGroup]="formSlideMedia">
+        <dialog-buttons [saveDisabled]="formSlideMedia.invalid" (onSave)="saveSlideMedia()" (onCancel)="closeDialog()">
+        </dialog-buttons>
+        <div class="grid">
+            <div class="col-6">
+                <mav-input formControlName="activity" [label]="translate('Common.Activity')" type="switch">
+                </mav-input>
+            </div>
+            <div class="col-6">
+                <mav-input formControlName="displayOrder" type="numeric" [label]="translate('Common.DisplayOrder')">
+                </mav-input>
+            </div>
+            <div class="col-6">
+                <mav-autocomplete formControlName="language"
+                    [label]="translate('Common.Choose') | stringFormat: translate('Language.ControllerTitle')"
+                    suggestionUrl="/Language/GetDropdownList"></mav-autocomplete>
+            </div>
+            <div class="col-6">
+                <mav-autocomplete formControlName="linkPage"
+                    [label]="translate('Common.Choose') | stringFormat: translate('SlideMedia.LinkPage')"
+                    suggestionUrl="/Page/GetDropdownList"></mav-autocomplete>
+            </div>
+            <div class="col-4">
+                <mav-input formControlName="textStyle" [label]="translate('SlideMedia.TextStyle')">
+                </mav-input>
+            </div>
+            <div class="col-4">
+                <mav-input formControlName="buttonStyle" [label]="translate('SlideMedia.ButtonStyle')">
+                </mav-input>
+            </div>
+            <div class="col-4">
+                <mav-input formControlName="buttonText" [label]="translate('SlideMedia.ButtonText')">
+                </mav-input>
+            </div>
+            <div class="col-6">
+                <mav-input formControlName="routerLink" [label]="translate('Menu.RouterLink')"></mav-input>
+            </div>
+            <div class="col-6">
+                <mav-input formControlName="routerQueryParameters" [label]="translate('Menu.RouterQueryParameter')">
+                </mav-input>
+            </div>
+            <div class="col-6">
+                <mav-input formControlName="title" [label]="translate('SlideMedia.Title')">
+                </mav-input>
+            </div>
+            <div class="col-6">
+                <mav-input formControlName="summary" [label]="translate('SlideMedia.Summary')">
+                </mav-input>
+            </div>
+            <div class="col-12">
+                <mav-upload formControlName="backgroundImageFile" formControlNamePath="backgroundImagePath">
+                </mav-upload>
+            </div>
+        </div>
+    </form>
+</div>

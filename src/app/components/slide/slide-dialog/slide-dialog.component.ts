@@ -1,5 +1,5 @@
 import { HttpParams } from '@angular/common/http';
-import { Component, isDevMode, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, isDevMode, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -15,7 +15,7 @@ import { MavDataService } from 'src/app/shared/services/mav-data.service';
   templateUrl: './slide-dialog.component.html',
   styleUrls: ['./slide-dialog.component.scss']
 })
-export class SlideDialogComponent implements OnInit {
+export class SlideDialogComponent implements OnInit, AfterViewInit {
 
   constructor(
     private formBuilder: FormBuilder,
@@ -24,7 +24,11 @@ export class SlideDialogComponent implements OnInit {
     private messageService: MessageService,
     private ref: DynamicDialogRef,
     private localizationService: LocalizationService,
+    private cdRef: ChangeDetectorRef,
   ) { }
+  ngAfterViewInit(): void {
+    this.cdRef.detectChanges();
+  }
 
   slideId: string = this.config.data;
 
@@ -41,7 +45,6 @@ export class SlideDialogComponent implements OnInit {
   slidePositionParams: HttpParams = new HttpParams().append('GroupName', 'SlidePosition');
 
   ngOnInit(): void {
-
     this.language$ = this.localizationService.language$;
     this.language$.subscribe((val) => {
       if (val && val.length > 0) {
@@ -70,8 +73,8 @@ export class SlideDialogComponent implements OnInit {
       isHome: [{ value: false, disabled: false }, Validators.required],
       page: [{ value: null, disabled: false }],
       pageId: [{ value: null, disabled: false }],
-      slidePosition: [{ value: null, disabled: false }],
-      slidePositionId: [{ value: null, disabled: false }],
+      slidePosition: [{ value: null, disabled: false }, Validators.required],
+      slidePositionId: [{ value: null, disabled: false }, Validators.required],
       slideMedias: this.formBuilder.array([]),
     });
     this.formSlide.get('page')?.valueChanges.subscribe(val => {
@@ -89,9 +92,10 @@ export class SlideDialogComponent implements OnInit {
   }
 
   createSlideMedia(media?: SlideMedia) {
-    const transForm = this.formBuilder.group({
+    const mediaForm = this.formBuilder.group({
       id!: [{ value: null, disabled: false }],
       slideId: [{ value: this.slideId, disabled: false }],
+      language: [{ value: this.languageList.find(x => x.id == media?.languageId), disabled: false }, Validators.required],
       languageId: [{ value: null, disabled: false }, Validators.required],
       activity: [{ value: true, disabled: false }, Validators.required],
       displayOrder: [{ value: 0, disabled: false }, Validators.required],
@@ -101,24 +105,31 @@ export class SlideDialogComponent implements OnInit {
       linkPage: [{ value: null, disabled: false }],
       linkPageId: [{ value: null, disabled: false }],
       backgroundImagePath: [{ value: null, disabled: false }],
-      backgroundImageFile: [{ value: null, disabled: false }],
+      backgroundImageFile: [{ value: null, disabled: false }, media && media.backgroundImagePath ? null : Validators.required],
       routerLink: [{ value: null, disabled: false }],
       routerQueryParameters: [{ value: null, disabled: false }],
       title: [{ value: null, disabled: false }, Validators.required],
       summary: [{ value: null, disabled: false }],
     });
 
-    this.formSlide.get('linkPage')?.valueChanges.subscribe(val => {
+    mediaForm.get('linkPage')?.valueChanges.subscribe(val => {
       if (val && val.id)
-        this.formSlide.get('linkPageId')?.setValue(val.id);
+        mediaForm.get('linkPageId')?.setValue(val.id);
       else
-        this.formSlide.get('linkPageId')?.setValue(null);
+        mediaForm.get('linkPageId')?.setValue(null);
+    });
+
+    mediaForm.get('language')?.valueChanges.subscribe(val => {
+      if (val && val.id)
+        mediaForm.get('languageId')?.setValue(val.id);
+      else
+        mediaForm.get('languageId')?.setValue(null);
     });
 
     if (media && media.id)
-      transForm.patchValue(media);
+      mediaForm.patchValue(media);
 
-    return transForm;
+    return mediaForm;
   }
 
   addSlideMedia() {
@@ -127,7 +138,12 @@ export class SlideDialogComponent implements OnInit {
 
   patchFormValues(slide: Slide) {
     this.formSlide.patchValue(slide);
-    this.formSlide.patchValue({ slideMedias: slide.slideMedias.map(x => this.createSlideMedia(x)) });
+    if (slide.slideMedias && slide.slideMedias.length > 0) {
+      for (let i = 0; i < slide.slideMedias.length; i++) {
+        (this.formSlide.get('slideMedias') as FormArray).push(this.createSlideMedia(slide.slideMedias[i]));
+
+      }
+    }
   }
 
   get getSlideTransFormArray(): AbstractControl[] {

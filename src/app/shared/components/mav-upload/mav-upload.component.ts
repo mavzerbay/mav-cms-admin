@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, forwardRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { ControlContainer, ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FileUpload } from 'primeng/fileupload';
@@ -14,7 +14,7 @@ import { LocalizationService } from '../../services/localization.service';
     useExisting: forwardRef(() => MavUploadComponent)
   }]
 })
-export class MavUploadComponent implements AfterViewInit, ControlValueAccessor {
+export class MavUploadComponent implements ControlValueAccessor, OnChanges {
 
   @ViewChild('upload') fileUpload!: FileUpload;
 
@@ -31,14 +31,16 @@ export class MavUploadComponent implements AfterViewInit, ControlValueAccessor {
     private localizationService: LocalizationService,
     private sanitizer: DomSanitizer,
   ) { }
-
-  ngAfterViewInit(): void {
-    this.controlPath.valueChanges.subscribe((val)=>{
-      if(val){
-        this.defaultPath = this.controlPath.value;
-        this.imagePath = this.defaultPath;
-      }
-    })
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes && changes['formControlNamePath'] && changes['formControlNamePath'].currentValue) {
+      this.controlPath.valueChanges.subscribe((val) => {
+        debugger;
+        if (val) {
+          this.defaultPath = this.controlPath.value;
+          this.imagePath = this.defaultPath;
+        }
+      })
+    }
   }
 
   translate(keyName: string) {

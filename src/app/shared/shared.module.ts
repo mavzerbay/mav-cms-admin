@@ -102,6 +102,7 @@ import { StringFormatPipe } from './pipes/string-format.pipe';
     StringFormatPipe,
     TableModule,
     ToolbarModule,
+    ActivityPipe,
   ]
 })
 export class SharedModule { }

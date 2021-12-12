@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { ControlContainer, FormArray } from '@angular/forms';
+import { ControlContainer, FormArray, FormGroup } from '@angular/forms';
 import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Table } from 'primeng/table';
@@ -76,8 +76,9 @@ export class SlideMediaComponent implements OnInit, AfterViewInit {
   }
 
   openDialog(slideMedia: SlideMedia | null) {
+    const index = this.slideMediaList.indexOf(slideMedia);
     this.ref = this.dialogService.open(SlideMediaDialogComponent, {
-      data: slideMedia?.id,
+      data: index,
       header: this.translate('SlideMedia.ControllerTitle'),
       width: '60%',
       contentStyle: { "max-height": "500px", "overflow": "auto" },
@@ -85,10 +86,9 @@ export class SlideMediaComponent implements OnInit, AfterViewInit {
       autoZIndex: true
     });
 
-    this.ref.onClose.subscribe((response: SlideMedia) => {
-      if (response) {
-
-      }
+    this.ref.onClose.subscribe((response: FormGroup) => {
+      if (index === -1 && !response)
+        this.slideMedias.removeAt(this.slideMedias.length - 1);
     })
   }
 
