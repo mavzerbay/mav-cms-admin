@@ -55,7 +55,7 @@ export class BreadcrumbComponent implements OnInit, AfterViewInit {
       }
 
       let label = child.snapshot.data[BreadcrumbComponent.ROUTE_DATA_BREADCRUMB];
-      if (label) {
+      if (label && label!=='Dashboard.ControllerTitle') {
         label = this.translatorList.some(x => x.keyName == label) ? this.translatorList.find(x => x.keyName == label)?.translation : label;
         breadcrumbs.push({ label, url });
       }

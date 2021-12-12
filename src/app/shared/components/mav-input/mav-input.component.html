@@ -1,6 +1,6 @@
 <ng-container [ngSwitch]="type">
     <ng-container *ngSwitchCase="'text'">
-        <span [class]="'p-float-label'+(icon?'p-input-icon-'+iconPosition:'')">
+        <span [class]="'p-float-label'+(icon?' p-input-icon-'+iconPosition+' pi '+icon:'')">
             <input [id]="inputId" type="text" pInputText [formControl]="control" [class]="class" [style]="style"
                 [autocomplete]="autocomplete" (input)="onInput($event)" (blur)="blur()" (keydown)="keydown($event)"
                 (keyup)="keyup($event)" [class.ng-invalid]="!control.valid" [class.ng-dirty]="control.dirty">

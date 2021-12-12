@@ -1,6 +1,6 @@
 <div class="p-card p-grid col-12" *ngIf="(language$ | async)">
-    <form [formGroup]="formPage" (ngSubmit)="savePage()">
-        <dialog-buttons [saveDisabled]="formPage.invalid" (onCancel)="closeDialog()"></dialog-buttons>
+    <form [formGroup]="formPage">
+        <dialog-buttons [saveDisabled]="formPage.invalid" (onSave)="savePage()" (onCancel)="closeDialog()"></dialog-buttons>
         <p-tabView>
             <p-tabPanel [header]="translate('Common.General')">
                 <div class="grid d-flex ai-center">

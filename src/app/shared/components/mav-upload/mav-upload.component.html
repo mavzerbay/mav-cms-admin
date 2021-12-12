@@ -5,7 +5,7 @@
             [chooseLabel]="translate('Common.ChooseFile')">
         </p-fileUpload>
     </div>
-    <div class="col-12" *ngIf="imagePath">
-        <img [src]="imagePath" style="width: 100%;">
+    <div class="col-12" *ngIf="imagePath || controlPath.value">
+        <img [src]="imagePath?imagePath:controlPath.value" style="width: 100%;">
     </div>
 </div>

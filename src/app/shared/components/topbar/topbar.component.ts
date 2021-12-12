@@ -1,4 +1,6 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit } from '@angular/core';
+import { LocalizationService } from '../../services/localization.service';
+import { MavAuthService } from '../../services/mav-auth.service';
 
 @Component({
   selector: 'app-topbar',
@@ -7,11 +9,22 @@ import { AfterViewInit, Component, ElementRef, HostListener, OnInit } from '@ang
 })
 export class TopbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private authService: MavAuthService,
+    private localizationService:LocalizationService
+  ) { }
 
 
   ngOnInit(): void {
 
+  }
+
+  translate(keyName:string){
+    return this.localizationService.translate(keyName);
+  }
+
+  logout() {
+    this.authService.logout().subscribe();
   }
 
   toggleSideBarActive() {

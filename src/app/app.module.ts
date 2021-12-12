@@ -27,38 +27,19 @@ import { SlideComponent } from './components/slide/slide.component';
 import { SlideDialogComponent } from './components/slide/slide-dialog/slide-dialog.component';
 import { SlideMediaComponent } from './components/slide/slide-media/slide-media.component';
 import { SlideMediaDialogComponent } from './components/slide/slide-media-dialog/slide-media-dialog.component';
+import { MainLayoutModule } from './components/main-layout.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LanguageComponent,
-    DashboardComponent,
-    LanguageDialogComponent,
-    TranslateComponent,
-    TranslateDialogComponent,
-    MenuComponent,
-    MenuDialogComponent,
-    CustomVarComponent,
-    CustomVarDialogComponent,
-    PageComponent,
-    CategoryComponent,
-    CategoryDialogComponent,
-    PageDialogComponent,
-    SlideComponent,
-    SlideDialogComponent,
-    SlideMediaComponent,
-    SlideMediaDialogComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
     SharedModule,
-    TooltipModule,
-    EditorModule,
+    MainLayoutModule,
   ],
   providers: [
     MessageService,

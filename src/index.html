@@ -1,12 +1,147 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    .splash-screen {
+      width: 100%;
+      min-height: 100vh;
+      background-color: #f4f7f7;
+    }
+
+    .spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 1;
+      height: 40px;
+      width: 40px;
+      transform: translate(-50%, -50%);
+    }
+
+    [class^="ball-"] {
+      position: absolute;
+      display: block;
+      left: 30px;
+      width: 12px;
+      height: 12px;
+      border-radius: 6px;
+      transition: all 0.5s;
+      animation: circleRotate 4s both infinite;
+      transform-origin: 0 250% 0;
+    }
+
+    @keyframes circleRotate {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(1440deg);
+      }
+    }
+
+    .ball-1 {
+      z-index: -1;
+      background-color: #5e81ac;
+      animation-timing-function: cubic-bezier(0.5, 0.3, 0.9, 0.9);
+    }
+
+    .ball-2 {
+      z-index: -2;
+      background-color: #81a1c1;
+      animation-timing-function: cubic-bezier(0.5, 0.6, 0.9, 0.9);
+    }
+
+    .ball-3 {
+      z-index: -3;
+      background-color: #88c0d0;
+      animation-timing-function: cubic-bezier(0.5, 0.9, 0.9, 0.9);
+    }
+
+    .ball-4 {
+      z-index: -4;
+      background-color: #8fbcbb;
+      animation-timing-function: cubic-bezier(0.5, 1.2, 0.9, 0.9);
+    }
+
+    .ball-5 {
+      z-index: -5;
+      background-color: #d08770;
+      animation-timing-function: cubic-bezier(0.5, 1.5, 0.9, 0.9);
+    }
+
+    .ball-6 {
+      z-index: -6;
+      background-color: #ebcb8b;
+      animation-timing-function: cubic-bezier(0.5, 1.8, 0.9, 0.9);
+    }
+
+    .ball-7 {
+      z-index: -7;
+      background-color: #a3be8c;
+      animation-timing-function: cubic-bezier(0.5, 2.1, 0.9, 0.9);
+    }
+
+    .ball-8 {
+      z-index: -8;
+      background-color: #b48ead;
+      animation-timing-function: cubic-bezier(0.5, 2.4, 0.9, 0.9);
+    }
+
+    * {
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+
+    html {
+      height: 100%;
+      font-size: 14px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      font-size: 14px;
+      color: #4c566a;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding: 0;
+      margin: 0;
+      min-height: 100%;
+      background-color: #eceff4;
+    }
+
+    body .ajax-loader {
+      font-size: 32px;
+    }
+
+    body.hidden-overflow {
+      overflow: hidden;
+    }
+  </style>
 </head>
+
 <body>
-  <app-root></app-root>
+  <app-root>
+    <div class="splash-screen">
+      <div class="spinner">
+        <span class="ball-1"></span>
+        <span class="ball-2"></span>
+        <span class="ball-3"></span>
+        <span class="ball-4"></span>
+        <span class="ball-5"></span>
+        <span class="ball-6"></span>
+        <span class="ball-7"></span>
+        <span class="ball-8"></span>
+      </div>
+    </div>
+  </app-root>
 </body>
+
 </html>

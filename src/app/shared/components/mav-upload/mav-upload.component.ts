@@ -14,7 +14,7 @@ import { LocalizationService } from '../../services/localization.service';
     useExisting: forwardRef(() => MavUploadComponent)
   }]
 })
-export class MavUploadComponent implements ControlValueAccessor, OnChanges {
+export class MavUploadComponent implements ControlValueAccessor, OnChanges, AfterViewInit {
 
   @ViewChild('upload') fileUpload!: FileUpload;
 
@@ -31,10 +31,17 @@ export class MavUploadComponent implements ControlValueAccessor, OnChanges {
     private localizationService: LocalizationService,
     private sanitizer: DomSanitizer,
   ) { }
+  ngAfterViewInit(): void {
+    this.controlPath.valueChanges.subscribe((val) => {
+      if (val) {
+        this.defaultPath = this.controlPath.value;
+        this.imagePath = this.defaultPath;
+      }
+    })
+  }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes['formControlNamePath'] && changes['formControlNamePath'].currentValue) {
       this.controlPath.valueChanges.subscribe((val) => {
-        debugger;
         if (val) {
           this.defaultPath = this.controlPath.value;
           this.imagePath = this.defaultPath;

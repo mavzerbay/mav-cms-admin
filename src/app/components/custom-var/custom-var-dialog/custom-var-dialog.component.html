@@ -10,6 +10,13 @@
                     <div class="col-6">
                         <mav-input formControlName="keyName" [label]="translate('CustomVar.KeyName')"></mav-input>
                     </div>
+                    <div class="col-6">
+                        <mav-input formControlName="name"
+                            [label]="translate('Common.Name')+' ('+primaryLanguage?.name!+')'">
+                        </mav-input>
+                    </div>
+                </div>
+                <div class="grid">
                     <ng-container formArrayName="primaryCustomVarTrans">
                         <ng-container *ngFor="let primary of getPrimaryTrans;let i =index">
                             <ng-container [formGroupName]="i">

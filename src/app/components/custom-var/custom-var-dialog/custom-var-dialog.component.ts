@@ -73,6 +73,7 @@ export class CustomVarDialogComponent implements OnInit {
       id: [{ value: this.customVarId, disabled: false }],
       groupName: [{ value: null, disabled: false }, Validators.required],
       keyName: [{ value: null, disabled: false }, Validators.required],
+      value: [{ value: null, disabled: false }],
       primaryCustomVarTrans: this.formBuilder.array(this.localizationService.getLanguageList.filter(x => x.id == this.primaryLanguage?.id).map(x => this.createCustomVarTansFormArray(x.id))),
       customVarTrans: this.formBuilder.array(this.localizationService.getLanguageListWithoutPrimary.map(x => this.createCustomVarTansFormArray(x.id))),
     });
