@@ -1,0 +1,28 @@
+<div class="p-card p-grid col-12">
+    <form [formGroup]="formGeneralSettings" (ngSubmit)="saveGeneralSettings()">
+        <dialog-buttons [saveDisabled]="formGeneralSettings.invalid" (onCancel)="closeDialog()"></dialog-buttons>
+        <div class="grid">
+            <div class="col-6">
+                <mav-input formControlName="name" [label]="translate('Common.Name')"></mav-input>
+            </div>
+            <div class="col-6">
+                <mav-input formControlName="displayOrder" label="Adı" type="numeric"></mav-input>
+            </div>
+            <div class="col-4">
+                <mav-input formControlName="culture" label="Kültür"></mav-input>
+            </div>
+            <div class="col-4">
+                <mav-input formControlName="flagIcon" label="Bayrak Icon Kodu"></mav-input>
+            </div>
+            <div class="col-4">
+                <mav-input formControlName="isRTL" label="Sağdan Sola Mı?" type="switch"></mav-input>
+            </div>
+            <div class="col-4">
+                <mav-input formControlName="activity" label="Aktif Mi?" type="switch"></mav-input>
+            </div>
+            <div class="col-4">
+                <mav-input formControlName="isPrimary" label="Birincil Mi?" type="switch"></mav-input>
+            </div>
+        </div>
+    </form>
+</div>

@@ -27,6 +27,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditorModule } from 'primeng/editor';
 import { TooltipModule } from 'primeng/tooltip';
 import { SharedModule } from '../shared/shared.module';
+import { GeneralSettingsComponent } from './general-settings/general-settings.component';
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import { SharedModule } from '../shared/shared.module';
     SlideDialogComponent,
     SlideMediaComponent,
     SlideMediaDialogComponent,
+    GeneralSettingsComponent,
   ],
   imports: [
     MainLayoutRoutingModule,
