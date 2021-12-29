@@ -21,6 +21,7 @@ export class MavUploadComponent implements ControlValueAccessor, OnChanges, Afte
   @Input() formControlName!: string;
   @Input() formControlNamePath!: string;
   @Input() accept: string = 'image/*';
+  @Input() chooseLabel!: string;
 
   defaultPath!: string;
 

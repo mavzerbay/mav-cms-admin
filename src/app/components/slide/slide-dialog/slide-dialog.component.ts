@@ -71,6 +71,7 @@ export class SlideDialogComponent implements OnInit, AfterViewInit {
       id: [{ value: this.slideId, disabled: false }],
       activity: [{ value: true, disabled: false }, Validators.required],
       isHome: [{ value: false, disabled: false }, Validators.required],
+      name: [{ value: null, disabled: false }, Validators.required],
       page: [{ value: null, disabled: false }],
       pageId: [{ value: null, disabled: false }],
       slidePosition: [{ value: null, disabled: false }, Validators.required],

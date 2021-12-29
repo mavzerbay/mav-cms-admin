@@ -8,6 +8,7 @@ export class Slide implements BaseModel {
     id!: string;
     activity!: boolean;
     isHome!: boolean;
+    name!: string;
     pageId!: string;
     page!: any;
     slidePositionId!: string;

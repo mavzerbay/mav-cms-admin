@@ -20,14 +20,13 @@ import { SlideComponent } from './slide/slide.component';
 import { SlideDialogComponent } from './slide/slide-dialog/slide-dialog.component';
 import { SlideMediaComponent } from './slide/slide-media/slide-media.component';
 import { SlideMediaDialogComponent } from './slide/slide-media-dialog/slide-media-dialog.component';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditorModule } from 'primeng/editor';
 import { TooltipModule } from 'primeng/tooltip';
 import { SharedModule } from '../shared/shared.module';
 import { GeneralSettingsComponent } from './general-settings/general-settings.component';
+import { UserComponent } from './user/user.component';
+import { UserDialogComponent } from './user/user-dialog/user-dialog.component';
 
 
 @NgModule({
@@ -51,8 +50,11 @@ import { GeneralSettingsComponent } from './general-settings/general-settings.co
     SlideMediaComponent,
     SlideMediaDialogComponent,
     GeneralSettingsComponent,
+    UserComponent,
+    UserDialogComponent,
   ],
   imports: [
+    CommonModule,
     MainLayoutRoutingModule,
     SharedModule,
     FormsModule,

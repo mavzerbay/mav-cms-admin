@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, isDevMode } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, map, Observable } from 'rxjs';
+import { AppUser } from 'src/app/models/app-user';
 import { environment } from 'src/environments/environment';
 import { IApiResponse } from '../models/api-response';
 import { CurrentUser } from '../models/current-user';
@@ -13,7 +14,7 @@ import { MavDataService } from './mav-data.service';
 export class MavAuthService {
   baseURL = environment.baseUrl;
 
-  private currentUserSource = new BehaviorSubject<CurrentUser | null>(null);
+  private currentUserSource = new BehaviorSubject<AppUser | null>(null);
   currentUser$ = this.currentUserSource.asObservable();
 
   constructor(
@@ -37,7 +38,6 @@ export class MavAuthService {
 
         let apiResponse = <IApiResponse<CurrentUser>>response.body
         if (apiResponse.isSuccess && apiResponse.dataSingle && apiResponse.dataSingle.token) {
-          this.currentUserSource.next(apiResponse.dataSingle);
           localStorage.setItem('token', apiResponse.dataSingle.token);
         }
         return apiResponse;
@@ -68,6 +68,26 @@ export class MavAuthService {
         }
 
         return false;
+      })
+    )
+  }
+  
+  loadCurrentUser(): Observable<IApiResponse<AppUser>> {
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', `application/json`);
+    headers = headers.set('Authorization', `Bearer ${token}`);
+
+    return this.http.get(`${this.baseURL}/AppUser/CurrentUser`, { observe: 'response', headers }).pipe(
+      map((response) => {
+        if (isDevMode())
+          console.log("Dönen veri", <IApiResponse<AppUser>>response.body);
+
+        let apiResponse = <IApiResponse<AppUser>>response.body;
+        if (apiResponse.isSuccess && apiResponse.dataSingle) {
+          this.currentUserSource.next(apiResponse.dataSingle);
+        }
+        return apiResponse;
       })
     )
   }

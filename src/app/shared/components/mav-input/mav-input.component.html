@@ -7,6 +7,23 @@
             <label *ngIf="label" [for]="inputId">{{label}}</label>
         </span>
     </ng-container>
+    <ng-container *ngSwitchCase="'password'">
+        <span [class]="'p-float-label'+(icon?' p-input-icon-'+iconPosition+' pi '+icon:'')">
+            <input [id]="inputId" type="password" pInputText [formControl]="control" [class]="class" [style]="style"
+                [autocomplete]="autocomplete" (input)="onInput($event)" (blur)="blur()" (keydown)="keydown($event)"
+                (keyup)="keyup($event)" [class.ng-invalid]="!control.valid" [class.ng-dirty]="control.dirty">
+            <label *ngIf="label" [for]="inputId">{{label}}</label>
+        </span>
+    </ng-container>
+    <ng-container *ngSwitchCase="'phone'">
+        <span class="p-float-label">
+            <p-inputMask [id]="inputId" [formControl]="control" [class]="class" [style]="style"
+                (input)="onInput($event)" (blur)="blur()" mask="(999) 999 9999" (keydown)="keydown($event)"
+                (keyup)="keyup($event)" [class.ng-invalid]="!control.valid" [class.ng-dirty]="control.dirty">
+            </p-inputMask>
+            <label *ngIf="label" [for]="inputId">{{label}}</label>
+        </span>
+    </ng-container>
     <ng-container *ngSwitchCase="'textarea'">
         <span class="p-float-label">
             <textarea [id]="inputId" [rows]="rows" [cols]="cols" [formControl]="control" pInputTextarea [class]="class"

@@ -10,6 +10,9 @@
                 <mav-input formControlName="isHome" [label]="translate('Slide.IsHome')" type="switch"></mav-input>
             </div>
             <div class="col-6">
+                <mav-input formControlName="name" [label]="translate('Common.Name')"></mav-input>
+            </div>
+            <div class="col-6">
                 <mav-autocomplete formControlName="page"
                     [label]="translate('Common.Choose') | stringFormat: translate('Page.ControllerTitle')"
                     suggestionUrl="/Page/GetDropdownList"></mav-autocomplete>

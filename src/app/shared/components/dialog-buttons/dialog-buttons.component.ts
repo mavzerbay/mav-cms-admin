@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { LocalizationService } from '../../services/localization.service';
 
 @Component({
   selector: 'dialog-buttons',
@@ -13,7 +14,16 @@ export class DialogButtonsComponent implements OnInit {
   @Input() saveDisabled: boolean = false;
   @Input() cancelDisabled: boolean = false;
 
-  constructor() { }
+  @Input() showCancelButton: boolean = true;
+
+
+  constructor(
+    private localizationService: LocalizationService,
+  ) { }
+
+  translate(keyName: string) {
+    return this.localizationService.translate(keyName);
+  }
 
   ngOnInit(): void {
   }

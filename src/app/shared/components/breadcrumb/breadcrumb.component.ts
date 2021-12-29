@@ -1,9 +1,11 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api/menuitem';
-import { filter } from 'rxjs';
+import { filter, Observable } from 'rxjs';
+import { AppUser } from 'src/app/models/app-user';
 import { Translation } from '../../models/translation';
 import { LocalizationService } from '../../services/localization.service';
+import { MavAuthService } from '../../services/mav-auth.service';
 
 @Component({
   selector: 'app-breadcrumb',
@@ -20,8 +22,11 @@ export class BreadcrumbComponent implements OnInit, AfterViewInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private localizationService: LocalizationService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private authService: MavAuthService,
   ) { }
+
+  currentUser$!: Observable<AppUser | null>;
 
   translatorList: Translation[] = [];
   ngAfterViewInit(): void {
@@ -29,6 +34,7 @@ export class BreadcrumbComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.currentUser$ = this.authService.currentUser$;
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -55,7 +61,7 @@ export class BreadcrumbComponent implements OnInit, AfterViewInit {
       }
 
       let label = child.snapshot.data[BreadcrumbComponent.ROUTE_DATA_BREADCRUMB];
-      if (label && label!=='Dashboard.ControllerTitle') {
+      if (label && label !== 'Dashboard.ControllerTitle') {
         label = this.translatorList.some(x => x.keyName == label) ? this.translatorList.find(x => x.keyName == label)?.translation : label;
         breadcrumbs.push({ label, url });
       }

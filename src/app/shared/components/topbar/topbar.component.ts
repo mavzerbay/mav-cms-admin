@@ -1,4 +1,6 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AppUser } from 'src/app/models/app-user';
 import { LocalizationService } from '../../services/localization.service';
 import { MavAuthService } from '../../services/mav-auth.service';
 
@@ -11,15 +13,24 @@ export class TopbarComponent implements OnInit {
 
   constructor(
     private authService: MavAuthService,
-    private localizationService:LocalizationService
+    private localizationService: LocalizationService
   ) { }
 
+  currentUser$!: Observable<AppUser | null>;
 
   ngOnInit(): void {
-
+    this.currentUser$ = this.authService.currentUser$;
   }
 
-  translate(keyName:string){
+  get getRole() {
+    this.currentUser$.subscribe((user) => {
+      if (user != null && user.userRoles && user.userRoles.length > 0)
+        return user.userRoles[0].name;
+    })
+    return null;
+  }
+
+  translate(keyName: string) {
     return this.localizationService.translate(keyName);
   }
 

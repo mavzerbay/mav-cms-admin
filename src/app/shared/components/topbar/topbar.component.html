@@ -12,7 +12,7 @@
         </div>
         <div class="layout-topbar-right fadeInDown">
             <ul class="layout-topbar-actions">
-                <li appTopbarItem class="topbar-item"><a href="#"><i class="topbar-icon pi pi-inbox"></i></a>
+                <!-- <li appTopbarItem class="topbar-item"><a href="#"><i class="topbar-icon pi pi-inbox"></i></a>
                     <ul class="fadeInDown">
                         <li class="layout-submenu-header">
                             <h1>Messages</h1><span>Today, you have new 4 messages</span>
@@ -42,8 +42,8 @@
                             </div><i class="pi pi-angle-right"></i>
                         </li>
                     </ul>
-                </li>
-                <li appTopbarItem class="topbar-item"><a href="#"><i class="topbar-icon pi pi-envelope"></i></a>
+                </li> -->
+                <!-- <li appTopbarItem class="topbar-item"><a href="#"><i class="topbar-icon pi pi-envelope"></i></a>
                     <ul class="fadeInDown">
                         <li class="layout-submenu-header">
                             <h1>Deals</h1>
@@ -85,24 +85,36 @@
                             </ul>
                         </li>
                     </ul>
-                </li>
+                </li> -->
                 <li appTopbarItem class="topbar-item profile-item">
                     <a href="#">
                         <span class="profile-image-wrapper">
-                            <img src="assets/images/mavzerbay-logo.png" alt="mavzerbay"></span>
+                            <img *ngIf="(currentUser$ |async)==null || (currentUser$ |async)?.profileImagePath==null"
+                                src="assets/images/mavzerbay-logo.png" alt="mavzerbay">
+                            <img *ngIf="(currentUser$ |async)!=null && (currentUser$ |async)?.profileImagePath!=null"
+                                [src]="(currentUser$ |async)?.profileImagePath"
+                                [alt]="(currentUser$ |async)?.nameSurname">
+                        </span>
                         <span class="profile-info-wrapper">
-                            <h3>Erbay MAVZER</h3>
-                            <span>Admin</span>
+                            <h3>{{(currentUser$ |async)?.nameSurname}}</h3>
+                            <span *ngIf="getRole!=null">{{getRole}}</span>
+                            <span *ngIf="getRole==null"></span>
                         </span>
                     </a>
                     <ul class="profile-item-submenu fadeInDown">
-                        <li class="profile-submenu-header p-ai-center"><img src="assets/images/mavzerbay-logo.png"
-                                alt="mavzerbay" width="40">
+                        <li class="profile-submenu-header p-ai-center">
+                            <img *ngIf="(currentUser$ |async)==null || (currentUser$ |async)?.profileImagePath==null"
+                                src="assets/images/mavzerbay-logo.png" alt="mavzerbay" width="40">
+                            <img *ngIf="(currentUser$ |async)!=null && (currentUser$ |async)?.profileImagePath!=null"
+                                [src]="(currentUser$ |async)?.profileImagePath"
+                                [alt]="(currentUser$ |async)?.nameSurname" width="40">
                             <div class="profile">
-                                <h1>Erbay MAVZER</h1><span>Admin</span>
+                                <h1>{{(currentUser$ |async)?.nameSurname}}</h1>
+                                <span *ngIf="getRole!=null">{{getRole}}</span>
+                                <span *ngIf="getRole==null"></span>
                             </div>
                         </li>
-                        <li class="layout-submenu-item"><i class="pi pi-list icon icon-1"></i>
+                        <!-- <li class="layout-submenu-item"><i class="pi pi-list icon icon-1"></i>
                             <div class="menu-text">
                                 <p>Tasks</p><span>3 open issues</span>
                             </div><i class="pi pi-angle-right"></i>
@@ -116,27 +128,44 @@
                             <div class="menu-text">
                                 <p>Clients</p><span>+80%</span>
                             </div><i class="pi pi-angle-right"></i>
-                        </li>
+                        </li> -->
                         <li class="layout-submenu-footer"><button class="signout-button"
-                                (click)="logout()">{{translate('Account.Signout')}}</button></li>
+                                (click)="logout()">{{translate('Account.SignOut')}}</button></li>
                     </ul>
                 </li>
             </ul>
             <ul class="profile-mobile-wrapper">
-                <li class="topbar-item profile-item"><a href="#"><span class="profile-image-wrapper"><img
-                                src="assets/images/mavzerbay-logo.png" alt="mavzerbay"></span><span
-                            class="profile-info-wrapper">
-                            <h3>Erbay MAVZER</h3><span>Admin</span>
-                        </span></a>
+                <li class="topbar-item profile-item">
+                    <a href="#">
+                        <span class="profile-image-wrapper">
+                            <img *ngIf="(currentUser$ |async)==null || (currentUser$ |async)?.profileImagePath==null"
+                                src="assets/images/mavzerbay-logo.png" alt="mavzerbay">
+                            <img *ngIf="(currentUser$ |async)!=null && (currentUser$ |async)?.profileImagePath!=null"
+                                [src]="(currentUser$ |async)?.profileImagePath"
+                                [alt]="(currentUser$ |async)?.nameSurname">
+                        </span>
+                        <span class="profile-info-wrapper">
+                            <h3>{{(currentUser$ |async)?.nameSurname}}</h3>
+                            <span *ngIf="getRole!=null">{{getRole}}</span>
+                            <span *ngIf="getRole==null"></span>
+                        </span>
+                    </a>
                     <ul class="fadeInDown">
                         <li class="profile-submenu-header">
                             <div class="performance"><span>Weekly Performance</span><img
                                     src="assets/images/mavzerbay-logo.png" alt="mavzerbay"></div>
-                            <div class="profile"><img src="assets/images/mavzerbay-logo.png" alt="mavzerbay" width="45">
-                                <h1>Erbay MAVZER</h1><span>Admin</span>
+                            <div class="profile">
+                                <img *ngIf="(currentUser$ |async)==null || (currentUser$ |async)?.profileImagePath==null"
+                                    src="assets/images/mavzerbay-logo.png" alt="mavzerbay" width="45">
+                                <img *ngIf="(currentUser$ |async)!=null && (currentUser$ |async)?.profileImagePath!=null"
+                                    [src]="(currentUser$ |async)?.profileImagePath"
+                                    [alt]="(currentUser$ |async)?.nameSurname" width="45">
+                                <h1>{{(currentUser$ |async)?.nameSurname}}</h1>
+                                <span *ngIf="getRole!=null">{{getRole}}</span>
+                                <span *ngIf="getRole==null"></span>
                             </div>
                         </li>
-                        <li><i class="pi pi-list icon icon-1"></i>
+                        <!-- <li><i class="pi pi-list icon icon-1"></i>
                             <div class="menu-text">
                                 <p>Tasks</p><span>3 open issues</span>
                             </div><i class="pi pi-angle-right"></i>
@@ -150,8 +179,9 @@
                             <div class="menu-text">
                                 <p>Clients</p><span>+80%</span>
                             </div><i class="pi pi-angle-right"></i>
-                        </li>
-                        <li class="layout-submenu-footer"><button class="signout-button">Sign Out</button></li>
+                        </li> -->
+                        <li class="layout-submenu-footer"><button
+                                class="signout-button">{{translate('Account.SignOut')}}</button></li>
                     </ul>
                 </li>
             </ul>

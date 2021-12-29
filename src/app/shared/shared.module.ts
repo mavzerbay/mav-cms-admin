@@ -35,9 +35,9 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { MavDataFromKeyDirective } from './directives/mav-data-from-key.directive';
 import { TabViewModule } from 'primeng/tabview';
 import { FileUploadModule } from 'primeng/fileupload';
-import { EditorModule } from 'primeng/editor';
 import { RippleModule } from 'primeng/ripple';
 import { StringFormatPipe } from './pipes/string-format.pipe';
+import {InputMaskModule} from 'primeng/inputmask';
 
 
 @NgModule({
@@ -82,7 +82,8 @@ import { StringFormatPipe } from './pipes/string-format.pipe';
     BreadcrumbModule,
     TriStateCheckboxModule,
     CheckboxModule,
-    FileUploadModule
+    FileUploadModule,
+    InputMaskModule,
   ],
   exports: [
     SideMenuComponent,
@@ -103,6 +104,7 @@ import { StringFormatPipe } from './pipes/string-format.pipe';
     TableModule,
     ToolbarModule,
     ActivityPipe,
+    ConfirmDialogModule,
   ]
 })
 export class SharedModule { }

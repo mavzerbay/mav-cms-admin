@@ -24,6 +24,7 @@ export class MavAutocompleteComponent implements ControlValueAccessor {
   @Input() suggestionUrl!: string;
   @Input() style!: string;
   @Input() class!: string;
+  @Input() multiple: boolean = false;
   /**
    * Specifies the behavior dropdown button. Default "blank" mode sends an empty string and "current" mode sends the input value.
    */

@@ -1,0 +1,44 @@
+<div class="p-card p-grid col-12">
+    <form [formGroup]="formAppUser" (ngSubmit)="saveAppUser()">
+        {{formAppUser.value | json}}
+        <dialog-buttons [saveDisabled]="formAppUser.invalid" (onCancel)="closeDialog()"></dialog-buttons>
+        <div class="grid">
+            <div class="col-6">
+                <mav-input formControlName="userName" [label]="translate('AppUser.UserName')"></mav-input>
+            </div>
+            <div class="col-6">
+                <mav-input formControlName="phoneNumber" type="phone" [label]="translate('Common.PhoneNumber')">
+                </mav-input>
+            </div>
+            <div class="col-6">
+                <mav-input formControlName="name" [label]="translate('Common.Name')"></mav-input>
+            </div>
+            <div class="col-6">
+                <mav-input formControlName="surname" [label]="translate('Common.Surname')"></mav-input>
+            </div>
+            <div class="col-6">
+                <mav-input formControlName="password" autocomplete="new-password" [label]="translate('Common.Password')"
+                    type="password">
+                </mav-input>
+                <small style="color:red;display: block;"
+                    *ngIf="!isMatching">{{translate('AppUser.PasswordsNotMatching')}}</small>
+            </div>
+            <div class="col-6">
+                <mav-input formControlName="passwordConfirm" autocomplete="new-password"
+                    [label]="translate('AppUser.PasswordConfirm')" type="password">
+                </mav-input>
+            </div>
+            <div class="col-6" *ngIf="formAppUser.get('profileImagePath')!=null">
+                <mav-upload formControlName="profileImageFile"
+                    [chooseLabel]="translate('Common.Choose') | stringFormat:translate('AppUser.ProfileImage')"
+                    formControlNamePath="profileImagePath">
+                </mav-upload>
+            </div>
+            <div class="col-6">
+                <mav-autocomplete formControlName="userRoles" suggestionUrl="/AppUser/GetRoleDropdownList"
+                    [multiple]="true" [label]="translate('AppUser.Roles')">
+                </mav-autocomplete>
+            </div>
+        </div>
+    </form>
+</div>

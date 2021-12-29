@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 import { BehaviorSubject, map, Subject, takeUntil } from 'rxjs';
 import { ILanguage, Language } from 'src/app/models/language';
 import { Translate } from 'src/app/models/translate';
@@ -18,6 +19,7 @@ export class LocalizationService {
 
   constructor(
     private dataService: MavDataService,
+    private cookieService: CookieService,
   ) { }
 
   private unsubscribe = new Subject();
@@ -35,11 +37,19 @@ export class LocalizationService {
   }
 
   getLanguages() {
-    return this.dataService.getDataList<Language>('/Language').pipe(
+    return this.dataService.getDataList<Language>('/Language/GetAllLanguage').pipe(
       takeUntil(this.unsubscribe),
       map((response) => {
         if (response && response.isSuccess) {
           this.languageSource.next(response.dataMulti);
+          debugger;
+          const browserLang = navigator.language;
+          let selectedLangId = response.dataMulti.find(x => x.isPrimary)?.id;
+          if (response.dataMulti.some(x => x.culture.includes(browserLang))) {
+            selectedLangId = response.dataMulti.find(x => x.culture.includes(browserLang))?.id;
+          }
+
+          this.cookieService.set('langId', selectedLangId!, 30, undefined, undefined, false, 'Strict');
         }
         return response;
       }

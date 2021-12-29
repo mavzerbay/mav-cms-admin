@@ -31,6 +31,7 @@ export class GeneralSettingsTrans implements BaseModel {
     aboutUs!: string
     homeOgTitle!: string
     homeOgDescription!: string
+    homeOgImage!: string
     contactOgTitle!: string
     contactOgDescription!: string
     contactOgImage!: string

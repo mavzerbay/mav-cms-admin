@@ -28,6 +28,11 @@ export class SlideComponent implements OnInit {
         type: ''
       },
       {
+        field: 'name',
+        fieldHeaderName: 'Common.Name',
+        type: 'text',
+      },
+      {
         field: 'page.name',
         fieldHeaderName: 'Page.ControllerTitle',
         type: 'autocomplete',
