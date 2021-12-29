@@ -6,7 +6,7 @@
             <p-tabPanel [header]="translate('Common.General')">
                 <div class="grid">
                     <div class="col-6">
-                        <mav-autocomplete formControlName="testimonailSlide" suggestionUrl="/Slide/GetDropdownList"
+                        <mav-autocomplete formControlName="testimonialSlide" suggestionUrl="/Slide/GetDropdownList"
                             [label]="translate('GeneralSettings.TestimonailSlide')">
                         </mav-autocomplete>
                     </div>
@@ -60,40 +60,127 @@
                             </mav-upload>
                         </div>
                     </div>
-                    <h5>{{translate('GeneralSettings.SeoArea')}}</h5>
-                    <div class="grid">
-                        <div class="col-6">
-                            <mav-input formControlName="homeOgTitle" [label]="translate('GeneralSettings.HomeOgTitle')">
-                            </mav-input>
-                        </div>
-                        <div class="col-6">
-                            <mav-input formControlName="homeOgDescription"
-                                [label]="translate('GeneralSettings.HomeOgDescription')">
-                            </mav-input>
-                        </div>
-                        <div class="col-6">
-                            <mav-input formControlName="contactOgTitle"
-                                [label]="translate('GeneralSettings.ContactOgTitle')">
-                            </mav-input>
-                        </div>
-                        <div class="col-6">
-                            <mav-input formControlName="contactOgDescription"
-                                [label]="translate('GeneralSettings.ContactOgDescription')">
-                            </mav-input>
-                        </div>
-                        <div class="col-6" *ngIf="group.get('homeOgImage')!=null">
-                            <mav-upload formControlName="homeOgFile"
-                                [chooseLabel]="translate('Common.Choose') | stringFormat: translate('GeneralSettings.HomeOgImage')"
-                                formControlNamePath="homeOgImage">
-                            </mav-upload>
-                        </div>
-                        <div class="col-6" *ngIf="group.get('contactOgImage')!=null">
-                            <mav-upload formControlName="contactOgFile"
-                                [chooseLabel]="translate('Common.Choose') | stringFormat: translate('GeneralSettings.ContactOgImage')"
-                                formControlNamePath="contactOgImage">
-                            </mav-upload>
-                        </div>
-                    </div>
+                    <p-accordion>
+                        <p-accordionTab [header]="translate('GeneralSettings.SeoArea')">
+                            <div class="grid">
+                                <div class="col-6">
+                                    <mav-input formControlName="homeOgTitle"
+                                        [label]="translate('GeneralSettings.HomeOgTitle')">
+                                    </mav-input>
+                                </div>
+                                <div class="col-6">
+                                    <mav-input formControlName="homeOgDescription"
+                                        [label]="translate('GeneralSettings.HomeOgDescription')">
+                                    </mav-input>
+                                </div>
+                                <div class="col-6">
+                                    <mav-input formControlName="contactOgTitle"
+                                        [label]="translate('GeneralSettings.ContactOgTitle')">
+                                    </mav-input>
+                                </div>
+                                <div class="col-6">
+                                    <mav-input formControlName="contactOgDescription"
+                                        [label]="translate('GeneralSettings.ContactOgDescription')">
+                                    </mav-input>
+                                </div>
+                                <div class="col-6" *ngIf="group.get('homeOgImage')!=null">
+                                    <mav-upload formControlName="homeOgFile"
+                                        [chooseLabel]="translate('Common.Choose') | stringFormat: translate('GeneralSettings.HomeOgImage')"
+                                        formControlNamePath="homeOgImage">
+                                    </mav-upload>
+                                </div>
+                                <div class="col-6" *ngIf="group.get('contactOgImage')!=null">
+                                    <mav-upload formControlName="contactOgFile"
+                                        [chooseLabel]="translate('Common.Choose') | stringFormat: translate('GeneralSettings.ContactOgImage')"
+                                        formControlNamePath="contactOgImage">
+                                    </mav-upload>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                        <p-accordionTab [header]="translate('GeneralSettings.HomeInfoArea')">
+                            <div class="grid">
+                                <div class="col-4">
+                                    <mav-input formControlName="info1Icon"
+                                        [label]="translate('GeneralSettings.InfoIcon') + '1'">
+                                    </mav-input>
+                                </div>
+                                <div class="col-4">
+                                    <mav-input formControlName="info1Title"
+                                        [label]="translate('GeneralSettings.InfoTitle') + '1'">
+                                    </mav-input>
+                                </div>
+                                <div class="col-4">
+                                    <mav-input formControlName="info1Description"
+                                        [label]="translate('GeneralSettings.InfoDescription') + '1'">
+                                    </mav-input>
+                                </div>
+                                <div class="col-4">
+                                    <mav-input formControlName="info2Icon"
+                                        [label]="translate('GeneralSettings.InfoIcon') + '2'">
+                                    </mav-input>
+                                </div>
+                                <div class="col-4">
+                                    <mav-input formControlName="info2Title"
+                                        [label]="translate('GeneralSettings.InfoTitle') + '2'">
+                                    </mav-input>
+                                </div>
+                                <div class="col-4">
+                                    <mav-input formControlName="info2Description"
+                                        [label]="translate('GeneralSettings.InfoDescription') + '2'">
+                                    </mav-input>
+                                </div>
+                                <div class="col-4">
+                                    <mav-input formControlName="info3Icon"
+                                        [label]="translate('GeneralSettings.InfoIcon') + '3'">
+                                    </mav-input>
+                                </div>
+                                <div class="col-4">
+                                    <mav-input formControlName="info3Title"
+                                        [label]="translate('GeneralSettings.InfoTitle') + '3'">
+                                    </mav-input>
+                                </div>
+                                <div class="col-4">
+                                    <mav-input formControlName="info3Description"
+                                        [label]="translate('GeneralSettings.InfoDescription') + '3'">
+                                    </mav-input>
+                                </div>
+                                <div class="col-4">
+                                    <mav-input formControlName="info4Icon"
+                                        [label]="translate('GeneralSettings.InfoIcon') + '4'">
+                                    </mav-input>
+                                </div>
+                                <div class="col-4">
+                                    <mav-input formControlName="info4Title"
+                                        [label]="translate('GeneralSettings.InfoTitle') + '4'">
+                                    </mav-input>
+                                </div>
+                                <div class="col-4">
+                                    <mav-input formControlName="info4Description"
+                                        [label]="translate('GeneralSettings.InfoDescription') + '4'">
+                                    </mav-input>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                        <p-accordionTab [header]="translate('GeneralSettings.Projects')">
+                            <div class="grid">
+                                <div class="col-4">
+                                    <mav-input formControlName="yearsOfExperienced" type="numeric"
+                                        [label]="translate('GeneralSettings.YearsOfExperienced')">
+                                    </mav-input>
+                                </div>
+                                <div class="col-4">
+                                    <mav-input formControlName="projectDone" type="numeric"
+                                        [label]="translate('GeneralSettings.ProjectDone')">
+                                    </mav-input>
+                                </div>
+                                <div class="col-4">
+                                    <mav-input formControlName="happyCustomer" type="numeric"
+                                        [label]="translate('GeneralSettings.HappyCustomer')">
+                                    </mav-input>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                    </p-accordion>
                 </ng-container>
             </p-tabPanel>
         </p-tabView>

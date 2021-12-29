@@ -1,4 +1,4 @@
-<div class="p-card p-grid col-12">
+<div class="p-card p-grid col-12" *ngIf="languageList!=null && languageList.length>0">
     <form [formGroup]="formSlide">
         <dialog-buttons [saveDisabled]="formSlide.invalid" (onSave)="saveSlide()" (onCancel)=" closeDialog()">
         </dialog-buttons>

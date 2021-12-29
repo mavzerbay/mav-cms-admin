@@ -20,7 +20,7 @@ export class MavDataService {
   ) { }
 
 
-  saveData<T extends BaseModel>(url: string, data: T, customParams?: HttpParams | null, isFormData: boolean = false): Observable<IApiResponse<T>> {
+  saveData<T extends BaseModel>(url: string, data: T, customParams?: HttpParams | null, isFormData: boolean = false, forcePost: boolean = false): Observable<IApiResponse<T>> {
     let values: any = null;
 
     let params = new HttpParams();
@@ -42,7 +42,7 @@ export class MavDataService {
     headers = headers.set('Accept', `application/json`);
     headers = headers.set('Authorization', `Bearer ${token}`);
 
-    if (data.id) {
+    if (data.id && !forcePost) {
       return this.http.put<IApiResponse<T>>(`${this.baseURL}${url}`, values, { observe: 'response', headers: headers, params: params }).pipe(map((response) => {
         if (isDevMode())
           console.log("Dönen veri", <IApiResponse<T>>response.body);

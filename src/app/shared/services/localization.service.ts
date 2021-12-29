@@ -18,8 +18,7 @@ export class LocalizationService {
   translation$ = this.translationSource.asObservable();
 
   constructor(
-    private dataService: MavDataService,
-    private cookieService: CookieService,
+    private dataService: MavDataService
   ) { }
 
   private unsubscribe = new Subject();
@@ -42,14 +41,12 @@ export class LocalizationService {
       map((response) => {
         if (response && response.isSuccess) {
           this.languageSource.next(response.dataMulti);
-          debugger;
           const browserLang = navigator.language;
           let selectedLangId = response.dataMulti.find(x => x.isPrimary)?.id;
           if (response.dataMulti.some(x => x.culture.includes(browserLang))) {
             selectedLangId = response.dataMulti.find(x => x.culture.includes(browserLang))?.id;
           }
-
-          this.cookieService.set('langId', selectedLangId!, 30, undefined, undefined, false, 'Strict');
+          localStorage.setItem("langId", `${selectedLangId}`);
         }
         return response;
       }

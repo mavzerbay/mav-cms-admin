@@ -27,6 +27,7 @@ import { SharedModule } from '../shared/shared.module';
 import { GeneralSettingsComponent } from './general-settings/general-settings.component';
 import { UserComponent } from './user/user.component';
 import { UserDialogComponent } from './user/user-dialog/user-dialog.component';
+import { AccordionModule } from 'primeng/accordion';
 
 
 @NgModule({
@@ -61,6 +62,7 @@ import { UserDialogComponent } from './user/user-dialog/user-dialog.component';
     ReactiveFormsModule,
     TooltipModule,
     EditorModule,
+    AccordionModule,
   ]
 })
 export class MainLayoutModule { }

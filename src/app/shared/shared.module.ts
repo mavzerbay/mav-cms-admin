@@ -62,7 +62,6 @@ import {InputMaskModule} from 'primeng/inputmask';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule,
     //Primeng Modules
     TableModule,
     ToastModule,

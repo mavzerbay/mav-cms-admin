@@ -23,7 +23,8 @@ export class SlideMedia implements BaseModel {
     backgroundImagePath!: string;
     activity!: boolean;
     displayOrder!: number;
-    textStyle!: string;
+    titleTextStyle!: string;
+    summaryTextStyle!: string;
     buttonStyle!: string;
     buttonText!: string;
     linkPageId!: string;

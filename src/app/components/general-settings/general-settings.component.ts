@@ -54,16 +54,16 @@ export class GeneralSettingsComponent implements OnInit {
       contactPhone: [{ value: null, disabled: false }],
       contactWhatsApp: [{ value: null, disabled: false }],
       googleMapUrl: [{ value: null, disabled: false }],
-      testimonailSlideId: [{ value: null, disabled: false }],
-      testimonailSlide: [{ value: null, disabled: false }],
+      testimonialSlideId: [{ value: null, disabled: false }],
+      testimonialSlide: [{ value: null, disabled: false }],
       generalSettingsTrans: this.formBuilder.array(this.localizationService.getLanguageList.map(x => this.createGeneralSettingsTransFormArray(x.id))),
     });
 
-    this.formGeneralSettings.get('testimonailSlide')?.valueChanges.subscribe((val) => {
+    this.formGeneralSettings.get('testimonialSlide')?.valueChanges.subscribe((val) => {
       if (val && val.id) {
-        this.formGeneralSettings.get('testimonailSlideId')?.setValue(val.id);
+        this.formGeneralSettings.get('testimonialSlideId')?.setValue(val.id);
       } else {
-        this.formGeneralSettings.get('testimonailSlideId')?.setValue(null);
+        this.formGeneralSettings.get('testimonialSlideId')?.setValue(null);
       }
     })
   }
@@ -76,7 +76,22 @@ export class GeneralSettingsComponent implements OnInit {
       logoPath!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
       logoFile!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
       aboutUs!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
+      info1Icon!: [{ value: 'pi-cog', disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
+      info1Title!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
+      info1Description!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
+      info2Icon!: [{ value: 'pi-thumbs-up', disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
+      info2Title!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
+      info2Description!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
+      info3Icon!: [{ value: 'pi-money-bill', disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
+      info3Title!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
+      info3Description!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
+      info4Icon!: [{ value: 'pi-eject', disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
+      info4Title!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
+      info4Description!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
       icoPath!: [{ value: null, disabled: false }],
+      yearsOfExperienced!: [{ value: 0, disabled: false }],
+      projectDone!: [{ value: 0, disabled: false }],
+      happyCustomer!: [{ value: 0, disabled: false }],
       icoFile!: [{ value: null, disabled: false }],
       homeOgTitle!: [{ value: null, disabled: false }],
       homeOgDescription!: [{ value: null, disabled: false }],
@@ -132,7 +147,7 @@ export class GeneralSettingsComponent implements OnInit {
 
   saveGeneralSettings() {
     if (this.formGeneralSettings.valid) {
-      this.dataService.saveData<GeneralSettings>("/GeneralSettings", this.formGeneralSettings.value, null, true).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
+      this.dataService.saveData<GeneralSettings>("/GeneralSettings", this.formGeneralSettings.value, null, true,true).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
         if (response && response.isSuccess) {
           this.formGeneralSettings.patchValue(response.dataSingle);
         } else {

@@ -29,7 +29,6 @@ import { ErrorModule } from './error/error.module';
   providers: [
     MessageService,
     ConfirmationService,
-    CookieService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],

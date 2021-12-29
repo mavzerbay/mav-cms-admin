@@ -13,7 +13,7 @@ export class JwtInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const token = localStorage.getItem('token');
-
+    const langId = localStorage.getItem('langId');
     if (token) {
       request = request.clone({
         setHeaders: {
@@ -21,6 +21,15 @@ export class JwtInterceptor implements HttpInterceptor {
         }
       });
     }
+    if (langId) {
+      request = request.clone({
+        setHeaders: {
+          LangId: langId
+        }
+      });
+    }
+
+
 
     return next.handle(request);
   }

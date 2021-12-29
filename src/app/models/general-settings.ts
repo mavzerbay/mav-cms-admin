@@ -27,12 +27,27 @@ export class GeneralSettingsTrans implements BaseModel {
     generalSettingsId!: string;
     languageId!: string;
     logoPath!: string;
-    icoPath!: string
-    aboutUs!: string
-    homeOgTitle!: string
-    homeOgDescription!: string
-    homeOgImage!: string
-    contactOgTitle!: string
-    contactOgDescription!: string
-    contactOgImage!: string
+    icoPath!: string;
+    aboutUs!: string;
+    info1Icon!: string;
+    info1Title!: string;
+    info1Description!: string;
+    info2Icon!: string;
+    info2Title!: string;
+    info2Description!: string;
+    info3Icon!: string;
+    info3Title!: string;
+    info3Description!: string;
+    info4Icon!: string;
+    info4Title!: string;
+    info4Description!: string;
+    yearsOfExperienced!: number;
+    projectDone!: number;
+    happyCustomer!: number;
+    homeOgTitle!: string;
+    homeOgDescription!: string;
+    homeOgImage!: string;
+    contactOgTitle!: string;
+    contactOgDescription!: string;
+    contactOgImage!: string;
 }
