@@ -36,6 +36,39 @@
                         <mav-input formControlName="googleMapUrl" [label]="translate('GeneralSettings.GoogleMapUrl')">
                         </mav-input>
                     </div>
+                    <div class="col-6">
+                        <mav-input formControlName="linkedInURL" [label]="translate('GeneralSettings.LinkedInUrl')">
+                        </mav-input>
+                    </div>
+                    <div class="col-6">
+                        <mav-input formControlName="facebookURL" [label]="translate('GeneralSettings.FacebookUrl')">
+                        </mav-input>
+                    </div>
+                    <div class="col-6">
+                        <mav-input formControlName="instagramURL" [label]="translate('GeneralSettings.InstagramUrl')">
+                        </mav-input>
+                    </div>
+                    <p-accordion>
+                        <p-accordionTab [header]="translate('GeneralSettings.Projects')">
+                            <div class="grid">
+                                <div class="col-4">
+                                    <mav-input formControlName="yearsOfExperienced" type="numeric"
+                                        [label]="translate('GeneralSettings.YearsOfExperienced')">
+                                    </mav-input>
+                                </div>
+                                <div class="col-4">
+                                    <mav-input formControlName="projectDone" type="numeric"
+                                        [label]="translate('GeneralSettings.ProjectDone')">
+                                    </mav-input>
+                                </div>
+                                <div class="col-4">
+                                    <mav-input formControlName="happyCustomer" type="numeric"
+                                        [label]="translate('GeneralSettings.HappyCustomer')">
+                                    </mav-input>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                    </p-accordion>
                 </div>
             </p-tabPanel>
             <p-tabPanel formArrayName="generalSettingsTrans" [header]="getLanguageName(group.value.languageId)"
@@ -157,25 +190,6 @@
                                 <div class="col-4">
                                     <mav-input formControlName="info4Description"
                                         [label]="translate('GeneralSettings.InfoDescription') + '4'">
-                                    </mav-input>
-                                </div>
-                            </div>
-                        </p-accordionTab>
-                        <p-accordionTab [header]="translate('GeneralSettings.Projects')">
-                            <div class="grid">
-                                <div class="col-4">
-                                    <mav-input formControlName="yearsOfExperienced" type="numeric"
-                                        [label]="translate('GeneralSettings.YearsOfExperienced')">
-                                    </mav-input>
-                                </div>
-                                <div class="col-4">
-                                    <mav-input formControlName="projectDone" type="numeric"
-                                        [label]="translate('GeneralSettings.ProjectDone')">
-                                    </mav-input>
-                                </div>
-                                <div class="col-4">
-                                    <mav-input formControlName="happyCustomer" type="numeric"
-                                        [label]="translate('GeneralSettings.HappyCustomer')">
                                     </mav-input>
                                 </div>
                             </div>

@@ -10,6 +10,7 @@ import { IApiResponse } from '../../models/api-response';
 import { BaseDropdownResponse } from '../../models/base-dropdown-response';
 import { LocalizationService } from '../../services/localization.service';
 import { StringFormatPipe } from '../../pipes/string-format.pipe';
+import { MavUtilsService } from '../../services/mav-utils.service';
 
 @Component({
   selector: 'mav-crud-layout',
@@ -53,6 +54,7 @@ export class CrudLayoutComponent implements OnInit {
     private confirmationService: ConfirmationService,
     public dialogService: DialogService,
     private localizationService: LocalizationService,
+    private utilsService: MavUtilsService,
   ) { }
 
   ngOnInit() {
@@ -60,7 +62,7 @@ export class CrudLayoutComponent implements OnInit {
     this.crudLayoutOptions.showToolBar = this.crudLayoutOptions.showToolBar ?? true;
     this.crudLayoutOptions.showSearch = this.crudLayoutOptions.showSearch ?? true;
     this.crudLayoutOptions.dialogWidth = this.crudLayoutOptions.dialogWidth ?? '60%';
-    this.crudLayoutOptions.contentStyle = this.crudLayoutOptions.contentStyle ?? { "max-height": "500px", "overflow": "auto" };
+    this.crudLayoutOptions.contentStyle = this.crudLayoutOptions.contentStyle ?? { "min-height": "500px", "overflow": "auto" };
     this.crudLayoutOptions.deleteProperty = this.crudLayoutOptions.deleteProperty ?? 'name';
 
   }
@@ -72,11 +74,12 @@ export class CrudLayoutComponent implements OnInit {
         this.dataList = response.dataMulti;
         this.totalRecords = response.count;
       } else {
-        if (response.error) {
-          let errorMessage;
-          for (const key in response.error) {
-            if (Object.prototype.hasOwnProperty.call(response.error, key)) {
-              errorMessage += response.error[key];
+        if (response.errors) {
+          let errorMessage!: string;
+          for (const key in response.errors) {
+            const keyAsCamelCase = key.toCamelCase();
+            if (Object.prototype.hasOwnProperty.call(response.errors, key)) {
+              errorMessage += response.errors[key];
             }
           }
           this.messageService.add({ severity: 'error', summary: 'İşlem Başarısız', detail: errorMessage, life: 3000 });

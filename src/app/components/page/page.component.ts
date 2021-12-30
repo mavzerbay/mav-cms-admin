@@ -38,7 +38,7 @@ export class PageComponent implements OnInit {
         type: 'text',
       },
       {
-        field: 'parentPage.name',
+        field: 'category.name',
         fieldHeaderName: 'Category.ControllerTitle',
         type: 'text',
       },

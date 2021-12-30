@@ -1,10 +1,11 @@
 <div class="p-card p-grid col-12" *ngIf="(language$ | async)">
     <form [formGroup]="formPage">
-        <dialog-buttons [saveDisabled]="formPage.invalid" (onSave)="savePage()" (onCancel)="closeDialog()"></dialog-buttons>
+        <dialog-buttons [saveDisabled]="formPage.invalid" (onSave)="savePage()" (onCancel)="closeDialog()">
+        </dialog-buttons>
         <p-tabView>
             <p-tabPanel [header]="translate('Common.General')">
                 <div class="grid d-flex ai-center">
-                    <div class="col-12">
+                    <div class="col-6">
                         <mav-input formControlName="activity" [label]="translate('Common.Activity')" type="switch">
                         </mav-input>
                     </div>
@@ -16,6 +17,11 @@
                     <div class="col-6">
                         <mav-autocomplete formControlName="parentPage" suggestionUrl="/Page/GetDropdownList"
                             [label]="translate('Page.ParentPage')">
+                        </mav-autocomplete>
+                    </div>
+                    <div class="col-6">
+                        <mav-autocomplete formControlName="pageType" [label]="translate('Page.PageType')"
+                            suggestionUrl="/CustomVar/GetDropdownList" [customParams]="pageTypeParams">
                         </mav-autocomplete>
                     </div>
                 </div>
@@ -32,15 +38,23 @@
                             <mav-input formControlName="summary" [label]="translate('Page.Summary')">
                             </mav-input>
                         </div>
+                        <div class="col-6">
+                            <mav-input formControlName="slug" [label]="translate('Page.Slug')">
+                            </mav-input>
+                        </div>
                         <div class="col-12">
                             <p-editor formControlName="content" [style]="{'height':'250px'}"></p-editor>
                         </div>
                         <div class="col-6" *ngIf="group.get('headerPath')!=null">
-                            <mav-upload formControlName="headerFile" formControlNamePath="headerPath">
+                            <mav-upload formControlName="headerFile"
+                                [chooseLabel]="translate('Common.Choose') | stringFormat:translate('Page.HeaderPath')"
+                                formControlNamePath="headerPath">
                             </mav-upload>
                         </div>
                         <div class="col-6" *ngIf="group.get('backgroundPath')!=null">
-                            <mav-upload formControlName="backgroundFile" formControlNamePath="backgroundPath">
+                            <mav-upload formControlName="backgroundFile"
+                                [chooseLabel]="translate('Common.Choose') | stringFormat:translate('Page.BackgroundPath')"
+                                formControlNamePath="backgroundPath">
                             </mav-upload>
                         </div>
                     </div>
@@ -55,8 +69,9 @@
                             </mav-input>
                         </div>
                         <div class="col-1">
-                            <button pButton pRipple type="button" [pTooltip]="translate('Page.OpenOgTypes')" tooltipPosition="top"
-                                icon="pi pi-info" class="p-button-rounded p-button-secondary p-button-outlined"
+                            <button pButton pRipple type="button" [pTooltip]="translate('Page.OpenOgTypes')"
+                                tooltipPosition="top" icon="pi pi-info"
+                                class="p-button-rounded p-button-secondary p-button-outlined"
                                 (click)="openTypes()"></button>
                         </div>
                         <div class="col-12">
@@ -64,7 +79,9 @@
                             </mav-input>
                         </div>
                         <div class="col-6" *ngIf="group.get('ogImagePath')!=null">
-                            <mav-upload formControlName="ogImageFile" formControlNamePath="ogImagePath">
+                            <mav-upload formControlName="ogImageFile"
+                                [chooseLabel]="translate('Common.Choose') | stringFormat:translate('Page.OgImagePath')"
+                                formControlNamePath="ogImagePath">
                             </mav-upload>
                         </div>
                     </div>

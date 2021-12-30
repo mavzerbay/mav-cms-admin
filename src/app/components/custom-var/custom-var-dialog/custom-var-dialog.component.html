@@ -1,6 +1,7 @@
 <div class="p-card p-grid col-12" *ngIf="(language$ | async)">
     <form [formGroup]="formCustomVar" (ngSubmit)="saveCustomVar()">
-        <dialog-buttons [saveDisabled]="formCustomVar.invalid" (onCancel)="closeDialog()"></dialog-buttons>
+        <dialog-buttons [saveDisabled]="formCustomVar.invalid" (onSave)="saveCustomVar()" (onCancel)="closeDialog()">
+        </dialog-buttons>
         <p-tabView>
             <p-tabPanel [header]="translate('Common.General')">
                 <div class="grid">
@@ -9,11 +10,6 @@
                     </div>
                     <div class="col-6">
                         <mav-input formControlName="keyName" [label]="translate('CustomVar.KeyName')"></mav-input>
-                    </div>
-                    <div class="col-6">
-                        <mav-input formControlName="name"
-                            [label]="translate('Common.Name')+' ('+primaryLanguage?.name!+')'">
-                        </mav-input>
                     </div>
                 </div>
                 <div class="grid">

@@ -11,6 +11,8 @@ export class Page implements BaseModel {
     parentPage!: any;
     categoryId!: string;
     category!: any;
+    pageTypeId!: string;
+    pageType!: any;
     pageTrans!: PageTrans[];
 }
 
@@ -19,6 +21,7 @@ export class PageTrans implements BaseModel {
     pageId!: string;
     languageId!: string;
     name!: string;
+    slug!: string;
     summary!: string;
     content!: string;
     headerPath!: string;

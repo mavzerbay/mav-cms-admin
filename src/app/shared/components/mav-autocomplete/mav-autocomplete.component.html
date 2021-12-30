@@ -6,3 +6,6 @@
     </p-autoComplete>
     <label *ngIf="label" [for]="inputId">{{label}}</label>
 </span>
+<ng-container *ngIf="control&& !control.valid&&(control.touched || control.dirty) && control.errors">
+    <small style="color: red;" *ngIf="control.errors?.['required']">{{label}} alanı zorunludur</small>
+</ng-container>

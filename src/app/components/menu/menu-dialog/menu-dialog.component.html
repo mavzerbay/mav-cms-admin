@@ -1,6 +1,6 @@
 <div class="p-card p-grid col-12" *ngIf="(language$ | async)">
     <form [formGroup]="formMenu" (ngSubmit)="saveMenu()">
-        <dialog-buttons [saveDisabled]="formMenu.invalid" (onCancel)="closeDialog()"></dialog-buttons>
+        <dialog-buttons [saveDisabled]="formMenu.invalid" (onSave)="saveMenu()" (onCancel)="closeDialog()"></dialog-buttons>
         <p-tabView>
             <p-tabPanel [header]="translate('Common.General')">
                 <div class="grid d-flex ai-center">
@@ -26,11 +26,6 @@
                     <div class="col-6">
                         <mav-autocomplete formControlName="menuPosition" suggestionUrl="/CustomVar/GetDropdownList"
                             [label]="translate('Menu.MenuPosition')" [customParams]="menuPositionParams">
-                        </mav-autocomplete>
-                    </div>
-                    <div class="col-6">
-                        <mav-autocomplete formControlName="menuType" [label]="translate('Menu.MenuType')"
-                            suggestionUrl="/CustomVar/GetDropdownList" [customParams]="menuTypeParams">
                         </mav-autocomplete>
                     </div>
                     <div class="col-6">
@@ -61,6 +56,10 @@
                     </div>
                     <div class="col-6">
                         <mav-input formControlName="info" [label]="translate('Menu.Info')">
+                        </mav-input>
+                    </div>
+                    <div class="col-6">
+                        <mav-input formControlName="slug" [label]="translate('Menu.Slug')">
                         </mav-input>
                     </div>
                 </div>

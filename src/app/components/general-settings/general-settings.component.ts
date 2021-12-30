@@ -7,6 +7,7 @@ import { Language } from 'src/app/models/language';
 import { IApiResponse } from 'src/app/shared/models/api-response';
 import { LocalizationService } from 'src/app/shared/services/localization.service';
 import { MavDataService } from 'src/app/shared/services/mav-data.service';
+import { MavUtilsService } from 'src/app/shared/services/mav-utils.service';
 
 @Component({
   selector: 'app-general-settings',
@@ -23,6 +24,7 @@ export class GeneralSettingsComponent implements OnInit {
     private dataService: MavDataService,
     private messageService: MessageService,
     private localizationService: LocalizationService,
+    private utilsService: MavUtilsService,
   ) { }
 
   formGeneralSettings!: FormGroup;
@@ -54,6 +56,12 @@ export class GeneralSettingsComponent implements OnInit {
       contactPhone: [{ value: null, disabled: false }],
       contactWhatsApp: [{ value: null, disabled: false }],
       googleMapUrl: [{ value: null, disabled: false }],
+      linkedInURL: [{ value: null, disabled: false }],
+      facebookURL: [{ value: null, disabled: false }],
+      instagramURL: [{ value: null, disabled: false }],
+      yearsOfExperienced!: [{ value: 0, disabled: false }],
+      projectDone!: [{ value: 0, disabled: false }],
+      happyCustomer!: [{ value: 0, disabled: false }],
       testimonialSlideId: [{ value: null, disabled: false }],
       testimonialSlide: [{ value: null, disabled: false }],
       generalSettingsTrans: this.formBuilder.array(this.localizationService.getLanguageList.map(x => this.createGeneralSettingsTransFormArray(x.id))),
@@ -89,9 +97,6 @@ export class GeneralSettingsComponent implements OnInit {
       info4Title!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
       info4Description!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
       icoPath!: [{ value: null, disabled: false }],
-      yearsOfExperienced!: [{ value: 0, disabled: false }],
-      projectDone!: [{ value: 0, disabled: false }],
-      happyCustomer!: [{ value: 0, disabled: false }],
       icoFile!: [{ value: null, disabled: false }],
       homeOgTitle!: [{ value: null, disabled: false }],
       homeOgDescription!: [{ value: null, disabled: false }],
@@ -126,17 +131,8 @@ export class GeneralSettingsComponent implements OnInit {
       if (response && response.isSuccess) {
         this.formGeneralSettings.patchValue(response.dataSingle);
       } else {
-        if (response.error) {
-          let errorMessage;
-          for (const key in response.error) {
-            if (Object.prototype.hasOwnProperty.call(response.error, key)) {
-              if (this.formGeneralSettings.get(key) != null) {
-                this.formGeneralSettings.get(key)?.setErrors(Validators.required, response.error[key]);
-              }
-              errorMessage += response.error[key];
-            }
-          }
-          this.messageService.add({ severity: 'error', summary: 'İşlem Başarısız', detail: errorMessage, life: 3000 });
+        if (response.errors) {
+          this.utilsService.markFormErrors(this.formGeneralSettings, response.errors, this.messageService);
         }
       }
     }, error => {
@@ -147,21 +143,12 @@ export class GeneralSettingsComponent implements OnInit {
 
   saveGeneralSettings() {
     if (this.formGeneralSettings.valid) {
-      this.dataService.saveData<GeneralSettings>("/GeneralSettings", this.formGeneralSettings.value, null, true,true).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
+      this.dataService.saveData<GeneralSettings>("/GeneralSettings", this.formGeneralSettings.value, null, true, true).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
         if (response && response.isSuccess) {
           this.formGeneralSettings.patchValue(response.dataSingle);
         } else {
-          if (response.error) {
-            let errorMessage;
-            for (const key in response.error) {
-              if (Object.prototype.hasOwnProperty.call(response.error, key)) {
-                if (this.formGeneralSettings.get(key) != null) {
-                  this.formGeneralSettings.get(key)?.setErrors(Validators.required, response.error[key]);
-                }
-                errorMessage += response.error[key];
-              }
-            }
-            this.messageService.add({ severity: 'error', summary: 'İşlem Başarısız', detail: errorMessage, life: 3000 });
+          if (response.errors) {
+            this.utilsService.markFormErrors(this.formGeneralSettings, response.errors, this.messageService);
           }
           this.messageService.add({ severity: 'error', summary: 'İşlem Başarısız', detail: response.message, life: 3000 });
         }

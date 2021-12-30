@@ -6,6 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { Translate } from 'src/app/models/translate';
 import { IApiResponse } from 'src/app/shared/models/api-response';
 import { MavDataService } from 'src/app/shared/services/mav-data.service';
+import { MavUtilsService } from 'src/app/shared/services/mav-utils.service';
 
 @Component({
   selector: 'app-translate-dialog',
@@ -20,6 +21,7 @@ export class TranslateDialogComponent implements OnInit {
     private dataService: MavDataService,
     private messageService: MessageService,
     private ref: DynamicDialogRef,
+    private utilsService: MavUtilsService,
   ) { }
 
   TranslateId: string = this.config.data;
@@ -62,17 +64,8 @@ export class TranslateDialogComponent implements OnInit {
       if (response && response.isSuccess) {
         this.formTranslate.patchValue(response.dataSingle);
       } else {
-        if (response.error) {
-          let errorMessage;
-          for (const key in response.error) {
-            if (Object.prototype.hasOwnProperty.call(response.error, key)) {
-              if (this.formTranslate.get(key) != null) {
-                this.formTranslate.get(key)?.setErrors(Validators.required, response.error[key]);
-              }
-              errorMessage += response.error[key];
-            }
-          }
-          this.messageService.add({ severity: 'error', summary: 'İşlem Başarısız', detail: errorMessage, life: 3000 });
+        if (response.errors) {
+          this.utilsService.markFormErrors(this.formTranslate, response.errors, this.messageService);
         }
       }
     }, (error: any) => {
@@ -87,17 +80,8 @@ export class TranslateDialogComponent implements OnInit {
         if (response && response.isSuccess) {
           this.ref.close(response);
         } else {
-          if (response.error) {
-            let errorMessage;
-            for (const key in response.error) {
-              if (Object.prototype.hasOwnProperty.call(response.error, key)) {
-                if (this.formTranslate.get(key) != null) {
-                  this.formTranslate.get(key)?.setErrors(Validators.required, response.error[key]);
-                }
-                errorMessage += response.error[key];
-              }
-            }
-            this.messageService.add({ severity: 'error', summary: 'İşlem Başarısız', detail: errorMessage, life: 3000 });
+          if (response.errors) {
+            this.utilsService.markFormErrors(this.formTranslate, response.errors, this.messageService);
           }
           this.messageService.add({ severity: 'error', summary: 'İşlem Başarısız', detail: response.message, life: 3000 });
         }

@@ -7,6 +7,7 @@ import { AppUser } from 'src/app/models/app-user';
 import { IApiResponse } from 'src/app/shared/models/api-response';
 import { LocalizationService } from 'src/app/shared/services/localization.service';
 import { MavDataService } from 'src/app/shared/services/mav-data.service';
+import { MavUtilsService } from 'src/app/shared/services/mav-utils.service';
 
 @Component({
   selector: 'app-user-dialog',
@@ -22,6 +23,7 @@ export class UserDialogComponent implements OnInit {
     private messageService: MessageService,
     private ref: DynamicDialogRef,
     private localizationService: LocalizationService,
+    private utilsService: MavUtilsService,
   ) { }
 
   appUserId: string = this.config.data;
@@ -93,17 +95,8 @@ export class UserDialogComponent implements OnInit {
       if (response && response.isSuccess) {
         this.formAppUser.patchValue(response.dataSingle);
       } else {
-        if (response.error) {
-          let errorMessage;
-          for (const key in response.error) {
-            if (Object.prototype.hasOwnProperty.call(response.error, key)) {
-              if (this.formAppUser.get(key) != null) {
-                this.formAppUser.get(key)?.setErrors(Validators.required, response.error[key]);
-              }
-              errorMessage += response.error[key];
-            }
-          }
-          this.messageService.add({ severity: 'error', summary: 'İşlem Başarısız', detail: errorMessage, life: 3000 });
+        if (response.errors) {
+          this.utilsService.markFormErrors(this.formAppUser, response.errors, this.messageService);
         }
       }
     }, error => {
@@ -118,17 +111,8 @@ export class UserDialogComponent implements OnInit {
         if (response && response.isSuccess) {
           this.ref.close(response);
         } else {
-          if (response.error) {
-            let errorMessage;
-            for (const key in response.error) {
-              if (Object.prototype.hasOwnProperty.call(response.error, key)) {
-                if (this.formAppUser.get(key) != null) {
-                  this.formAppUser.get(key)?.setErrors(Validators.required, response.error[key]);
-                }
-                errorMessage += response.error[key];
-              }
-            }
-            this.messageService.add({ severity: 'error', summary: 'İşlem Başarısız', detail: errorMessage, life: 3000 });
+          if (response.errors) {
+            this.utilsService.markFormErrors(this.formAppUser, response.errors, this.messageService);
           }
           this.messageService.add({ severity: 'error', summary: 'İşlem Başarısız', detail: response.message, life: 3000 });
         }

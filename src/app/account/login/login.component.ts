@@ -53,14 +53,14 @@ export class LoginComponent implements OnInit {
         if (loginResponse && loginResponse.isSuccess) {
           this.router.navigateByUrl(this.returnUrl);
         } else {
-          if (loginResponse.error) {
+          if (loginResponse.errors) {
             let errorMessage;
-            for (const key in loginResponse.error) {
-              if (Object.prototype.hasOwnProperty.call(loginResponse.error, key)) {
+            for (const key in loginResponse.errors) {
+              if (Object.prototype.hasOwnProperty.call(loginResponse.errors, key)) {
                 if (this.loginForm.get(key) != null) {
-                  this.loginForm.get(key)?.setErrors(Validators.required, loginResponse.error[key]);
+                  this.loginForm.get(key)?.setErrors(Validators.required, loginResponse.errors[key]);
                 }
-                errorMessage += loginResponse.error[key];
+                errorMessage += loginResponse.errors[key];
               }
             }
             this.messageService.add({ severity: 'error', summary: 'İşlem Başarısız', detail: errorMessage, life: 3000 });

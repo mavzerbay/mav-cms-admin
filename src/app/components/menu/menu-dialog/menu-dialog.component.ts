@@ -7,9 +7,9 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { Language } from 'src/app/models/language';
 import { Menu, MenuTrans } from 'src/app/models/menu';
 import { IApiResponse } from 'src/app/shared/models/api-response';
-import { BaseDropdownResponse } from 'src/app/shared/models/base-dropdown-response';
 import { LocalizationService } from 'src/app/shared/services/localization.service';
 import { MavDataService } from 'src/app/shared/services/mav-data.service';
+import { MavUtilsService } from 'src/app/shared/services/mav-utils.service';
 
 @Component({
   selector: 'app-menu-dialog',
@@ -25,6 +25,7 @@ export class MenuDialogComponent implements OnInit {
     private messageService: MessageService,
     private ref: DynamicDialogRef,
     private localizationService: LocalizationService,
+    private utilsService: MavUtilsService,
   ) { }
 
   menuId: string = this.config.data;
@@ -78,11 +79,10 @@ export class MenuDialogComponent implements OnInit {
       isBackend: [{ value: false, disabled: false }, Validators.required],
       menuPosition: [{ value: null, disabled: false }],
       menuPositionId: [{ value: null, disabled: false }],
-      menuType: [{ value: null, disabled: false }],
-      menuTypeId: [{ value: null, disabled: false }],
       parentMenu: [{ value: null, disabled: false }],
       parentMenuId: [{ value: null, disabled: false }],
       page: [{ value: null, disabled: false }],
+      pageId: [{ value: null, disabled: false }],
       menuTrans: this.formBuilder.array(this.localizationService.getLanguageList.map(x => this.createMenuTansFormArray(x.id))),
     });
 
@@ -92,17 +92,19 @@ export class MenuDialogComponent implements OnInit {
       else
         this.formMenu.get('menuPositionId')?.setValue(null);
     });
-    this.formMenu.get('menuType')?.valueChanges.subscribe(val => {
-      if (val && val.id)
-        this.formMenu.get('menuTypeId')?.setValue(val.id);
-      else
-        this.formMenu.get('menuTypeId')?.setValue(null);
-    });
+
     this.formMenu.get('parentMenu')?.valueChanges.subscribe(val => {
       if (val && val.id)
         this.formMenu.get('parentMenuId')?.setValue(val.id);
       else
         this.formMenu.get('parentMenuId')?.setValue(null);
+    });
+
+    this.formMenu.get('page')?.valueChanges.subscribe(val => {
+      if (val && val.id)
+        this.formMenu.get('pageId')?.setValue(val.id);
+      else
+        this.formMenu.get('pageId')?.setValue(null);
     });
   }
 
@@ -113,7 +115,16 @@ export class MenuDialogComponent implements OnInit {
       languageId!: [{ value: languageId, disabled: false }, Validators.required],
       langDisplayOrder: [{ value: null }],
       name!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
+      slug!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
       info!: [{ value: null, disabled: false }],
+    });
+
+    transForm.get('name')?.valueChanges.subscribe((val: string) => {
+      if (val) {
+        transForm.get('slug')?.setValue(val.turkishToEnglish().makeUrlFriendly());
+      } else {
+        transForm.get('slug')?.setValue(null);
+      }
     });
 
     transForm.get('languageId')?.valueChanges.subscribe((val) => {
@@ -121,7 +132,7 @@ export class MenuDialogComponent implements OnInit {
       if (val == this.primaryLanguage?.id) {
         transForm.get('name')?.setValidators(Validators.required);
         transForm.get('name')?.updateValueAndValidity();
-      }else{        
+      } else {
         transForm.get('name')?.setValidators(null);
         transForm.get('name')?.updateValueAndValidity();
       }
@@ -142,17 +153,8 @@ export class MenuDialogComponent implements OnInit {
       if (response && response.isSuccess) {
         this.formMenu.patchValue(response.dataSingle);
       } else {
-        if (response.error) {
-          let errorMessage;
-          for (const key in response.error) {
-            if (Object.prototype.hasOwnProperty.call(response.error, key)) {
-              if (this.formMenu.get(key) != null) {
-                this.formMenu.get(key)?.setErrors(Validators.required, response.error[key]);
-              }
-              errorMessage += response.error[key];
-            }
-          }
-          this.messageService.add({ key: 'menu-toast', severity: 'error', summary: 'İşlem Başarısız', detail: errorMessage, life: 5000 });
+        if (response.errors) {
+          this.utilsService.markFormErrors(this.formMenu, response.errors, this.messageService);
         }
       }
     }, (error: any) => {
@@ -167,17 +169,9 @@ export class MenuDialogComponent implements OnInit {
         if (response && response.isSuccess) {
           this.ref.close(response);
         } else {
-          if (response.error) {
-            let errorMessage;
-            for (const key in response.error) {
-              if (Object.prototype.hasOwnProperty.call(response.error, key)) {
-                if (this.formMenu.get(key) != null) {
-                  this.formMenu.get(key)?.setErrors(Validators.required, response.error[key]);
-                }
-                errorMessage += response.error[key];
-              }
-            }
-            this.messageService.add({ key: 'menu-toast', severity: 'error', summary: 'İşlem Başarısız', detail: errorMessage, life: 5000 });
+          debugger;
+          if (response.errors) {
+            this.utilsService.markFormErrors(this.formMenu, response.errors, this.messageService);
           }
           this.messageService.add({ key: 'menu-toast', severity: 'error', summary: 'İşlem Başarısız', detail: response.message, life: 5000 });
         }

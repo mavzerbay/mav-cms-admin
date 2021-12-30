@@ -1,13 +1,15 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LazyLoadEvent } from 'primeng/api';
+import { FormGroup } from '@angular/forms';
+import { LazyLoadEvent, MessageService } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MavUtilsService {
 
-  constructor() { }
+  constructor(
+  ) { }
 
   lazyLoadToCustomParams(event: LazyLoadEvent): HttpParams {
     let customParams = new HttpParams();
@@ -72,6 +74,24 @@ export class MavUtilsService {
         formData.append(formKey, object[property].toString());
     }
     return formData;
+  }
+
+  markFormErrors(form: FormGroup, errors: any[], messageService: MessageService) {
+    let errorMessage: string = '';
+    for (const key in errors) {
+      let keyAsCamelCase = key.toCamelCase();
+      if (keyAsCamelCase.endsWith('Id'))
+        keyAsCamelCase = keyAsCamelCase.replace('Id', '');
+      if (Object.prototype.hasOwnProperty.call(errors, key)) {
+        if (form.get(keyAsCamelCase) != null) {
+          form.get(keyAsCamelCase)?.setErrors({ required: errors[key] });
+          form.get(keyAsCamelCase)?.markAsDirty();
+        }
+        errorMessage += errors[key];
+      }
+    }
+    form.updateValueAndValidity();
+    messageService.add({ key: 'menu-toast', severity: 'error', summary: 'İşlem Başarısız', detail: errorMessage, life: 5000 });
   }
 
 }

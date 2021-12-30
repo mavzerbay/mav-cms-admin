@@ -1,6 +1,7 @@
 <div class="p-card p-grid col-12" *ngIf="(language$ | async)">
     <form [formGroup]="formCategory" (ngSubmit)="saveCategory()">
-        <dialog-buttons [saveDisabled]="formCategory.invalid" (onCancel)="closeDialog()"></dialog-buttons>
+        <dialog-buttons [saveDisabled]="formCategory.invalid" (onSave)="saveCategory()" (onCancel)="closeDialog()">
+        </dialog-buttons>
         <p-tabView>
             <p-tabPanel [header]="translate('Common.General')">
                 <div class="grid">

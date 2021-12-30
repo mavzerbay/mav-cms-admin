@@ -1,6 +1,6 @@
 <div class="p-card p-grid col-12">
     <form [formGroup]="formLanguage" (ngSubmit)="saveLanguage()">
-        <dialog-buttons [saveDisabled]="formLanguage.invalid" (onCancel)="closeDialog()"></dialog-buttons>
+        <dialog-buttons [saveDisabled]="formLanguage.invalid" (onSave)="saveLanguage()" (onCancel)="closeDialog()"></dialog-buttons>
         <div class="grid">
             <div class="col-6">
                 <mav-input formControlName="name" [label]="translate('Common.Name')"></mav-input>

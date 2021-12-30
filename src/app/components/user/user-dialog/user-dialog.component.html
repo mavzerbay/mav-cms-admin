@@ -1,7 +1,7 @@
 <div class="p-card p-grid col-12">
     <form [formGroup]="formAppUser" (ngSubmit)="saveAppUser()">
         {{formAppUser.value | json}}
-        <dialog-buttons [saveDisabled]="formAppUser.invalid" (onCancel)="closeDialog()"></dialog-buttons>
+        <dialog-buttons [saveDisabled]="formAppUser.invalid" (onSave)="saveAppUser()" (onCancel)="closeDialog()"></dialog-buttons>
         <div class="grid">
             <div class="col-6">
                 <mav-input formControlName="userName" [label]="translate('AppUser.UserName')"></mav-input>

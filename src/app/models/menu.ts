@@ -15,8 +15,6 @@ export class Menu implements BaseModel {
     isBackend!: boolean;
     menuPositionId!: string;
     menuPosition!: any;
-    menuTypeId!: string;
-    menuType!: any;
     parentMenuId!: string;
     parentMenu!: any;
     pageId!: string;
@@ -29,5 +27,6 @@ export class MenuTrans implements BaseModel {
     menuId!: string;
     languageId!: string;
     name!: string;
+    slug!: string;
     toolTip!: string;
 }
