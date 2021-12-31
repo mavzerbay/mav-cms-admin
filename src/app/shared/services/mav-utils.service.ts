@@ -14,7 +14,7 @@ export class MavUtilsService {
   lazyLoadToCustomParams(event: LazyLoadEvent): HttpParams {
     let customParams = new HttpParams();
     if (event) {
-      customParams = customParams.append("PageIndex", (event.first ?? 0) + 1);
+      customParams = customParams.append("PageIndex", (event.first ?? 0) / (event.rows ?? 10) + 1);
       customParams = customParams.append("PageSize", event.rows ?? 10);
 
       if (event.sortOrder && event.sortField) {

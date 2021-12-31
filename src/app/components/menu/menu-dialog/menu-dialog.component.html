@@ -1,6 +1,7 @@
 <div class="p-card p-grid col-12" *ngIf="(language$ | async)">
     <form [formGroup]="formMenu" (ngSubmit)="saveMenu()">
-        <dialog-buttons [saveDisabled]="formMenu.invalid" (onSave)="saveMenu()" (onCancel)="closeDialog()"></dialog-buttons>
+        <dialog-buttons [saveDisabled]="formMenu.invalid" (onSave)="saveMenu()" (onCancel)="closeDialog()">
+        </dialog-buttons>
         <p-tabView>
             <p-tabPanel [header]="translate('Common.General')">
                 <div class="grid d-flex ai-center">
@@ -42,7 +43,9 @@
                         <mav-input formControlName="icon" [label]="translate('Menu.Icon')"></mav-input>
                     </div>
                     <div class="col-8">
-                        <mav-upload formControlName="backgroundImageFile" formControlNamePath="backgroundImagePath">
+                        <mav-upload formControlName="backgroundImageFile"
+                            [chooseLabel]="translate('Common.Choose')|stringFormat:translate('Menu.BackgroundImage')"
+                            formControlNamePath="backgroundImagePath">
                         </mav-upload>
                     </div>
                 </div>

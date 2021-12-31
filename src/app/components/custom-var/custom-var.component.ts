@@ -34,13 +34,19 @@ export class CustomVarComponent implements OnInit {
       },
       {
         field: 'groupName',
-        fieldHeaderName: 'Anahtar Adı',
+        fieldHeaderName: 'Grup Adı',
         type: 'text',
         isGlobalFilter: true,
       },
       {
         field: 'keyName',
         fieldHeaderName: 'Anahtar Adı',
+        type: 'text',
+        isGlobalFilter: true,
+      },
+      {
+        field: 'value',
+        fieldHeaderName: 'Değer',
         type: 'text',
         isGlobalFilter: true,
       },
