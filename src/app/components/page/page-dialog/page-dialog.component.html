@@ -16,7 +16,7 @@
                     </div>
                     <div class="col-6">
                         <mav-autocomplete formControlName="parentPage" suggestionUrl="/Page/GetDropdownList"
-                            [label]="translate('Page.ParentPage')">
+                            [label]="translate('Page.ParentPage')" [customParams]="pageCustomParams">
                         </mav-autocomplete>
                     </div>
                     <div class="col-6">

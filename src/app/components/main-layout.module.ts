@@ -28,6 +28,8 @@ import { GeneralSettingsComponent } from './general-settings/general-settings.co
 import { UserComponent } from './user/user.component';
 import { UserDialogComponent } from './user/user-dialog/user-dialog.component';
 import { AccordionModule } from 'primeng/accordion';
+import { SupportTicketComponent } from './support-ticket/support-ticket.component';
+import { SupportTicketDialogComponent } from './support-ticket/support-ticket-dialog/support-ticket-dialog.component';
 
 
 @NgModule({
@@ -53,6 +55,8 @@ import { AccordionModule } from 'primeng/accordion';
     GeneralSettingsComponent,
     UserComponent,
     UserDialogComponent,
+    SupportTicketComponent,
+    SupportTicketDialogComponent,
   ],
   imports: [
     CommonModule,

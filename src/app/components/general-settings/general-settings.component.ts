@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Component, isDevMode, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -37,6 +38,8 @@ export class GeneralSettingsComponent implements OnInit {
 
   languageList!: Language[];
 
+  pageCustomParams: HttpParams = new HttpParams().append("OnlyParent", true);
+
   ngOnInit(): void {
     this.language$ = this.localizationService.language$;
     this.language$.subscribe((val) => {
@@ -64,6 +67,8 @@ export class GeneralSettingsComponent implements OnInit {
       happyCustomer!: [{ value: 0, disabled: false }],
       testimonialSlideId: [{ value: null, disabled: false }],
       testimonialSlide: [{ value: null, disabled: false }],
+      latestProjectPageId: [{ value: null, disabled: false }],
+      latestProjectPage: [{ value: null, disabled: false }],
       generalSettingsTrans: this.formBuilder.array(this.localizationService.getLanguageList.map(x => this.createGeneralSettingsTransFormArray(x.id))),
     });
 
@@ -73,8 +78,17 @@ export class GeneralSettingsComponent implements OnInit {
       } else {
         this.formGeneralSettings.get('testimonialSlideId')?.setValue(null);
       }
-    })
+    });
+
+    this.formGeneralSettings.get('latestProjectPage')?.valueChanges.subscribe((val) => {
+      if (val && val.id) {
+        this.formGeneralSettings.get('latestProjectPageId')?.setValue(val.id);
+      } else {
+        this.formGeneralSettings.get('latestProjectPageId')?.setValue(null);
+      }
+    });
   }
+
   private createGeneralSettingsTransFormArray(languageId: string) {
     const transForm = this.formBuilder.group({
       id!: [{ value: null, disabled: false }],

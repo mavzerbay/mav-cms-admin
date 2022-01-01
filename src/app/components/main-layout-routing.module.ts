@@ -9,6 +9,7 @@ import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { MenuComponent } from './menu/menu.component';
 import { PageComponent } from './page/page.component';
 import { SlideComponent } from './slide/slide.component';
+import { SupportTicketComponent } from './support-ticket/support-ticket.component';
 import { TranslateComponent } from './translate/translate.component';
 import { UserComponent } from './user/user.component';
 
@@ -25,6 +26,7 @@ const routes: Routes = [
       { path: 'Slide', component: SlideComponent, data: { breadcrumb: 'Slide.ControllerTitlePlural' } },
       { path: 'GeneralSettings', component: GeneralSettingsComponent, data: { breadcrumb: 'GeneralSettings.ControllerTitle' } },
       { path: 'User', component: UserComponent, data: { breadcrumb: 'AppUser.ControllerTitlePlural' } },
+      { path: 'SupportTicket', component: SupportTicketComponent, data: { breadcrumb: 'SupportTicket.ControllerTitlePlural' } },
     ]
   },
 ];

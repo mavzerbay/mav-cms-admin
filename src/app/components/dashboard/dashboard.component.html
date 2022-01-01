@@ -1,1 +1,15 @@
-<p>dashboard works!</p>
+<div class="grid layout-dashboard">
+    <div class="col-12 xl:col-3 md:col-6" (click)="goToSupportTicket()" style="cursor:pointer">
+        <div class="grid grid-nogutter widget-overview-box overview-box-1">
+            <div class="col-3 overview-box-icon">
+                <i class="pi pi-check" style="font-size: 2rem"></i>
+            </div>
+            <div class="col-6 overview-box-text">
+                <h5>{{translate('SupportTicket.ControllerTitlePlural')}}</h5>
+                <p>{{openSupportTicketText}}</p>
+                <p>{{closeSupportTicketText}}</p>
+            </div>
+            <div class="col-3 overview-box-status"> {{supportTicketList.length}} </div>
+        </div>
+    </div>
+</div>

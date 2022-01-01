@@ -1,0 +1,37 @@
+<div class="p-card p-grid col-12">
+    <form [formGroup]="formSupportTicket" (ngSubmit)="saveSupportTicket()">
+        <dialog-buttons [saveDisabled]="formSupportTicket.invalid" (onSave)="saveSupportTicket()"
+            (onCancel)="closeDialog()"></dialog-buttons>
+        <div class="grid">
+            <div class="col-6">
+                <mav-input formControlName="isClosed" [label]="translate('SupportTicket.IsClosed')" type="switch">
+                </mav-input>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="col-6">
+                <mav-autocomplete formControlName="supportType"
+                    [label]="translate('Common.Choose')|stringFormat:translate('SupportTicket.SupportType')"
+                    suggestionUrl="/CustomVar/GetDropdownList" [customParams]="supportTypeCustomParams">
+                </mav-autocomplete>
+            </div>
+            <div class="col-6">
+                <mav-input formControlName="email" [label]="translate('Common.Email')"></mav-input>
+            </div>
+
+            <div class="col-6">
+                <mav-input formControlName="name" [label]="translate('Common.Name')"></mav-input>
+            </div>
+            <div class="col-6">
+                <mav-input formControlName="surname" [label]="translate('Common.Surname')"></mav-input>
+            </div>
+            <div class="col-6">
+                <mav-input formControlName="phoneNumber" [label]="translate('Common.PhoneNumber')"></mav-input>
+            </div>
+            <div class="col-12">
+                <mav-input formControlName="content" type="textarea" [label]="translate('SupportTicket.Content')">
+                </mav-input>
+            </div>
+        </div>
+    </form>
+</div>

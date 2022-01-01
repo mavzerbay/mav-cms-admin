@@ -42,6 +42,7 @@ export class PageDialogComponent implements OnInit {
   languageList!: Language[];
 
   pageTypeParams: HttpParams = new HttpParams().append('GroupName', 'PageType');
+  pageCustomParams: HttpParams = new HttpParams().append("PageId", this.pageId);
 
   ngOnInit(): void {
 
