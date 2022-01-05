@@ -169,7 +169,6 @@ export class MenuDialogComponent implements OnInit {
         if (response && response.isSuccess) {
           this.ref.close(response);
         } else {
-          debugger;
           if (response.errors) {
             this.utilsService.markFormErrors(this.formMenu, response.errors, this.messageService);
           }

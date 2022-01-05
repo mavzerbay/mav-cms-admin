@@ -19,11 +19,11 @@ export class AppComponent implements OnInit {
     this.primengConfig.ripple = true;
     this.localizationService.getLanguages().subscribe((response) => {
       if (response && response.isSuccess && isDevMode())
-        console.log("languages loaded");
+        console.log("languages loaded", response);
     });
     this.localizationService.getTranslations().subscribe((response) => {
       if (response && response.isSuccess && isDevMode())
-        console.log("translations loaded");
+        console.log("translations loaded", response);
     });
   }
 

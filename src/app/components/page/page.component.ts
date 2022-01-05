@@ -35,7 +35,10 @@ export class PageComponent implements OnInit {
       {
         field: 'parentPage.name',
         fieldHeaderName: 'Page.ParentPage',
-        type: 'text',
+        type: 'autocomplete',
+        typePlaceHolder: 'Page.ControllerTitle',
+        autoCompleteUrl: '/Page/GetDropdownList',
+        autoCompleteSearchName: 'parentPageId'
       },
       {
         field: 'category.name',
@@ -46,7 +49,7 @@ export class PageComponent implements OnInit {
         field: 'activity',
         fieldHeaderName: 'Common.Activity',
         type: 'boolean',
-        pipeName:'activity'
+        pipeName: 'activity'
       }
     ]
   }

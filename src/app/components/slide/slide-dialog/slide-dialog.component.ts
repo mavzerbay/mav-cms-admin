@@ -101,6 +101,7 @@ export class SlideDialogComponent implements OnInit, AfterViewInit {
       language: [{ value: this.languageList.find(x => x.id == media?.languageId), disabled: false }, Validators.required],
       languageId: [{ value: null, disabled: false }, Validators.required],
       activity: [{ value: true, disabled: false }, Validators.required],
+      affectAllLanguage: [{ value: false, disabled: false }, Validators.required],
       displayOrder: [{ value: 0, disabled: false }, Validators.required],
       titleTextStyle: [{ value: null, disabled: false }],
       summaryTextStyle: [{ value: null, disabled: false }],
@@ -112,7 +113,7 @@ export class SlideDialogComponent implements OnInit, AfterViewInit {
       backgroundImageFile: [{ value: null, disabled: false }, media && media.backgroundImagePath ? null : Validators.required],
       routerLink: [{ value: null, disabled: false }],
       routerQueryParameters: [{ value: null, disabled: false }],
-      title: [{ value: null, disabled: false }, Validators.required],
+      title: [{ value: null, disabled: false }],
       summary: [{ value: null, disabled: false }],
     });
 

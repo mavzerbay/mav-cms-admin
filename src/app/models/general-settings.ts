@@ -51,8 +51,12 @@ export class GeneralSettingsTrans implements BaseModel {
     info4Description!: string;
     homeOgTitle!: string;
     homeOgDescription!: string;
+    homeOgKeywords!: string;
+    homeOgKeywordModel!: string[];
     homeOgImage!: string;
     contactOgTitle!: string;
     contactOgDescription!: string;
+    contactOgKeywords!: string;
+    contactOgKeywordModel!: string[];
     contactOgImage!: string;
 }

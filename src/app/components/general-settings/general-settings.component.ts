@@ -96,7 +96,7 @@ export class GeneralSettingsComponent implements OnInit {
       languageId!: [{ value: languageId, disabled: false }, Validators.required],
       langDisplayOrder: [{ value: null }],
       logoPath!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
-      logoFile!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
+      logoFile!: [{ value: null, disabled: false }],
       aboutUs!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
       info1Icon!: [{ value: 'pi-cog', disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
       info1Title!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
@@ -114,12 +114,32 @@ export class GeneralSettingsComponent implements OnInit {
       icoFile!: [{ value: null, disabled: false }],
       homeOgTitle!: [{ value: null, disabled: false }],
       homeOgDescription!: [{ value: null, disabled: false }],
+      homeOgKeywordModel!: [{ value: null, disabled: false }],
+      homeOgKeywords!: [{ value: null, disabled: false }],
       homeOgImage!: [{ value: null, disabled: false }],
       homeOgFile!: [{ value: null, disabled: false }],
       contactOgTitle!: [{ value: null, disabled: false }],
       contactOgDescription!: [{ value: null, disabled: false }],
+      contactOgKeywordModel!: [{ value: null, disabled: false }],
+      contactOgKeywords!: [{ value: null, disabled: false }],
       contactOgImage!: [{ value: null, disabled: false }],
       contactOgFile!: [{ value: null, disabled: false }],
+    });
+
+
+    transForm.get('homeOgKeywordModel')?.valueChanges.subscribe((val: string[]) => {
+      if (val && val.length > 0) {
+        transForm.get('homeOgKeywords')?.setValue(val.join(','));
+      } else {
+        transForm.get('homeOgKeywords')?.setValue(null);
+      }
+    });
+    transForm.get('contactOgKeywordModel')?.valueChanges.subscribe((val: string[]) => {
+      if (val && val.length > 0) {
+        transForm.get('contactOgKeywords')?.setValue(val.join(','));
+      } else {
+        transForm.get('contactOgKeywords')?.setValue(null);
+      }
     });
 
     transForm.get('languageId')?.valueChanges.subscribe((val) => {
@@ -143,6 +163,21 @@ export class GeneralSettingsComponent implements OnInit {
   private getGeneralSettings() {
     this.dataService.getData<GeneralSettings>(`/GeneralSettings`,).subscribe((response: IApiResponse<GeneralSettings>) => {
       if (response && response.isSuccess) {
+        for (let i = 0; i < response.dataSingle.generalSettingsTrans.length; i++) {
+          const element = response.dataSingle.generalSettingsTrans[i];
+          if (element.homeOgKeywords) {
+            if (element.homeOgKeywords.includes(','))
+              element.homeOgKeywordModel = element.homeOgKeywords.split(',');
+            else
+              element.homeOgKeywordModel = [element.homeOgKeywords];
+          }
+          if (element.contactOgKeywords) {
+            if (element.contactOgKeywords.includes(','))
+              element.contactOgKeywordModel = element.contactOgKeywords.split(',');
+            else
+              element.contactOgKeywordModel = [element.contactOgKeywords];
+          }
+        }
         this.formGeneralSettings.patchValue(response.dataSingle);
       } else {
         if (response.errors) {
@@ -159,12 +194,13 @@ export class GeneralSettingsComponent implements OnInit {
     if (this.formGeneralSettings.valid) {
       this.dataService.saveData<GeneralSettings>("/GeneralSettings", this.formGeneralSettings.value, null, true, true).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
         if (response && response.isSuccess) {
+          this.messageService.add({ key: 'general-settings-toast', severity: 'success', summary: 'İşlem Başarılı', detail: response.message, life: 3000 });
           this.formGeneralSettings.patchValue(response.dataSingle);
         } else {
           if (response.errors) {
             this.utilsService.markFormErrors(this.formGeneralSettings, response.errors, this.messageService);
           }
-          this.messageService.add({ severity: 'error', summary: 'İşlem Başarısız', detail: response.message, life: 3000 });
+          this.messageService.add({ key: 'general-settings-toast', severity: 'error', summary: 'İşlem Başarısız', detail: response.message, life: 3000 });
         }
       }, error => {
         if (isDevMode())

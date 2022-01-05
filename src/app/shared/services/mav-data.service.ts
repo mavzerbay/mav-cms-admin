@@ -37,19 +37,14 @@ export class MavDataService {
     if (isDevMode())
       console.log("Gönderilen veri", values);
 
-    const token = localStorage.getItem('token');
-    let headers = new HttpHeaders();
-    headers = headers.set('Accept', `application/json`);
-    headers = headers.set('Authorization', `Bearer ${token}`);
-
     if (data.id && !forcePost) {
-      return this.http.put<IApiResponse<T>>(`${this.baseURL}${url}`, values, { observe: 'response', headers: headers, params: params }).pipe(map((response) => {
+      return this.http.put<IApiResponse<T>>(`${this.baseURL}${url}`, values, { observe: 'response', params: params }).pipe(map((response) => {
         if (isDevMode())
           console.log("Dönen veri", <IApiResponse<T>>response.body);
         return <IApiResponse<T>>response.body;
       }))
     } else {
-      return this.http.post<IApiResponse<T>>(`${this.baseURL}${url}`, values, { observe: 'response', headers: headers }).pipe(map((response) => {
+      return this.http.post<IApiResponse<T>>(`${this.baseURL}${url}`, values, { observe: 'response' }).pipe(map((response) => {
         if (isDevMode())
           console.log("Dönen veri", <IApiResponse<T>>response.body);
         return <IApiResponse<T>>response.body;
@@ -58,13 +53,7 @@ export class MavDataService {
   }
 
   getById<T extends BaseModel>(url: string, id: string): Observable<IApiResponse<T>> {
-
-    const token = localStorage.getItem('token');
-    let headers = new HttpHeaders();
-    headers = headers.set('Accept', `application/json`);
-    headers = headers.set('Authorization', `Bearer ${token}`);
-
-    return this.http.get<IApiResponse<T>>(`${this.baseURL}${url}/${id}`, { observe: 'response', headers }).pipe(
+    return this.http.get<IApiResponse<T>>(`${this.baseURL}${url}/${id}`, { observe: 'response' }).pipe(
       map((response) => {
         if (isDevMode())
           console.log("Dönen veri", <IApiResponse<T>>response.body);
@@ -73,13 +62,7 @@ export class MavDataService {
     );
   }
   getData<T extends BaseModel>(url: string): Observable<IApiResponse<T>> {
-
-    const token = localStorage.getItem('token');
-    let headers = new HttpHeaders();
-    headers = headers.set('Accept', `application/json`);
-    headers = headers.set('Authorization', `Bearer ${token}`);
-
-    return this.http.get<IApiResponse<T>>(`${this.baseURL}${url}`, { observe: 'response', headers }).pipe(
+    return this.http.get<IApiResponse<T>>(`${this.baseURL}${url}`, { observe: 'response' }).pipe(
       map((response) => {
         if (isDevMode())
           console.log("Dönen veri", <IApiResponse<T>>response.body);
@@ -107,12 +90,7 @@ export class MavDataService {
     if (event) {
       params = this.utilsService.lazyLoadToCustomParams(event);
     }
-    const token = localStorage.getItem('token');
-    let headers = new HttpHeaders();
-    headers = headers.set('Accept', `application/json`);
-    headers = headers.set('Authorization', `Bearer ${token}`);
-
-    return this.http.get<IApiResponse<T>>(`${this.baseURL}${url}`, { observe: 'response', headers, params }).pipe(
+    return this.http.get<IApiResponse<T>>(`${this.baseURL}${url}`, { observe: 'response', params }).pipe(
       map((response) => {
         if (isDevMode())
           console.log("Dönen veri", <IApiResponse<T>>response.body);
@@ -132,12 +110,7 @@ export class MavDataService {
     if (query)
       params = params.append("Name", query);
 
-    const token = localStorage.getItem('token');
-    let headers = new HttpHeaders();
-    headers = headers.set('Accept', `application/json`);
-    headers = headers.set('Authorization', `Bearer ${token}`);
-
-    return this.http.get<IApiResponse<T>>(`${this.baseURL}${url}`, { observe: 'response', headers, params }).pipe(
+    return this.http.get<IApiResponse<T>>(`${this.baseURL}${url}`, { observe: 'response', params }).pipe(
       map((response) => {
         if (isDevMode())
           console.log("Dönen veri", <IApiResponse<T>>response.body);

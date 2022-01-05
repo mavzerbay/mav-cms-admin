@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpStatusCode } from '@angular/common/http';
 import { Injectable, isDevMode } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, map, Observable } from 'rxjs';
@@ -47,7 +47,7 @@ export class MavAuthService {
 
   logout(): Observable<boolean> {
     const token = localStorage.getItem('token');
-    if (token == null)
+    if (token != null)
       localStorage.removeItem('token');
 
     this.currentUserSource.next(null);
@@ -71,7 +71,7 @@ export class MavAuthService {
       })
     )
   }
-  
+
   loadCurrentUser(): Observable<IApiResponse<AppUser>> {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
@@ -86,6 +86,9 @@ export class MavAuthService {
         let apiResponse = <IApiResponse<AppUser>>response.body;
         if (apiResponse.isSuccess && apiResponse.dataSingle) {
           this.currentUserSource.next(apiResponse.dataSingle);
+        }else if(response.status==HttpStatusCode.Unauthorized){
+          localStorage.removeItem('token');
+          this.router.navigate(['Account/Login']);
         }
         return apiResponse;
       })

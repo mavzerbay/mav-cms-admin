@@ -44,7 +44,6 @@ export class DashboardComponent implements OnInit {
   }
 
   get openSupportTicketText() {
-    debugger;
     return new StringFormatPipe().transform(this.translate('SupportTicket.OpenCount'), this.supportTicketList.filter(x => !x.isClosed).length);
   }
 

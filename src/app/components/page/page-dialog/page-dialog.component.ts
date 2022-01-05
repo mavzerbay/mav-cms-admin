@@ -35,14 +35,14 @@ export class PageDialogComponent implements OnInit {
 
   private unsubscribe = new Subject();
 
-  primaryLanguage = this.localizationService.getPrimaryLanguage;
+  primaryLanguage!: Language;
 
   language$!: Observable<Language[]>;
 
   languageList!: Language[];
 
   pageTypeParams: HttpParams = new HttpParams().append('GroupName', 'PageType');
-  pageCustomParams: HttpParams = new HttpParams().append("PageId", this.pageId);
+  pageCustomParams: HttpParams = this.pageId ? new HttpParams().append("PageId", this.pageId) : new HttpParams();
 
   ngOnInit(): void {
 
@@ -50,6 +50,7 @@ export class PageDialogComponent implements OnInit {
     this.language$.subscribe((val) => {
       if (val && val.length > 0) {
         this.languageList = val;
+        this.primaryLanguage = val.find(x => x.isPrimary)!;
         this.createPageForm();
         if (this.pageId)
           this.getPage();
@@ -109,7 +110,7 @@ export class PageDialogComponent implements OnInit {
       languageId!: [{ value: languageId, disabled: false }, Validators.required],
       langDisplayOrder: [{ value: null }],
       name!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
-      slug!: [{ value: null, disabled: false }, languageId == this.primaryLanguage?.id ? Validators.required : null],
+      slug!: [{ value: null, disabled: false }],
       summary!: [{ value: null, disabled: false }],
       content!: [{ value: null, disabled: false }],
       headerPath: [{ value: null, disabled: false }],
@@ -118,6 +119,7 @@ export class PageDialogComponent implements OnInit {
       backgroundFile: [{ value: null, disabled: false }],
       ogTitle: [{ value: null, disabled: false }],
       ogDescription: [{ value: null, disabled: false }],
+      ogKeywordModel: [{ value: null, disabled: false }],
       ogKeywords: [{ value: null, disabled: false }],
       ogImagePath: [{ value: null, disabled: false }],
       ogImageFile: [{ value: null, disabled: false }],
@@ -127,8 +129,22 @@ export class PageDialogComponent implements OnInit {
     transForm.get('name')?.valueChanges.subscribe((val: string) => {
       if (val) {
         transForm.get('slug')?.setValue(val.turkishToEnglish().makeUrlFriendly());
+        transForm.get('slug')?.setValidators(Validators.required);
+        transForm.get('slug')?.markAsTouched();
+        transForm.get('slug')?.updateValueAndValidity();
       } else {
         transForm.get('slug')?.setValue(null);
+        transForm.get('slug')?.removeValidators(Validators.required);
+        transForm.get('slug')?.markAsTouched();
+        transForm.get('slug')?.updateValueAndValidity();
+      }
+    });
+
+    transForm.get('ogKeywordModel')?.valueChanges.subscribe((val: string[]) => {
+      if (val && val.length > 0) {
+        transForm.get('ogKeywords')?.setValue(val.join(','));
+      } else {
+        transForm.get('ogKeywords')?.setValue(null);
       }
     });
 
@@ -156,6 +172,15 @@ export class PageDialogComponent implements OnInit {
   private getPage() {
     this.dataService.getById<Page>(`/Page`, this.pageId).subscribe((response: IApiResponse<Page>) => {
       if (response && response.isSuccess) {
+        for (let i = 0; i < response.dataSingle.pageTrans.length; i++) {
+          const element = response.dataSingle.pageTrans[i];
+          if (element.ogKeywords) {
+            if (element.ogKeywords.includes(','))
+              element.ogKeywordModel = element.ogKeywords.split(',');
+            else
+              element.ogKeywordModel = [element.ogKeywords];
+          }
+        }
         this.formPage.patchValue(response.dataSingle);
       } else {
         if (response.errors) {

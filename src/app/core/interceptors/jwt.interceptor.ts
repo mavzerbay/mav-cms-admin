@@ -6,6 +6,7 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
@@ -17,7 +18,12 @@ export class JwtInterceptor implements HttpInterceptor {
     if (token) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${token}`
+          'Accept': `application/json`,
+          Authorization: `Bearer ${token}`,
+          'Access-Control-Allow-Origin': environment.siteURL,
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+          'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
+          'Access-Control-Allow-Credentials': 'true',
         }
       });
     }

@@ -121,6 +121,22 @@
                                         [label]="translate('GeneralSettings.ContactOgDescription')">
                                     </mav-input>
                                 </div>
+                                <div class="col-6">
+                                    <span class="p-float-label">
+                                        <p-chips [id]="i+'_homeOgKeywordModel'" formControlName="homeOgKeywordModel">
+                                        </p-chips>
+                                        <label
+                                            [for]="i+'_homeOgKeywordModel'">{{translate('GeneralSettings.HomeOgKeywordModel')}}</label>
+                                    </span>
+                                </div>
+                                <div class="col-6">
+                                    <span class="p-float-label">
+                                        <p-chips [id]="i+'_contactOgKeywordModel'" formControlName="contactOgKeywordModel">
+                                        </p-chips>
+                                        <label
+                                            [for]="i+'_contactOgKeywordModel'">{{translate('GeneralSettings.ContactOgKeywordModel')}}</label>
+                                    </span>
+                                </div>
                                 <div class="col-6" *ngIf="group.get('homeOgImage')!=null">
                                     <mav-upload formControlName="homeOgFile"
                                         [chooseLabel]="translate('Common.Choose') | stringFormat: translate('GeneralSettings.HomeOgImage')"
@@ -205,8 +221,6 @@
         </p-tabView>
     </form>
 </div>
-<p-toast position="top-right" key="page-toast" [baseZIndex]="9999999"></p-toast>
-
-<p-toast position="top-right" [baseZIndex]="9999999"></p-toast>
+<p-toast position="top-right" key="general-settings-toast" [baseZIndex]="9999999"></p-toast>
 <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" acceptLabel="Evet" rejectLabel="Hayır">
 </p-confirmDialog>

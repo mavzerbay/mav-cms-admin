@@ -10,16 +10,16 @@
                         <div class="col-12">
                             <span class="p-float-label p-input-icon-right w-full">
                                 <i class="pi pi-user"></i>
-                                <input type="text" id="emailOrUserName" pInputText formControlName="emailOrUserName"
-                                    class="w-full" />
+                                <input type="text" id="emailOrUserName" autocomplete="username" pInputText
+                                    formControlName="emailOrUserName" class="w-full" />
                                 <label for="emailOrUserName">{{translate('Common.EmailOrUserName')}}</label>
                             </span>
                         </div>
                         <div class="col-12">
                             <span class="p-float-label p-input-icon-right w-full">
                                 <i class="pi pi-lock"></i>
-                                <input type="password" id="password" pInputText formControlName="password"
-                                    class="w-full" />
+                                <input type="password" id="password" autocomplete="current-password" pInputText
+                                    formControlName="password" class="w-full" />
                                 <label for="email">{{translate('Common.Password')}}</label>
                             </span>
                         </div>
@@ -28,8 +28,8 @@
                             </p-checkbox>
                         </div> -->
                         <div class="col-12 flex justify-content-between align-items-center">
-                            <button pbutton="" type="button" (click)="login()" [disabled]="loginForm.invalid"
-                                label="Login" class="p-element p-button p-component" tabindex="0">
+                            <button pbutton type="submit" (click)="login()" [disabled]="loginForm.invalid"
+                                class="p-element p-button p-component">
                                 <span class="p-button-label">{{translate('Account.Login')}}</span>
                             </button>
                             <a href="#" class="secondary-button">{{translate('Account.ForgetPassword')}}</a>

@@ -78,6 +78,12 @@
                             <mav-input formControlName="ogDescription" [label]="translate('Page.OgDescription')">
                             </mav-input>
                         </div>
+                        <div class="col-6">
+                            <span class="p-float-label">
+                                <p-chips [id]="i+'_ogKeywordModel'" formControlName="ogKeywordModel"></p-chips>
+                                <label [for]="i+'_ogKeywordModel'">{{translate('Page.OgKeywords')}}</label>
+                            </span>
+                        </div>
                         <div class="col-6" *ngIf="group.get('ogImagePath')!=null">
                             <mav-upload formControlName="ogImageFile"
                                 [chooseLabel]="translate('Common.Choose') | stringFormat:translate('Page.OgImagePath')"

@@ -28,6 +28,8 @@ export class PageTrans implements BaseModel {
     backgroundPath!: string;
     ogTitle!: string;
     ogDescription!: string;
+    ogKeywords!: string;
+    ogKeywordModel!: string[];
     ogImagePath!: string;
     ogType!: string;
 }

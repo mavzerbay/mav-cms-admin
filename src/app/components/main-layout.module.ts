@@ -21,16 +21,18 @@ import { SlideDialogComponent } from './slide/slide-dialog/slide-dialog.componen
 import { SlideMediaComponent } from './slide/slide-media/slide-media.component';
 import { SlideMediaDialogComponent } from './slide/slide-media-dialog/slide-media-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { EditorModule } from 'primeng/editor';
-import { TooltipModule } from 'primeng/tooltip';
 import { SharedModule } from '../shared/shared.module';
 import { GeneralSettingsComponent } from './general-settings/general-settings.component';
 import { UserComponent } from './user/user.component';
 import { UserDialogComponent } from './user/user-dialog/user-dialog.component';
-import { AccordionModule } from 'primeng/accordion';
 import { SupportTicketComponent } from './support-ticket/support-ticket.component';
 import { SupportTicketDialogComponent } from './support-ticket/support-ticket-dialog/support-ticket-dialog.component';
 
+//Primeng
+import { EditorModule } from 'primeng/editor';
+import { TooltipModule } from 'primeng/tooltip';
+import { ChipsModule } from 'primeng/chips';
+import { AccordionModule } from 'primeng/accordion';
 
 @NgModule({
   declarations: [
@@ -67,6 +69,7 @@ import { SupportTicketDialogComponent } from './support-ticket/support-ticket-di
     TooltipModule,
     EditorModule,
     AccordionModule,
+    ChipsModule,
   ]
 })
 export class MainLayoutModule { }
