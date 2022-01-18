@@ -211,7 +211,7 @@ export class CrudLayoutComponent implements OnInit {
       if (k == "0" && a[i - 1].includes('Trans')) {
         k = this.filterByUserLanguage(data).toString();
       }
-      if (k in data) {
+      if (data && k in data) {
         data = data[k];
       } else {
         return;
