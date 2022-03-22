@@ -62,7 +62,9 @@ export class MavUtilsService {
         for (let i = 0; i < object[property].length; i++) {
           const element = object[property][i];
           const tempFormKey = `${formKey}[${i}]`;
-          if (typeof object[property][i] === 'object')
+          if (object[property][i] instanceof File) 
+            formData.append(formKey, object[property][i]);
+          else if (typeof object[property][i] === 'object')
             this.objectToFormData(element, formData, tempFormKey);
           else
             formData.append(tempFormKey, element.toString());
